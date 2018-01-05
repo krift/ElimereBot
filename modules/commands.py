@@ -16,10 +16,22 @@ class Commands():
         await ctx.channel.send("Sunday: 730pm Eastern")
         await ctx.channel.send("Please stop asking me this, you should remember it by now.")
 
-    @commands.command(aliases = ['areyoulistening'])
+    @commands.command(aliases=['areyoulistening'])
     async def AreYouListening(self, ctx):
         """Uhhhhh....hellooooo"""
         await ctx.channel.send("I swear to god, I don't know why I even bother, no one listens anyways.")
+
+    @commands.commmand(aliases=['twitchchannel'])
+    async def TwitchChannel(self, ctx):
+        """Holy crap are you even paying attention when I talk?"""
+        await ctx.channel.send("https://www.twitch.tv/elimere")
+
+    @commands.command(aliases=['mods'])
+    async def Mods(self, ctx):
+        """These are the mods required for raiding"""
+        await ctx.channel.send("Again, here are the mods required for the 100000th time.")
+        await ctx.channel.send("http://www.mediafire.com/file/gpc0t8yjhi5369f/Booty_Bay_Surf_Club_Raid_Pack.ccip")
+        await ctx.channel.send("You need the Twitch app installed, download this, then run it.")
 
 def setup(bot):
     bot.add_cog(Commands(bot))
