@@ -27,9 +27,9 @@ class Commands():
         """-Holy crap are you even paying attention when I talk?"""
         await ctx.channel.send("https://www.twitch.tv/elimere")
 
-    @commands.command(aliases=['mods'])
-    async def Mods(self, ctx):
-        """-These are the mods required for raiding"""
+    @commands.command(aliases=['raidmods'])
+    async def RaidMods(self, ctx):
+        """These are the mods required for raiding"""
         await ctx.channel.send("Again, here are the mods required for the 100000th time.")
         await ctx.channel.send("http://www.mediafire.com/file/gpc0t8yjhi5369f/Booty_Bay_Surf_Club_Raid_Pack.ccip")
         await ctx.channel.send("You need the Twitch app installed, download this, then run it.")
