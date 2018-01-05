@@ -7,14 +7,13 @@ from discord.ext.commands import Bot
 from discord.ext import commands
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
-BOT_PREFIX = "!Elimere"
+BOT_PREFIX = "$elimere "
 
 INITIAL_EXTENSIONS = (
     'modules.errorhandling',
     'modules.commands'
 )
 
-#
 def RunBot():
     bot = ElimereBot()
     bot.run()
@@ -40,6 +39,7 @@ class ElimereBot(commands.AutoShardedBot):
         print('-------------')
 
     async def on_message(self, message):
+        message.content = str(message.content.lower())
         await self.process_commands(message)
 
     def run(self):
