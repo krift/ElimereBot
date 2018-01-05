@@ -21,13 +21,15 @@ def RunBot():
 
 class ElimereBot(commands.AutoShardedBot):
     def __init__(self):
-        super().__init__(command_prefix=BOT_PREFIX, description=DESCRIPTION, pm_help=none, help_attrs=dict(hidden=true))
+        super().__init__(command_prefix=BOT_PREFIX, description=DESCRIPTION, pm_help=None, help_attrs=dict(hidden=True))
         self.guild_only = True
 
         for extension in INITIAL_EXTENSIONS:
             try:
                 self.load_extension(extension)
+                print(f'Loaded {extension} extension')
             except Exception as e:
+                print(e)
                 print(f'Failed to load extension {extension}')
 
     async def on_ready(self):
@@ -41,6 +43,6 @@ class ElimereBot(commands.AutoShardedBot):
         await self.process_commands(message)
 
     def run(self):
-        super().run("Bot Token goes here.")
+        super().run("")
 
 RunBot()

@@ -6,7 +6,6 @@ import datetime
 import traceback
 import discord
 from discord.ext import commands
-import GenericFunctions as gen
 
 class ErrorHandling:
 
