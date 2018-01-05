@@ -1,6 +1,5 @@
-#pylint: disable = W, C
 
-import discord
+import discord, config
 import discord.ext.commands.errors
 
 from discord.ext.commands import Bot
@@ -9,11 +8,13 @@ from discord.ext import commands
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
 BOT_PREFIX = "$elimere "
 
+
 INITIAL_EXTENSIONS = (
     'modules.errorhandling',
     'modules.commands'
 )
 
+#
 def RunBot():
     bot = ElimereBot()
     bot.run()
@@ -43,6 +44,6 @@ class ElimereBot(commands.AutoShardedBot):
         await self.process_commands(message)
 
     def run(self):
-        super().run("")
+        super().run(config.token)
 
 RunBot()

@@ -12,8 +12,8 @@ class Commands():
     async def RaidTime(self, ctx):
         """Tells the user for the 100th time when raids are."""
         await ctx.channel.send("Raids are on the following days:")
-        await ctx.channel.send("Thursday: 830 Eastern")
-        await ctx.channel.send("Sunday: 730 Eastern")
+        await ctx.channel.send("Thursday: 830pm Eastern")
+        await ctx.channel.send("Sunday: 730pm Eastern")
         await ctx.channel.send("Please stop asking me this, you should remember it by now.")
 
     @commands.command(aliases = ['areyoulistening'])
