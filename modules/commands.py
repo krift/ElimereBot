@@ -22,5 +22,5 @@ class Commands():
         """Uhhhhh....hellooooo"""
         await ctx.channel.send("I swear to god, I don't know why I even bother, no one listens anyways.")
 
-def Setup(bot):
+def setup(bot):
     bot.add_cog(Commands(bot))
