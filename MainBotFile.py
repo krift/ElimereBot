@@ -14,6 +14,7 @@ INITIAL_EXTENSIONS = (
     'modules.commands'
 )
 
+#
 def RunBot():
     bot = ElimereBot()
     bot.run()
