@@ -6,8 +6,13 @@ import discord.ext.commands.errors
 from discord.ext.commands import Bot
 from discord.ext import commands
 
-description = "An Elimere bot that really doesn't like to be asked questions!"
-bot_prefix = "!Elimere"
+DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
+BOT_PREFIX = "!Elimere"
+
+INITIAL_EXTENSIONS = (
+    'modules.errorhandling',
+    'modules.commands'
+)
 
 def RunBot():
     bot = ElimereBot()
@@ -15,8 +20,14 @@ def RunBot():
 
 class ElimereBot(commands.AutoShardedBot):
     def __init__(self):
-        super().__init__(command_prefix=bot_prefix, description=description, pm_help=none, help_attrs=dict(hidden=true))
+        super().__init__(command_prefix=BOT_PREFIX, description=DESCRIPTION, pm_help=none, help_attrs=dict(hidden=true))
         self.guild_only = True
+
+        for extension in INITIAL_EXTENSIONS:
+            try:
+                self.load_extension(extension)
+            except Exception as e:
+                print(f'Failed to load extension {extension}')
 
     async def on_ready(self):
         print('-------------')
