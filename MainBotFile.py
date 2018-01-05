@@ -1,13 +1,14 @@
 #pylint: disable = W, C
 
-import discord
+import discord, token
 import discord.ext.commands.errors
 
 from discord.ext.commands import Bot
 from discord.ext import commands
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
-BOT_PREFIX = "!Elimere"
+BOT_PREFIX = "$"
+
 
 INITIAL_EXTENSIONS = (
     'modules.errorhandling',
@@ -41,6 +42,6 @@ class ElimereBot(commands.AutoShardedBot):
         await self.process_commands(message)
 
     def run(self):
-        super().run("Bot Token goes here.")
+        super().run(token.token)
 
 RunBot()
