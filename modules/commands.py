@@ -33,5 +33,19 @@ class Commands():
         await ctx.channel.send("http://www.mediafire.com/file/gpc0t8yjhi5369f/Booty_Bay_Surf_Club_Raid_Pack.ccip")
         await ctx.channel.send("You need the Twitch app installed, download this, then run it.")
 
+    @commands.command(aliases=['Silv'])
+    async def Silv(self, ctx):
+        """Damn it Silv!"""
+        await ctx.channel.send("Silv you can't cloak everything damn it!")
+
+    @commands.command(aliases=['void elfs'])
+    async def Silv(self, ctx):
+        """DTell us how you REALLY feel about Void Elves"""
+        await ctx.channel.send("Well first, fuck them")
+        await ctx.channel.send("Second..i secretly love their hair")
+
+
+
+
 def setup(bot):
     bot.add_cog(Commands(bot))
