@@ -6,7 +6,7 @@ from discord.ext.commands import Bot
 from discord.ext import commands
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
-BOT_PREFIX = "$elimere "
+BOT_PREFIX = "$eli "
 
 
 INITIAL_EXTENSIONS = (
