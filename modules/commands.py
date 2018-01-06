@@ -33,5 +33,10 @@ class Commands():
         await ctx.channel.send("http://www.mediafire.com/file/gpc0t8yjhi5369f/Booty_Bay_Surf_Club_Raid_Pack.ccip")
         await ctx.channel.send("You need the Twitch app installed, download this, then run it.")
 
+    @commands.command(aliases=['mechanics'])
+    async def Mechanics(self, ctx):
+        """Will you please stop standing in shit??"""
+        await ctx.channel.send("Seriously guys? Are we really still fucking this up after this many months?")
+
 def setup(bot):
     bot.add_cog(Commands(bot))
