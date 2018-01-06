@@ -1,4 +1,5 @@
 
+import modules.functions as funcs
 import config
 import discord
 import discord.ext.commands.errors
@@ -6,7 +7,6 @@ from discord.ext import commands
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
 BOT_PREFIX = "$eli "
-HEY_ELI = "hey eli!"
 
 
 INITIAL_EXTENSIONS = (
@@ -42,7 +42,7 @@ class ElimereBot(commands.AutoShardedBot):
 
     async def on_message(self, message):
         message.content = str(message.content.lower())
-        if CheckForString(message):
+        if funcs.CheckForString(message):
             message.content = "$eli BotRespond"
             await self.process_commands(message)
         else:
@@ -52,10 +52,7 @@ class ElimereBot(commands.AutoShardedBot):
         super().run(config.token)
 
 
-def CheckForString(msg):
-    if msg.content.lower().rfind(HEY_ELI) != -1:
-        print("true")
-        return True
+
 
 
 RunBot()

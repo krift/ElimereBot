@@ -23,3 +23,18 @@ mass = [
 "I would totes bake him cookies for sure!",
 "Glad to be part of his fam!"
 ]
+
+hey_eli = [
+    "hey eli!",
+    "hey eli",
+    "hi eli!",
+    "hi eli",
+    "hi elimere!",
+    "hi elimere",
+    "hey elimere!",
+    "hey elimere"
+]
+
+eli_responses = [
+
+]

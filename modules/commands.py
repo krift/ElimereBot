@@ -1,5 +1,6 @@
 #pylint: disable = W, C
 
+import modules.functions as func
 import botoptions
 import random
 import asyncio
@@ -38,12 +39,6 @@ class Commands:
         await ctx.channel.send("You need the Twitch app installed, download this, then run it.")
         await ctx.channel.send("http://www.mediafire.com/file/gpc0t8yjhi5369f/Booty_Bay_Surf_Club_Raid_Pack.ccip")
 
-    @commands.command(aliases=['silv'])
-    async def Silv(self, ctx):
-        """-Damn it Silv!"""
-        msg = random.choice(botoptions.silv)
-        await ctx.channel.send(msg)
-
     @commands.command(aliases=['voidelfs'])
     async def Voidelfs(self, ctx):
         """-Tell us how you REALLY feel about Void Elves"""
@@ -54,6 +49,17 @@ class Commands:
     async def Mechanics(self, ctx):
         """-Will you please stop standing in shit??"""
         await ctx.channel.send("Seriously guys? Are we really still fucking this up after this many months?")
+
+    @commands.command(aliases=['haste'])
+    async def Haste(self, ctx):
+        """-Is it not enough???"""
+        await ctx.channel.send("I don't have enough haste!")
+
+    @commands.command(aliases=['silv'])
+    async def Silv(self, ctx):
+        """-Damn it Silv!"""
+        msg = random.choice(botoptions.silv)
+        await ctx.channel.send(msg)
 
     @commands.command(aliases=['jems'])
     async def Jems(self, ctx):
@@ -67,16 +73,19 @@ class Commands:
         msg = random.choice(botoptions.mass)
         await ctx.channel.send(msg)
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def BotRespond(self, ctx):
-        """"""
+        """This responds to certain keywords and strings"""
         try:
+            if func.TwitchLive():
+                await ctx.channel.send("My twitch channel is live! Talk to me there, not here!")
+                await ctx.channel.send("https://www.twitch.tv/elimere")
             await ctx.channel.send("Can I help you?")
 
             def check(msg):
                 return msg.author == ctx.author and ctx.channel == msg.channel
             response = await self.bot.wait_for('message', check=check, timeout=20.0)
-            await ctx.channel.send("Do you even listen? Just type $eli help next time.....")
+            await ctx.channel.send("I don't have time for this, I have to run Maw of Souls. Just type $eli help next time!")
         except asyncio.TimeoutError:
             await ctx.channel.send("I guess you didn't have anything to say anyways....")
 
