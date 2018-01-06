@@ -34,7 +34,6 @@ hey_eli = [
     "hey elimere!",
     "hey elimere",
     "eli!",
-    "eli",
     "meg!",
     "meg",
     "hi meg!",
