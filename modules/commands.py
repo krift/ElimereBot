@@ -33,7 +33,7 @@ class Commands():
         await ctx.channel.send("http://www.mediafire.com/file/gpc0t8yjhi5369f/Booty_Bay_Surf_Club_Raid_Pack.ccip")
         await ctx.channel.send("You need the Twitch app installed, download this, then run it.")
 
-    @commands.command(aliases=['Silv'])
+    @commands.command(aliases=['silv'])
     async def Silv(self, ctx):
         """-Damn it Silv!"""
         await ctx.channel.send("Silv you can't cloak everything damn it!")
