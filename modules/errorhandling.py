@@ -92,5 +92,6 @@ class ErrorHandling:
         await self.bot.get_guild(356544379885846549).get_channel(357317190556581891).send(error)
         await self.bot.get_guild(356544379885846549).get_channel(357317190556581891).send('```'+str(var)+'```')
 
+
 def setup(bot):
     bot.add_cog(ErrorHandling(bot))

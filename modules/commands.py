@@ -2,11 +2,12 @@
 
 import botoptions
 import random
+import asyncio
 
 from discord.ext import commands
 
 
-class Commands():
+class Commands:
     def __init__(self, bot):
         self.bot = bot
 
@@ -65,6 +66,20 @@ class Commands():
         """-Cant stop wont stop"""
         msg = random.choice(botoptions.mass)
         await ctx.channel.send(msg)
+
+    @commands.command()
+    async def BotRespond(self, ctx):
+        """"""
+        try:
+            await ctx.channel.send("Can I help you?")
+
+            def check(msg):
+                return msg.author == ctx.author and ctx.channel == msg.channel
+            response = await self.bot.wait_for('message', check=check, timeout=20.0)
+            await ctx.channel.send("Do you even listen? Just type $eli help next time.....")
+        except asyncio.TimeoutError:
+            await ctx.channel.send("I guess you didn't have anything to say anyways....")
+
 
 def setup(bot):
     bot.add_cog(Commands(bot))
