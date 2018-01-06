@@ -2,7 +2,6 @@
 
 import discord
 import asyncio
-import random, botoptions
 from discord.ext import commands
 
 class Commands():
@@ -11,7 +10,7 @@ class Commands():
 
     @commands.command(aliases=['raidtime'])
     async def RaidTime(self, ctx):
-        """-Tells the user for the 100th time when raids are."""
+        """Tells the user for the 100th time when raids are."""
         await ctx.channel.send("Raids are on the following days:")
         await ctx.channel.send("Thursday: 830pm Eastern")
         await ctx.channel.send("Sunday: 730pm Eastern")
@@ -19,12 +18,12 @@ class Commands():
 
     @commands.command(aliases=['areyoulistening'])
     async def AreYouListening(self, ctx):
-        """-Uhhhhh....hellooooo"""
+        """Uhhhhh....hellooooo"""
         await ctx.channel.send("I swear to god, I don't know why I even bother, no one listens anyways.")
 
     @commands.command(aliases=['twitchchannel'])
     async def TwitchChannel(self, ctx):
-        """-Holy crap are you even paying attention when I talk?"""
+        """Holy crap are you even paying attention when I talk?"""
         await ctx.channel.send("https://www.twitch.tv/elimere")
 
     @commands.command(aliases=['raidmods'])
@@ -33,6 +32,11 @@ class Commands():
         await ctx.channel.send("Again, here are the mods required for the 100000th time.")
         await ctx.channel.send("http://www.mediafire.com/file/gpc0t8yjhi5369f/Booty_Bay_Surf_Club_Raid_Pack.ccip")
         await ctx.channel.send("You need the Twitch app installed, download this, then run it.")
+
+    @commands.command(aliases=['mechanics'])
+    async def Mechanics(self, ctx):
+        """Will you please stop standing in shit??"""
+        await ctx.channel.send("Seriously guys? Are we really still fucking this up after this many months?")
 
     @commands.command(aliases=['silv'])
     async def Silv(self, ctx):
