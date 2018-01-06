@@ -1,9 +1,10 @@
 #pylint: disable = W, C
 
-import discord
-import asyncio
-import random, botoptions
+import botoptions
+import random
+
 from discord.ext import commands
+
 
 class Commands():
     def __init__(self, bot):
@@ -64,10 +65,6 @@ class Commands():
         """-Cant stop wont stop"""
         msg = random.choice(botoptions.mass)
         await ctx.channel.send(msg)
-
-
-
-
 
 def setup(bot):
     bot.add_cog(Commands(bot))
