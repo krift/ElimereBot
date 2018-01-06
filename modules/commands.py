@@ -73,9 +73,9 @@ class Commands:
         msg = random.choice(botoptions.mass)
         await ctx.channel.send(msg)
 
-    @commands.command(aliases=['heros'])
+    @commands.command(aliases=['heroes'])
     async def Heros(self, ctx):
-        """My heros!"""
+        """-My heroes!"""
         media1 = open('media/thing1.jpg', 'rb')
         media2 = open('media/thing2.jpg', 'rb')
         await ctx.channel.send("Thanks to these guys who are the best guys I know")
