@@ -27,8 +27,8 @@ class Commands():
         """-Holy crap are you even paying attention when I talk?"""
         await ctx.channel.send("https://www.twitch.tv/elimere")
 
-    @commands.command(aliases=['mods'])
-    async def Mods(self, ctx):
+    @commands.command(aliases=['raidmods'])
+    async def RaidMods(self, ctx):
         """-These are the mods required for raiding"""
         await ctx.channel.send("Again, here are the mods required for the 100000th time.")
         await ctx.channel.send("http://www.mediafire.com/file/gpc0t8yjhi5369f/Booty_Bay_Surf_Club_Raid_Pack.ccip")
@@ -48,6 +48,11 @@ class Commands():
 
 
 
+
+    @commands.command(aliases=['mechanics'])
+    async def Mechanics(self, ctx):
+        """Will you please stop standing in shit??"""
+        await ctx.channel.send("Seriously guys? Are we really still fucking this up after this many months?")
 
 def setup(bot):
     bot.add_cog(Commands(bot))
