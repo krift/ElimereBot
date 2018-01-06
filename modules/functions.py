@@ -8,6 +8,13 @@ def CheckForString(msg):
             return True
 
 
+def CheckResponseString(msg):
+    if msg.content in botoptions.eli_responses:
+        return botoptions.eli_responses.get(msg.content, "looks like this doesn't exist")
+    else:
+        return ''
+
+
 def TwitchLive():
     """Checks to see if the twitch channel is live"""
     twitchURL = ('https://api.twitch.tv/kraken/streams/elimere')
@@ -17,8 +24,7 @@ def TwitchLive():
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
         'Accept-Encoding': 'none',
-        'Accept-Language': 'en-US,en;q=0.8',
-        'Connection': 'keep-alive'}
+        'Accept-Language': 'en-US,en;q=0.8'}
     request_ = urllib.request.Request(twitchURL, None, headers)
     response = urllib.request.urlopen(request_, None, 15)
     stream_info = response.read().decode('utf-8')

@@ -1,10 +1,7 @@
 #pylint: disable = W, C
 
 import modules.functions as func
-import botoptions
-import random
-import asyncio
-import discord
+import botoptions, random, asyncio, discord
 
 from discord.ext import commands
 
@@ -93,7 +90,15 @@ class Commands:
             def check(msg):
                 return msg.author == ctx.author and ctx.channel == msg.channel
             response = await self.bot.wait_for('message', check=check, timeout=20.0)
-            await ctx.channel.send("I don't have time for this, I have to run Maw of Souls. Just type $eli help next time!")
+            response.content = func.CheckResponseString(response)
+            if response.content == '':
+                msg = random.choice(botoptions.eli_messages)
+                await ctx.channel.send(msg)
+            else:
+                if response.content[0] == '$':
+                    await self.bot.process_commands(response)
+                else:
+                    await ctx.channel.send(response.content)
         except asyncio.TimeoutError:
             await ctx.channel.send("I guess you didn't have anything to say anyways....")
 
