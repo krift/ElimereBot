@@ -1,4 +1,4 @@
-import botoptions, urllib, json, config
+import botoptions, urllib.request, json, config
 
 
 def CheckForString(msg):
