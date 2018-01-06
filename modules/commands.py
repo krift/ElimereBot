@@ -2,6 +2,7 @@
 
 import discord
 import asyncio
+import random, botoptions
 from discord.ext import commands
 
 class Commands():
@@ -49,6 +50,24 @@ class Commands():
         """-Tell us how you REALLY feel about Void Elves"""
         await ctx.channel.send("Well first, fuck them")
         await ctx.channel.send("Second..I secretly envy their hair")
+
+    @commands.command(aliases=['mechanics'])
+    async def Mechanics(self, ctx):
+        """-Will you please stop standing in shit??"""
+        await ctx.channel.send("Seriously guys? Are we really still fucking this up after this many months?")
+
+    @commands.command(aliases=['jems'])
+    async def Jems(self, ctx):
+        """-One of my besties"""
+        msg = random.choice(botoptions.jems)
+        await ctx.channel.send(msg)
+
+    @commands.command(aliases=['mass'])
+    async def Mass(self, ctx):
+        """-Cant stop wont stop"""
+        msg = random.choice(botoptions.mass)
+        await ctx.channel.send(msg)
+
 
 
 
