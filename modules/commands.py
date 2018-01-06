@@ -73,6 +73,15 @@ class Commands:
         msg = random.choice(botoptions.mass)
         await ctx.channel.send(msg)
 
+    @commands.command(aliases=['heros'])
+    async def Heros(self, ctx):
+        """My heros!"""
+        media1 = open('media/thing1.jpg', 'rb')
+        media2 = open('media/thing2.jpg', 'rb')
+        await ctx.channel.send("Thanks to these guys who are the best guys I know")
+        await ctx.channel.send("Brian " + media1)
+        await ctx.channel.send("Cory " + media2)
+
     @commands.command(hidden=True)
     async def BotRespond(self, ctx):
         """This responds to certain keywords and strings"""
