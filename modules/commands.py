@@ -1,7 +1,7 @@
 #pylint: disable = W, C
 
 import modules.functions as func
-import botoptions, random, asyncio, discord
+import botoptions, random, asyncio, discord, os
 
 from discord.ext import commands
 
@@ -74,9 +74,10 @@ class Commands:
     @commands.command(aliases=['heroes'])
     async def Heros(self, ctx):
         """-My heroes!"""
+        fileLoc = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Thanks to these guys, who are the best guys I know")
-        await ctx.channel.send(file=discord.File('media/thing1.jpg'))
-        await ctx.channel.send(file=discord.File('media/thing2.jpg'))
+        await ctx.channel.send(file=discord.File(fileLoc+'/media/thing1.jpg'))
+        await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
 
     @commands.command(hidden=True)
     async def BotRespond(self, ctx):
