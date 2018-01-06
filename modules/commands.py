@@ -2,6 +2,7 @@
 
 import discord
 import asyncio
+import random, botoptions
 from discord.ext import commands
 
 class Commands():
@@ -36,7 +37,8 @@ class Commands():
     @commands.command(aliases=['silv'])
     async def Silv(self, ctx):
         """-Damn it Silv!"""
-        await ctx.channel.send("Silv you can't cloak everything damn it!")
+        msg = random.choice(botoptions.silv)
+        await ctx.channel.send(msg)
 
     @commands.command(aliases=['voidelfs'])
     async def Voidelfs(self, ctx):
