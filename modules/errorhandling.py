@@ -1,11 +1,11 @@
 
 #pylint: disable = W, C
 
-import asyncio
-import datetime
 import traceback
+
 import discord
 from discord.ext import commands
+
 
 class ErrorHandling:
 
@@ -47,7 +47,7 @@ class ErrorHandling:
                 strippedCommand = ctx.message.content.replace(ctx.message.content[0], '')
                 strippedCommand = strippedCommand[0:len(strippedCommand)]
                 await ctx.send(f"{error}")
-                await ctx.send(f"Do $elimere help {strippedCommand} to see the correct usage.")
+                await ctx.send(f"Do $eli help {strippedCommand} to see the correct usage.")
             except Exception as e:
                 print(e)
             finally:
@@ -56,7 +56,7 @@ class ErrorHandling:
         elif isinstance(error, commands.CommandNotFound):
             try:
                 await ctx.send(f"There is no command called {ctx.message.content}.")
-                await ctx.send("Use $elimere help to see a list of available commands.")
+                await ctx.send("Use $eli help to see a list of available commands.")
             except Exception as e:
                 print(e)
                 pass
@@ -74,7 +74,7 @@ class ErrorHandling:
         
         elif isinstance(error, commands.errors.BadArgument):
             try:
-                await ctx.send("You entered an invalid value. Type $elimere help <command> to see the correct usage.")
+                await ctx.send("You entered an invalid value. Type $eli help <command> to see the correct usage.")
             except Exception as e:
                 print(e)
                 pass
