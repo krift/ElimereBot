@@ -4,6 +4,7 @@ import modules.functions as func
 import botoptions
 import random
 import asyncio
+import discord
 
 from discord.ext import commands
 
@@ -76,11 +77,9 @@ class Commands:
     @commands.command(aliases=['heroes'])
     async def Heros(self, ctx):
         """-My heroes!"""
-        media1 = open('media/thing1.jpg', 'rb')
-        media2 = open('media/thing2.jpg', 'rb')
-        await ctx.channel.send("Thanks to these guys who are the best guys I know")
-        await ctx.channel.send("Brian " + media1)
-        await ctx.channel.send("Cory " + media2)
+        await ctx.channel.send("Thanks to these guys, who are the best guys I know")
+        await ctx.channel.send(file=discord.File('media/thing1.jpg'))
+        await ctx.channel.send(file=discord.File('media/thing2.jpg'))
 
     @commands.command(hidden=True)
     async def BotRespond(self, ctx):
