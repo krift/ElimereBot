@@ -39,7 +39,7 @@ class Commands():
         await ctx.channel.send("Silv you can't cloak everything damn it!")
 
     @commands.command(aliases=['voidelfs'])
-    async def Silv(self, ctx):
+    async def Voidelfs(self, ctx):
         """-Tell us how you REALLY feel about Void Elves"""
         await ctx.channel.send("Well first, fuck them")
         await ctx.channel.send("Second..I secretly envy their hair")
