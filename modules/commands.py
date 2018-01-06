@@ -65,9 +65,5 @@ class Commands():
         msg = random.choice(botoptions.mass)
         await ctx.channel.send(msg)
 
-
-
-
-
 def setup(bot):
     bot.add_cog(Commands(bot))
