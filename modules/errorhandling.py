@@ -1,9 +1,7 @@
 
 #pylint: disable = W, C
 
-import traceback
-
-import discord
+import traceback, discord
 from discord.ext import commands
 
 

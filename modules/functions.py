@@ -8,6 +8,13 @@ def CheckForString(msg):
             return True
 
 
+def CheckResponseString(msg):
+    if msg.content in botoptions.eli_responses:
+        return botoptions.eli_responses.get(msg.content, "looks like this doesn't exist")
+    else:
+        return ''
+
+
 def TwitchLive():
     """Checks to see if the twitch channel is live"""
     twitchURL = ('https://api.twitch.tv/kraken/streams/elimere')
