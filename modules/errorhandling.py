@@ -1,9 +1,7 @@
 
 #pylint: disable = W, C
 
-import traceback
-
-import discord
+import traceback, discord
 from discord.ext import commands
 
 
@@ -87,7 +85,6 @@ class ErrorHandling:
         print('Ignoring exception in command {}:'.format(ctx.command))
         traceback.print_exception(type(error), error, error.__traceback__)
         var = traceback.format_exception(type(error), error, error.__traceback__)
-        await self.bot.get_guild(356544379885846549).get_channel(357317190556581891).send(self.user.name)
         await self.bot.get_guild(356544379885846549).get_channel(357317190556581891).send('Error on server: '+str(ctx.guild))
         await self.bot.get_guild(356544379885846549).get_channel(357317190556581891).send(error)
         await self.bot.get_guild(356544379885846549).get_channel(357317190556581891).send('```'+str(var)+'```')

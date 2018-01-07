@@ -1,10 +1,7 @@
 #pylint: disable = W, C
 
 import modules.functions as func
-import botoptions
-import random
-import asyncio
-import discord
+import botoptions, random, asyncio, discord, os
 
 from discord.ext import commands
 
@@ -77,9 +74,10 @@ class Commands:
     @commands.command(aliases=['heroes'])
     async def Heros(self, ctx):
         """-My heroes!"""
+        fileLoc = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Thanks to these guys, who are the best guys I know")
-        await ctx.channel.send(file=discord.File('media/thing1.jpg'))
-        await ctx.channel.send(file=discord.File('media/thing2.jpg'))
+        await ctx.channel.send(file=discord.File(fileLoc+'/media/thing1.jpg'))
+        await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
 
     @commands.command(hidden=True)
     async def BotRespond(self, ctx):
@@ -93,7 +91,15 @@ class Commands:
             def check(msg):
                 return msg.author == ctx.author and ctx.channel == msg.channel
             response = await self.bot.wait_for('message', check=check, timeout=20.0)
-            await ctx.channel.send("I don't have time for this, I have to run Maw of Souls. Just type $eli help next time!")
+            response.content = func.CheckResponseString(response)
+            if response.content == '':
+                msg = random.choice(botoptions.eli_messages)
+                await ctx.channel.send(msg)
+            else:
+                if response.content[0] == '$':
+                    await self.bot.process_commands(response)
+                else:
+                    await ctx.channel.send(response.content)
         except asyncio.TimeoutError:
             await ctx.channel.send("I guess you didn't have anything to say anyways....")
 
