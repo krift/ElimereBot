@@ -54,6 +54,10 @@ eli_responses = {
     "can you help me": "No",
     "when is raid?": "$eli raidtime",
     "when is raid": "$eli raidtime",
+    "what time is raid?": "$eli raidtime",
+    "what time is raid": "$eli raidtime",
     "what mods are required?": "$eli raidmods",
-    "what mods are required": "$eli raidmods"
+    "what mods are required": "$eli raidmods",
+    "what mods do i need": "$eli raidmods",
+    "what mods do i need?": "$eli raidmods"
 }
