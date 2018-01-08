@@ -85,17 +85,6 @@ class Commands:
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing1.jpg'))
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
 
-    #TODO:Turn this into an automated command
-    @commands.command(aliases=['testcommand'])
-    async def AutoCheckCommand(self, ctx):
-        """Does shit"""
-        await ctx.channel.send("Testing new command....")
-        curTime = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=3)).timestamp() * 1e3
-        unixStamp = curTime - 200000000
-        url = func.AutoCheckForLogs(unixStamp)
-        if url != "":
-            await ctx.channel.send(url)
-
     @commands.command(hidden=True)
     async def BotRespond(self, ctx):
         """This responds to certain keywords and strings"""
