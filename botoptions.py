@@ -24,6 +24,10 @@ mass = [
     "Glad to be part of his fam!"
 ]
 
+khaid = [
+    "Khaid vs Some Explody Bois! https://clips.twitch.tv/DeadHorribleVultureDatSheffy"
+]
+
 hey_eli = [
     "hey eli!",
     "hey eli",
@@ -46,7 +50,8 @@ eli_messages = [
     "I don't have time for this, I have to run Maw of Souls. Just type $eli help next time!",
     "You should just blame Jason, it's obviously his fault.",
     "I don't want to have to explain the mechanics again.",
-    "Did you know Vak has useless nipples?"
+    "Did you know Vak has useless nipples?",
+    "Avoid the traps you fuckers."
 ]
 
 eli_responses = {
