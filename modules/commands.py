@@ -1,7 +1,7 @@
 #pylint: disable = W, C
 
 import modules.functions as func
-import botoptions, random, asyncio, discord, os
+import botoptions, random, asyncio, discord, os, datetime
 
 from discord.ext import commands
 
@@ -71,6 +71,12 @@ class Commands:
         msg = random.choice(botoptions.mass)
         await ctx.channel.send(msg)
 
+    @commands.command(aliases=['khaid'])
+    async def Khaid(self, ctx):
+        """-Tell us another dad joke piano man"""
+        msg = random.choice(botoptions.khaid)
+        await ctx.channel.send(msg)
+
     @commands.command(aliases=['heroes'])
     async def Heros(self, ctx):
         """-My heroes!"""
@@ -78,6 +84,17 @@ class Commands:
         await ctx.channel.send("Thanks to these guys, who are the best guys I know")
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing1.jpg'))
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
+
+    #TODO:Turn this into an automated command
+    @commands.command(aliases=['testcommand'])
+    async def AutoCheckCommand(self, ctx):
+        """Does shit"""
+        await ctx.channel.send("Testing new command....")
+        curTime = (datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(days=3)).timestamp() * 1e3
+        unixStamp = curTime - 200000000
+        url = func.AutoCheckForLogs(unixStamp)
+        if url != "":
+            await ctx.channel.send(url)
 
     @commands.command(hidden=True)
     async def BotRespond(self, ctx):
