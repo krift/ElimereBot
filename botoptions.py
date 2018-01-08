@@ -2,7 +2,7 @@ silv = [
     "Silv stop fucking cloaking!",
     "Why did Silv die?",
     "Who the fuck pulled? Damn it Silv!",
-    "Silv you have to play the mechanics for fuck sakes"
+    "Silv you have to play the mechanics for fuck sakes",
     "What fucking enchant do you want Silv?"
 ]
 
