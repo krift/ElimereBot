@@ -24,8 +24,8 @@ mass = [
     "Glad to be part of his fam!"
 ]
 
-khaid= [
-    "https://clips.twitch.tv/DeadHorribleVultureDatSheffy"
+khaid = [
+    "Khaid vs Some Explody Bois! https://clips.twitch.tv/DeadHorribleVultureDatSheffy"
 ]
 
 hey_eli = [
