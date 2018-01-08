@@ -1,6 +1,6 @@
 
 import modules.functions as funcs
-import config, discord, discord.ext.commands.errors
+import config, discord, discord.ext.commands.errors, asyncio
 from discord.ext import commands
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
@@ -22,6 +22,7 @@ class ElimereBot(commands.AutoShardedBot):
     def __init__(self):
         super().__init__(command_prefix=BOT_PREFIX, description=DESCRIPTION, pm_help=None, help_attrs=dict(hidden=True))
         self.guild_only = True
+        self.bg_task = self.loop.create_task(self.BackgroundLogCheck())
 
         for extension in INITIAL_EXTENSIONS:
             try:
@@ -37,6 +38,17 @@ class ElimereBot(commands.AutoShardedBot):
         print('Bot ID: ' + str(self.user.id))
         print('Discord.py Version: ' + str(discord.__version__))
         print('-------------')
+
+    async def BackgroundLogCheck(self):
+        """This checks the current date"""
+        print("Running")
+        await self.wait_until_ready()
+        channel = self.get_guild(config.serverDiscId).get_channel(config.raidlogsChannelId)
+        while not self.is_closed():
+            msg = funcs.CheckForLogs()
+            if msg != "":
+                await channel.send(msg)
+            await asyncio.sleep(600)
 
     async def on_message(self, message):
         message.content = str(message.content.lower())

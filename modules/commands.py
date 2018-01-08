@@ -1,7 +1,7 @@
 #pylint: disable = W, C
 
 import modules.functions as func
-import botoptions, random, asyncio, discord, os
+import botoptions, random, asyncio, discord, os, datetime
 
 from discord.ext import commands
 
@@ -69,6 +69,12 @@ class Commands:
     async def Mass(self, ctx):
         """-Cant stop wont stop"""
         msg = random.choice(botoptions.mass)
+        await ctx.channel.send(msg)
+
+    @commands.command(aliases=['khaid'])
+    async def Khaid(self, ctx):
+        """-Tell us another dad joke piano man"""
+        msg = random.choice(botoptions.khaid)
         await ctx.channel.send(msg)
 
     @commands.command(aliases=['heroes'])
