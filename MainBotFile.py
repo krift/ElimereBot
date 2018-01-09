@@ -43,7 +43,7 @@ class ElimereBot(commands.AutoShardedBot):
         """This checks the current date"""
         print("Running")
         await self.wait_until_ready()
-        channel = self.get_guild(config.serverDiscId).get_channel(config.raidlogsChannelId)
+        channel = self.get_guild(config.guildServerID).get_channel(config.guildLogChanID)
         while not self.is_closed():
             msg = funcs.CheckForLogs()
             if msg != "":
