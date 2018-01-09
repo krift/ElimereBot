@@ -41,18 +41,17 @@ class ElimereBot(commands.AutoShardedBot):
 
     async def BackgroundLogCheck(self):
         """This checks the current date"""
-        print("Running")
         await self.wait_until_ready()
         channel = self.get_guild(config.serverDiscId).get_channel(config.raidlogsChannelId)
         while not self.is_closed():
-            msg = funcs.CheckForLogs()
+            msg = await funcs.CheckForLogs()
             if msg != "":
                 await channel.send(msg)
             await asyncio.sleep(600)
 
     async def on_message(self, message):
-        message.content = str(message.content.lower())
-        if funcs.CheckForString(message):
+        message.content = message.content.lower()
+        if await funcs.CheckForString(message):
             message.content = "$eli BotRespond"
             await self.process_commands(message)
         else:
