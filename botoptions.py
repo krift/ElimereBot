@@ -16,7 +16,7 @@ jems = [
 
 mass = [
     "I love his dick stories they are 8/10.",
-    "Why the fuck do you not know the raid time plz us '$eli raidtime' to figure it out",
+    "Why the fuck do you not know the raid time, please use '$eli raidtime' to figure it out",
     "I guess if you want to check out some lame times go to https://www.twitch.tv/mastec08",
     "Best battle priest I know around!",
     "I mean he is pretty charming",
