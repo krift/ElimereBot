@@ -99,7 +99,7 @@ class Commands:
             def check(message):
                 return message.author == ctx.author and ctx.channel == message.channel
             response = await self.bot.wait_for('message', check=check, timeout=20.0)
-            response.content = await func.CheckResponseString(response)
+            response.content = await func.CheckResponseString(botoptions.eli_responses, response)
             if response.content == '':
                 msg = random.choice(botoptions.eli_messages)
                 await ctx.channel.send(msg)
