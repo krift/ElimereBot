@@ -94,7 +94,7 @@ class Commands:
                 await ctx.channel.send("https://www.twitch.tv/elimere")
                 await ctx.channel.send("But I guess I can help you anyways...")
             else:
-                await ctx.channel.send("Can I help you?")
+                await ctx.channel.send(random.choice(botoptions.eli_calls))
 
             def check(message):
                 return message.author == ctx.author and ctx.channel == message.channel
