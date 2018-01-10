@@ -1,6 +1,6 @@
 
 import modules.functions as funcs
-import config, discord, discord.ext.commands.errors, asyncio
+import config, discord, discord.ext.commands.errors, asyncio, botoptions
 from discord.ext import commands
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
@@ -50,18 +50,20 @@ class ElimereBot(commands.AutoShardedBot):
             await asyncio.sleep(600)
 
     async def on_message(self, message):
-        message.content = message.content.lower()
-        if await funcs.CheckForString(message):
-            message.content = "$eli BotRespond"
-            await self.process_commands(message)
-        else:
-            await self.process_commands(message)
+        if message.author.id != 398690668924370944:
+            if message.content[0] == '$':
+                await self.process_commands(message)
+                return
+            response = await funcs.CheckResponseString(botoptions.eli_main_responses, message)
+            if response != '':
+                message.content = response
+                await message.channel.send(message.content)
+            elif await funcs.CheckForString(message):
+                message.content = "$eli BotRespond"
+                await self.process_commands(message)
 
     def run(self):
         super().run(config.token)
-
-
-
 
 
 RunBot()

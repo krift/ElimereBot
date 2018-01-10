@@ -8,11 +8,11 @@ async def CheckForString(msg):
             return True
 
 
-async def CheckResponseString(msg):
+async def CheckResponseString(dict, msg):
     """This checks a dictionary of strings and returns appropriately"""
-    for response in botoptions.eli_responses.keys():
+    for response in dict.keys():
         if msg.content.lower().rfind(response) != -1:
-            return botoptions.eli_responses.get(response)
+            return dict.get(response)
     return ''
 
 
