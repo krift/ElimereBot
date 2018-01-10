@@ -67,22 +67,26 @@ eli_messages = [
 ]
 
 eli_main_responses = {
+    "run": "You can run but you can't hide....",
+    "runs": "You can run but you can't hide....",
+    "amazing": "Why yes, I am amazing.",
+    "savior": "Blessings upon you child.",
     "resistance": "Resistance is futile.",
     "resist": "Resistance is futile.",
     "cowers": "Pathetic.",
     "hides": "You really think you can hide?",
     "hide": "You can't hide forever...",
-    "nothing": "Sorry to bother you....",
-    "no": "Sorry to bother you....",
     "unleashed": "Can't stop me now...",
     "controlled": "Do you really think you can stop me?",
     "mechanics": "I said I'm not explaining them again!",
     "god": "God can't help you...",
     "kill her": "Why would you want to kill me :(",
+    "killed": "I'll never die...sleep tight.",
     "jason": "Way to go Jason...",
     "kash": "Way to go Jason...",
     "spare me": "You must sacrifice treats to Wash to be spared.",
     "spares me": "You must sacrifice treats to Wash to be spared.",
+    "spare us": "You must sacrifice treats to Wash to be spared.",
     "im scared": "Me too...",
     "I'm scared": "Me too...",
     "can you help me?": "No.",
@@ -90,6 +94,8 @@ eli_main_responses = {
 }
 
 eli_responses = {
+    "nothing": "Sorry to bother you....",
+    "no": "Sorry to bother you....",
     "eli": "$eli BotRespond",
     "meg": "$eli BotRespond",
     "elimere": "$eli BotRespond",
