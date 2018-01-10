@@ -18,8 +18,8 @@ async def CheckResponseString(dict, msg):
 
 async def TwitchLive():
     """Checks to see if the twitch channel is live"""
-    twitchURL = ('https://api.twitch.tv/kraken/streams/elimere')
-    headers = {'Client-ID': config.twitchBotId}
+    twitchURL = 'https://api.twitch.tv/kraken/streams/elimere'
+    headers = {'Client-ID': config.twitchBotId}  # This is needed to access the twitch api
     async with aiohttp.ClientSession() as session:
         async with session.get(twitchURL, headers=headers) as resp:
             json_info = await resp.json()
@@ -32,9 +32,9 @@ async def TwitchLive():
 
 
 async def CheckForLogs():
-    """This checks the warcraftlogs site for new logs"""
-    params = {'api_key': config.warcraftLogsAPI}
-    url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us"
+    """This checks the WarcraftLogs site for new logs"""
+    params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api
+    url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us?"
     async with aiohttp.ClientSession() as session:
         async with session.get(url, params=params) as resp:
             log_info = await resp.json()
