@@ -78,7 +78,7 @@ class Commands:
         await ctx.channel.send(msg)
 
     @commands.command(aliases=['heroes'])
-    async def Heros(self, ctx):
+    async def Heroes(self, ctx):
         """-My heroes!"""
         fileLoc = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Thanks to these guys, who are the best guys I know")
