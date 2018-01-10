@@ -25,7 +25,8 @@ mass = [
 ]
 
 khaid = [
-    "Khaid vs Some Explody Bois! https://clips.twitch.tv/DeadHorribleVultureDatSheffy"
+    "Khaid vs Some Explody Bois! https://clips.twitch.tv/DeadHorribleVultureDatSheffy",
+    "Tell us another dad joke khaid!"
 ]
 
 hey_eli = [
@@ -37,6 +38,8 @@ hey_eli = [
     "hi elimere",
     "hey elimere!",
     "hey elimere",
+    "elimere",
+    "elimere!",
     "eli!",
     "meg!",
     "meg",
@@ -44,6 +47,15 @@ hey_eli = [
     "hi meg",
     "hey meg!",
     "hey meg"
+]
+
+eli_calls = [
+    "Can I help you?",
+    "Who has summoned me?",
+    "What do you want now?",
+    "You do know you can just type $eli raidtime right?",
+    "$eli help is always available.....",
+    "Look, I know I'm a robot, but that doesn't mean you can't treat me like this."
 ]
 
 eli_messages = [
