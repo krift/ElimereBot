@@ -67,6 +67,15 @@ eli_messages = [
 ]
 
 eli_responses = {
+    "nothing": "Sorry to bother you....",
+    "no": "Sorry to bother you....",
+    "unleashed": "Can't stop me now...",
+    "controlled": "Do you really think you can stop me?",
+    "mechanics": "I said I'm not explaining them again!",
+    "god": "God can't help you...",
+    "spare me": "You must sacrifice treats to Wash to be spared.",
+    "im scared": "Me too...",
+    "I'm scared": "Me too...",
     "can you help me?": "No.",
     "can you help me": "No",
     "when is raid?": "$eli raidtime",
