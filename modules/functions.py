@@ -1,14 +1,6 @@
 import botoptions, asyncio, config, os, aiohttp
 
 
-async def CallGit():
-    async with aiohttp.ClientSession() as session:
-        async with session.get('https://api.github.com/events') as resp:
-            print(resp.status)
-            session.close()
-            print(session.closed)
-
-
 async def CheckForString(msg):
     """Checks the message to see if it matches the hey eli strings"""
     for string in botoptions.hey_eli:
@@ -17,10 +9,11 @@ async def CheckForString(msg):
 
 
 async def CheckResponseString(msg):
-    if msg.content in botoptions.eli_responses:
-        return botoptions.eli_responses.get(msg.content, "looks like this doesn't exist")
-    else:
-        return ''
+    """This checks a dictionary of strings and returns appropriately"""
+    for response in botoptions.eli_responses.keys():
+        if msg.content.lower().rfind(response) != -1:
+            return botoptions.eli_responses.get(response)
+    return ''
 
 
 async def TwitchLive():
