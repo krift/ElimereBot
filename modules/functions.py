@@ -31,6 +31,23 @@ async def TwitchLive():
         return True
 
 
+async def RetrieveTwitchClip():
+    """Retrieves the newest twitch clip from the channel"""
+    # https://dev.twitch.tv/docs/v5/reference/clips
+    # Docs located here
+    twitchURL = 'https://api.twitch.tv/kraken/clips/top?channel=elimere&period=all&limit=1'
+    #twitchURL = 'https://api.twitch.tv/kraken/clips/top?channel=Twitch&period=month&trending=true&limit=1'
+    headers = {'Client-ID': config.twitchBotId,
+               'Accept': 'application/vnd.twitchtv.v5+json'}
+    async with aiohttp.ClientSession() as session:
+        async with session.get(twitchURL, headers=headers) as resp:
+            json_info = await resp.json()
+            await asyncio.sleep(0.250)
+            session.close()
+    print(json_info['clips'])
+    print(json_info['clips'][0]['url'])
+    return json_info['clips'][0]['url']
+
 async def CheckForLogs():
     """This checks the WarcraftLogs site for new logs"""
     params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api
