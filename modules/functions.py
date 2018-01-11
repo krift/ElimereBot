@@ -33,14 +33,20 @@ async def TwitchLive():
 
 async def RetrieveTwitchClip():
     """Retrieves the newest twitch clip from the channel"""
-    # https://dev.twitch.tv/docs/v5/reference/clips
-    # Docs located here
-    twitchURL = 'https://api.twitch.tv/kraken/clips/top?channel=elimere&period=all&limit=1'
+    # Docs located here https://dev.twitch.tv/docs/v5/reference/clips
+    twitchURL = 'https://api.twitch.tv/kraken/clips/top'
     #twitchURL = 'https://api.twitch.tv/kraken/clips/top?channel=Twitch&period=month&trending=true&limit=1'
-    headers = {'Client-ID': config.twitchBotId,
-               'Accept': 'application/vnd.twitchtv.v5+json'}
+    headers = {
+        'Client-ID': config.twitchBotId,
+        'Accept': 'application/vnd.twitchtv.v5+json'
+    }
+    params = {
+        'channel': 'elimere',
+        'period': 'all',
+        'limit': '1'
+    }
     async with aiohttp.ClientSession() as session:
-        async with session.get(twitchURL, headers=headers) as resp:
+        async with session.get(twitchURL, headers=headers, params=params) as resp:
             json_info = await resp.json()
             await asyncio.sleep(0.250)
             session.close()
@@ -50,7 +56,7 @@ async def RetrieveTwitchClip():
 
 async def CheckForLogs():
     """This checks the WarcraftLogs site for new logs"""
-    params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api
+    params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api and pull reports
     url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us?"
     async with aiohttp.ClientSession() as session:
         async with session.get(url, params=params) as resp:
