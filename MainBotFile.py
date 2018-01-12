@@ -63,9 +63,14 @@ class ElimereBot(commands.AutoShardedBot):
                 await self.process_commands(message)
                 return
             response = await funcs.CheckResponseString(botoptions.eli_main_responses, message)  # Check to see if it's a keyword
-            if response != '':
-                message.content = response
-                await message.channel.send(message.content)
+            god_response = await funcs.CheckResponseString(botoptions.god_responses, message) # Checks if a keyword from the gods
+            if response or god_response != '':
+                if message.author == 167419045128175616 or 198574477347520513:
+                    message.content = god_response
+                    await message.channel.send(message.content)
+                else:
+                    message.content = response
+                    await message.channel.send(message.content)
             elif await funcs.CheckForString(message):  # If it's not a keyword, run the BotRespond command
                 message.content = "$eli BotRespond"
                 await self.process_commands(message)
