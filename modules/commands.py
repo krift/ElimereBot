@@ -53,6 +53,11 @@ class Commands:
         """-Is it not enough???"""
         await ctx.channel.send("I don't have enough haste!")
 
+    @commands.command(aliases=['thunder'])
+    async def Thunder(self, ctx):
+        """-Where are you???"""
+        await ctx.channel.send("Did you get enough strawberry mountain water??")
+
     @commands.command(aliases=['silv'])
     async def Silv(self, ctx):
         """-Damn it Silv!"""
