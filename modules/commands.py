@@ -1,5 +1,3 @@
-#pylint: disable = W, C
-
 import modules.functions as func
 import botoptions, random, asyncio, discord, os
 
@@ -30,6 +28,8 @@ class Commands:
         """-Holy crap are you even paying attention when I talk?"""
         await ctx.channel.send("https://www.twitch.tv/elimere")
 
+
+    #TODO:"TURN THE LINK INTO AN EMBED?"
     @commands.command(aliases=['raidmods'])
     async def RaidMods(self, ctx):
         """-These are the mods required for raiding"""
@@ -94,26 +94,26 @@ class Commands:
     async def BotRespond(self, ctx):
         """This responds to certain keywords and strings"""
         try:
-            if await func.TwitchLive():
+            if await func.TwitchLive():  # If the function returns true
                 await ctx.channel.send("My twitch channel is live! Talk to me there, not here!")
                 await ctx.channel.send("https://www.twitch.tv/elimere")
                 await ctx.channel.send("But I guess I can help you anyways...")
-            else:
+            else:  # Else, send a snarky response
                 await ctx.channel.send(random.choice(botoptions.eli_calls))
 
-            def check(message):
+            def check(message):  # This check is used to ensure it's the same user and channel who sent the first message
                 return message.author == ctx.author and ctx.channel == message.channel
-            response = await self.bot.wait_for('message', check=check, timeout=20.0)
-            response.content = await func.CheckResponseString(botoptions.eli_responses, response)
-            if response.content == '':
-                msg = random.choice(botoptions.eli_messages)
+            response = await self.bot.wait_for('message', check=check, timeout=20.0)  # Wait for the response, 20 seconds max
+            response.content = await func.CheckResponseString(botoptions.eli_responses, response)  # Call this function
+            if response.content == '':  # If content is an empty string
+                msg = random.choice(botoptions.eli_messages)  # Send a random message
                 await ctx.channel.send(msg)
             else:
-                if response.content[0] == '$':
+                if response.content[0] == '$':  # If it's a command, process it
                     await self.bot.process_commands(response)
                 else:
-                    await ctx.channel.send(response.content)
-        except asyncio.TimeoutError:
+                    await ctx.channel.send(response.content)  # Else just send what the bot response was
+        except asyncio.TimeoutError:  # This fires if the user doesn't respond in 20 seconds
             await ctx.channel.send("I guess you didn't have anything to say anyways....")
 
 
