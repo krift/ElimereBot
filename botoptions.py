@@ -16,12 +16,17 @@ jems = [
 
 mass = [
     "I love his dick stories they are 8/10.",
-    "Why the fuck do you not know the raid time plz us '$eli raidtime' to figure it out",
+    "Why the fuck do you not know the raid time, please use '$eli raidtime' to figure it out",
     "I guess if you want to check out some lame times go to https://www.twitch.tv/mastec08",
     "Best battle priest I know around!",
     "I mean he is pretty charming",
     "I would totes bake him cookies for sure!",
     "Glad to be part of his fam!"
+]
+
+khaid = [
+    "Khaid vs Some Explody Bois! https://clips.twitch.tv/DeadHorribleVultureDatSheffy",
+    "Tell us another dad joke khaid!"
 ]
 
 hey_eli = [
@@ -33,6 +38,8 @@ hey_eli = [
     "hi elimere",
     "hey elimere!",
     "hey elimere",
+    "elimere",
+    "elimere!",
     "eli!",
     "meg!",
     "meg",
@@ -42,16 +49,55 @@ hey_eli = [
     "hey meg"
 ]
 
+eli_calls = [
+    "Can I help you?",
+    "Who has summoned me?",
+    "What do you want now?",
+    "You do know you can just type $eli raidtime right?",
+    "$eli help is always available.....",
+    "Look, I know I'm a robot, but that doesn't mean you can't treat me like this."
+]
+
 eli_messages = [
     "I don't have time for this, I have to run Maw of Souls. Just type $eli help next time!",
     "You should just blame Jason, it's obviously his fault.",
-    "I don't want to have to explain the mechanics again.",
-    "Did you know Vak has useless nipples?"
+    "Did you know Vak has useless nipples?",
+    "Avoid the traps you fuckers."
 ]
 
-eli_responses = {
+eli_main_responses = {  # This is accessed in the MainBotFile when it responds to certain keywords
+    "run": "You can run but you can't hide....",
+    "runs": "You can run but you can't hide....",
+    "amazing": "Why yes, I am amazing.",
+    "savior": "Blessings upon you child.",
+    "resistance": "Resistance is futile.",
+    "resist": "Resistance is futile.",
+    "cowers": "Pathetic.",
+    "hides": "You really think you can hide?",
+    "hide": "You can't hide forever...",
+    "unleashed": "Can't stop me now...",
+    "controlled": "Do you really think you can stop me?",
+    "mechanics": "I said I'm not explaining them again!",
+    "god": "God can't help you...",
+    "kill her": "Why would you want to kill me :(",
+    "killed": "I'll never die...sleep tight.",
+    "jason": "Way to go Jason...",
+    "kash": "Way to go Jason...",
+    "spare me": "You must sacrifice treats to Wash to be spared.",
+    "spares me": "You must sacrifice treats to Wash to be spared.",
+    "spare us": "You must sacrifice treats to Wash to be spared.",
+    "im scared": "Me too...",
+    "I'm scared": "Me too...",
     "can you help me?": "No.",
-    "can you help me": "No",
+    "can you help me": "No"
+}
+
+eli_responses = {  # This is accessed in the commands file when it's asked specific questions
+    "nothing": "Sorry to bother you....",
+    "no": "Sorry to bother you....",
+    "eli": "$eli BotRespond",
+    "meg": "$eli BotRespond",
+    "elimere": "$eli BotRespond",
     "when is raid?": "$eli raidtime",
     "when is raid": "$eli raidtime",
     "what time is raid?": "$eli raidtime",
