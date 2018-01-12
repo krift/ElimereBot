@@ -1,6 +1,6 @@
 
 import modules.functions as funcs
-import config, discord, discord.ext.commands.errors, asyncio, botoptions
+import config, discord, discord.ext.commands.errors, asyncio, botoptions, datetime, traceback
 from discord.ext import commands
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
@@ -65,19 +65,28 @@ class ElimereBot(commands.AutoShardedBot):
                 return  # Return so it doesn't run any other part of this
             response = await funcs.CheckResponseString(botoptions.eli_main_responses, message)  # Check to see if it's a keyword
             god_response = await funcs.CheckResponseString(botoptions.god_responses, message) # Checks if a keyword from the gods
-            if response or god_response != '':  # If either response isn't an empty string
-                if message.author == 167419045128175616 or 198574477347520513:  # If either author is the devs
-                    message.content = god_response  # Send a god response
-                    await message.channel.send(message.content)
-                else:  # Else, send a normal response
-                    message.content = response
-                    await message.channel.send(message.content)
+            if (message.author == 167419045128175616 or 198574477347520513) and god_response != '':  # If either author is the devs
+                message.content = god_response  # Send a god response
+                await message.channel.send(message.content)
+            elif response != '':  # Else, send a normal response
+                message.content = response
+                await message.channel.send(message.content)
             elif await funcs.CheckForString(message):  # If it's not a keyword, run the BotRespond command
                 message.content = "$eli BotRespond"
                 await self.process_commands(message)
 
     def run(self):
         super().run(config.token)
+
+    async def on_error(self, event, *args, **kwargs):
+        """Default error handler"""
+        e = discord.Embed(title="Event Error", colour=0x32952)
+        e.add_field(name="Event", value=event)
+        e.add_field(name="args", value=str(args))
+        e.add_field(name="kwargs", value=str(kwargs))
+        e.description = f'```py\n{traceback.format_exc()}\n```'
+        e.timestamp = datetime.datetime.utcnow()
+        await self.get_guild(356544379885846549).get_channel(357317190556581891).send(embed=e)
 
 
 RunBot()

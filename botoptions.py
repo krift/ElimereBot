@@ -97,7 +97,7 @@ god_responses = {  # This is accessed in the MainBotFile when it responds to cer
     "master": "Yes my Lord?",
     "cracks whip": "Sorry my lord",
     "galfin": "<@167340145912184832> shall burn!",
-    "thunder": "<@263480893891411968> is probably lost grabbing strawberry water...again",
+    "thunder": "<@263480893891411968> is probably lost grabbing strawberry mountain water...again",
     "sorry": "Sorry guys my wires got crossed",
     "god": "Praise Brian and Cory",
     "jason": "Way to go Jason...",

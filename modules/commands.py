@@ -11,12 +11,11 @@ class Commands:
     @commands.command(aliases=['raidtime'])
     async def RaidTime(self, ctx):
         """-Tells the user for the 100th time when raids are."""
-        await ctx.channel.send("```\n"
-                               "Raids are on the following days:\n"
-                               "Thursday: 830pm Eastern\n"
-                               "Sunday: 730pm Eastern\n"
-                               "Please stop asking me this, you should remember it by now.\n"
-                               "```")
+        e = discord.Embed(title='Raid Times', colour=discord.Colour.purple())
+        e.description = 'Raids are on the following days. Please stop asking me this, you should remember it by now.'
+        e.add_field(name='Thursdays', value='830pm Eastern')
+        e.add_field(name='Sundays', value='730pm Eastern')
+        await ctx.channel.send(embed=e)
 
     @commands.command(aliases=['hello'])
     async def Hello(self, ctx):
@@ -28,8 +27,6 @@ class Commands:
         """-Holy crap are you even paying attention when I talk?"""
         await ctx.channel.send("https://www.twitch.tv/elimere")
 
-
-    #TODO:"TURN THE LINK INTO AN EMBED?"
     @commands.command(aliases=['raidmods'])
     async def RaidMods(self, ctx):
         """-These are the mods required for raiding"""
