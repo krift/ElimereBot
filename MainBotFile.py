@@ -47,6 +47,9 @@ class ElimereBot(commands.AutoShardedBot):
             msg = await funcs.CheckForLogs()
             if msg != "":
                 await channel.send(msg)
+            else:
+                channel = self.get_guild(356544379885846549).get_channel(356545378839035915)
+                await channel.send("This isn't an error, just reporting that there are no new logs.")
             await asyncio.sleep(600)
 
     async def on_message(self, message):
