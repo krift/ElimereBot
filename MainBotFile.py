@@ -48,22 +48,30 @@ class ElimereBot(commands.AutoShardedBot):
             if msg != "":  # As long as the return isn't an empty string
                 await channel.send("Look what I found guys!")  # Post this and the log
                 await channel.send(msg)
-            await asyncio.sleep(600)  # Wait 10 minutes to run the next check
+            else:
+                channel = self.get_guild(356544379885846549).get_channel(356545378839035915)
+                await channel.send("This isn't an error, just reporting that there are no new logs.")
+            await asyncio.sleep(600)
 
-    async def on_member_join(self, member):
+    async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
         channel = discord.utils.get(member.guild.text_channels)  # Select the top most text channel in the server
         # Send this message
         await channel.send("Hello "+member.mention+"! Hope you enjoy your stay here! We're all happy you decided to join us!")
 
     async def on_message(self, message):
-        if message.author.bot == False:  # So the bot won't process it's own messages
+        if message.author.bot is False:  # So the bot won't process it's own messages
             if message.content[0] == '$':  # If the message is actually a command, process it
                 await self.process_commands(message)  # This part processes the actual command
                 return  # Return so it doesn't run any other part of this
             response = await funcs.CheckResponseString(botoptions.eli_main_responses, message)  # Check to see if it's a keyword
-            if response != '':  # If response isn't an empty string
-                message.content = response  # Store it in message.content
-                await message.channel.send(message.content)  # Send the content to the channel
+            god_response = await funcs.CheckResponseString(botoptions.god_responses, message) # Checks if a keyword from the gods
+            if response or god_response != '':  # If either response isn't an empty string
+                if message.author == 167419045128175616 or 198574477347520513:  # If either author is the devs
+                    message.content = god_response  # Send a god response
+                    await message.channel.send(message.content)
+                else:  # Else, send a normal response
+                    message.content = response
+                    await message.channel.send(message.content)
             elif await funcs.CheckForString(message):  # If it's not a keyword, run the BotRespond command
                 message.content = "$eli BotRespond"
                 await self.process_commands(message)
