@@ -38,8 +38,6 @@ class ElimereBot(commands.AutoShardedBot):
         print('Bot ID: ' + str(self.user.id))
         print('Discord.py Version: ' + str(discord.__version__))
         print('-------------')
-        channel = self.get_guild(356544379885846549).get_channel(356544379885846552)  # Sets the channel to the dev server
-        await channel.send(await funcs.RetrieveTwitchClip())  # Sends the clip url
 
     async def BackgroundLogCheck(self):
         """This checks the Warcraft Logs site and posts a new log if there is one, runs every 10 minutes"""
@@ -50,9 +48,6 @@ class ElimereBot(commands.AutoShardedBot):
             if msg != "":  # As long as the return isn't an empty string
                 await channel.send("Look what I found guys!")  # Post this and the log
                 await channel.send(msg)
-            else:
-                channel = self.get_guild(356544379885846549).get_channel(356545378839035915)
-                await channel.send("This isn't an error, just reporting that there are no new logs.")
             await asyncio.sleep(600)
 
     async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
