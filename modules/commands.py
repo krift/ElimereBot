@@ -88,6 +88,11 @@ class Commands:
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
 
     @commands.command(hidden=True)
+    async def PullUpdate(self, ctx):
+        """This pulls from the master branch"""
+        await ctx.channel.send("Checking git thingy")
+
+    @commands.command(hidden=True)
     async def BotRespond(self, ctx):
         """This responds to certain keywords and strings"""
         try:
