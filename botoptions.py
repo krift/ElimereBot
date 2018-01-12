@@ -61,12 +61,11 @@ eli_calls = [
 eli_messages = [
     "I don't have time for this, I have to run Maw of Souls. Just type $eli help next time!",
     "You should just blame Jason, it's obviously his fault.",
-    "I don't want to have to explain the mechanics again.",
     "Did you know Vak has useless nipples?",
     "Avoid the traps you fuckers."
 ]
 
-eli_main_responses = {
+eli_main_responses = {  # This is accessed in the MainBotFile when it responds to certain keywords
     "run": "You can run but you can't hide....",
     "runs": "You can run but you can't hide....",
     "amazing": "Why yes, I am amazing.",
@@ -93,7 +92,7 @@ eli_main_responses = {
     "can you help me": "No"
 }
 
-eli_responses = {
+eli_responses = {  # This is accessed in the commands file when it's asked specific questions
     "nothing": "Sorry to bother you....",
     "no": "Sorry to bother you....",
     "eli": "$eli BotRespond",
