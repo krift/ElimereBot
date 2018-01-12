@@ -38,6 +38,8 @@ class ElimereBot(commands.AutoShardedBot):
         print('Bot ID: ' + str(self.user.id))
         print('Discord.py Version: ' + str(discord.__version__))
         print('-------------')
+        channel = self.get_guild(356544379885846549).get_channel(356544379885846552)  # Sets the channel to the dev server
+        await channel.send(await funcs.RetrieveTwitchClip())  # Sends the clip url
 
     async def BackgroundLogCheck(self):
         """This checks the Warcraft Logs site and posts a new log if there is one, runs every 10 minutes"""
