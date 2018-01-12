@@ -48,6 +48,9 @@ class ElimereBot(commands.AutoShardedBot):
             if msg != "":
                 await channel.send("Look what I found guys!")
                 await channel.send(msg)
+            else:
+                channel = self.get_guild(356544379885846549).get_channel(356545378839035915)
+                await channel.send("This isn't an error, just reporting that there are no new logs.")
             await asyncio.sleep(600)
 
     async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
@@ -60,9 +63,14 @@ class ElimereBot(commands.AutoShardedBot):
                 await self.process_commands(message)
                 return
             response = await funcs.CheckResponseString(botoptions.eli_main_responses, message)  # Check to see if it's a keyword
-            if response != '':
-                message.content = response
-                await message.channel.send(message.content)
+            god_response = await funcs.CheckResponseString(botoptions.god_responses, message) # Checks if a keyword from the gods
+            if response or god_response != '':
+                if message.author == 167419045128175616 or 198574477347520513:
+                    message.content = god_response
+                    await message.channel.send(message.content)
+                else:
+                    message.content = response
+                    await message.channel.send(message.content)
             elif await funcs.CheckForString(message):  # If it's not a keyword, run the BotRespond command
                 message.content = "$eli BotRespond"
                 await self.process_commands(message)
