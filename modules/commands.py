@@ -53,6 +53,11 @@ class Commands:
         """-Is it not enough???"""
         await ctx.channel.send("I don't have enough haste!")
 
+    @commands.command(aliases=['thunder'])
+    async def Thunder(self, ctx):
+        """-Where are you???"""
+        await ctx.channel.send("Did you get enough strawberry mountain water??")
+
     @commands.command(aliases=['silv'])
     async def Silv(self, ctx):
         """-Damn it Silv!"""
@@ -71,8 +76,14 @@ class Commands:
         msg = random.choice(botoptions.mass)
         await ctx.channel.send(msg)
 
+    @commands.command(aliases=['khaid'])
+    async def Khaid(self, ctx):
+        """-Tell us another dad joke piano man"""
+        msg = random.choice(botoptions.khaid)
+        await ctx.channel.send(msg)
+
     @commands.command(aliases=['heroes'])
-    async def Heros(self, ctx):
+    async def Heroes(self, ctx):
         """-My heroes!"""
         fileLoc = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Thanks to these guys, who are the best guys I know")
@@ -83,15 +94,17 @@ class Commands:
     async def BotRespond(self, ctx):
         """This responds to certain keywords and strings"""
         try:
-            if func.TwitchLive():
+            if await func.TwitchLive():
                 await ctx.channel.send("My twitch channel is live! Talk to me there, not here!")
                 await ctx.channel.send("https://www.twitch.tv/elimere")
-            await ctx.channel.send("Can I help you?")
+                await ctx.channel.send("But I guess I can help you anyways...")
+            else:
+                await ctx.channel.send(random.choice(botoptions.eli_calls))
 
-            def check(msg):
-                return msg.author == ctx.author and ctx.channel == msg.channel
+            def check(message):
+                return message.author == ctx.author and ctx.channel == message.channel
             response = await self.bot.wait_for('message', check=check, timeout=20.0)
-            response.content = func.CheckResponseString(response)
+            response.content = await func.CheckResponseString(botoptions.eli_responses, response)
             if response.content == '':
                 msg = random.choice(botoptions.eli_messages)
                 await ctx.channel.send(msg)
