@@ -78,7 +78,7 @@ class Commands:
         await ctx.channel.send(msg)
 
     @commands.command(aliases=['heroes'])
-    async def Heros(self, ctx):
+    async def Heroes(self, ctx):
         """-My heroes!"""
         fileLoc = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Thanks to these guys, who are the best guys I know")
@@ -94,12 +94,12 @@ class Commands:
                 await ctx.channel.send("https://www.twitch.tv/elimere")
                 await ctx.channel.send("But I guess I can help you anyways...")
             else:
-                await ctx.channel.send("Can I help you?")
+                await ctx.channel.send(random.choice(botoptions.eli_calls))
 
             def check(message):
                 return message.author == ctx.author and ctx.channel == message.channel
             response = await self.bot.wait_for('message', check=check, timeout=20.0)
-            response.content = await func.CheckResponseString(response)
+            response.content = await func.CheckResponseString(botoptions.eli_responses, response)
             if response.content == '':
                 msg = random.choice(botoptions.eli_messages)
                 await ctx.channel.send(msg)

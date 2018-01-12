@@ -1,14 +1,6 @@
 import botoptions, asyncio, config, os, aiohttp
 
 
-async def CallGit():
-    async with aiohttp.ClientSession() as session:
-        async with session.get('https://api.github.com/events') as resp:
-            print(resp.status)
-            session.close()
-            print(session.closed)
-
-
 async def CheckForString(msg):
     """Checks the message to see if it matches the hey eli strings"""
     for string in botoptions.hey_eli:
@@ -16,17 +8,18 @@ async def CheckForString(msg):
             return True
 
 
-async def CheckResponseString(msg):
-    if msg.content in botoptions.eli_responses:
-        return botoptions.eli_responses.get(msg.content, "looks like this doesn't exist")
-    else:
-        return ''
+async def CheckResponseString(dict, msg):
+    """This checks a dictionary of strings and returns appropriately"""
+    for response in dict.keys():
+        if msg.content.lower().rfind(response) != -1:
+            return dict.get(response)
+    return ''
 
 
 async def TwitchLive():
     """Checks to see if the twitch channel is live"""
-    twitchURL = ('https://api.twitch.tv/kraken/streams/elimere')
-    headers = {'Client-ID': config.twitchBotId}
+    twitchURL = 'https://api.twitch.tv/kraken/streams/elimere'
+    headers = {'Client-ID': config.twitchBotId}  # This is needed to access the twitch api
     async with aiohttp.ClientSession() as session:
         async with session.get(twitchURL, headers=headers) as resp:
             json_info = await resp.json()
@@ -39,9 +32,9 @@ async def TwitchLive():
 
 
 async def CheckForLogs():
-    """This checks the warcraftlogs site for new logs"""
-    params = {'api_key': config.warcraftLogsAPI}
-    url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us"
+    """This checks the WarcraftLogs site for new logs"""
+    params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api
+    url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us?"
     async with aiohttp.ClientSession() as session:
         async with session.get(url, params=params) as resp:
             log_info = await resp.json()
