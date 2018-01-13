@@ -92,8 +92,11 @@ class Commands:
     async def PullUpdate(self, ctx):
         """This pulls from the master branch"""
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
-        async with subprocess.Popen(['python3.6', '/home/pi/Desktop/ElimereBot/main.py']) as process:
+        process = subprocess.Popen(['python3.6', '/home/pi/Desktop/ElimereBot/main.py'])
+        if process.poll() == 0:
             await ctx.channel.send("All updated! Now I need to restart!")
+        else:
+            await ctx.channel.send("Oh no! Looks like there was an issue!")
 
     @commands.command(hidden=True)
     async def BotRespond(self, ctx):
