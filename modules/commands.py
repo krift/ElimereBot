@@ -108,7 +108,7 @@ class Commands:
                 await ctx.channel.send("All updated! Now I need to restart!")
             else:
                 await ctx.channel.send("Return Code: " + process.returncode)
-                await ctx.channel.send("Error: "+err)
+                await ctx.channel.send("Error: "+str(err))
         except Exception as e:
             await ctx.channel.send(e)
 

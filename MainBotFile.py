@@ -62,7 +62,7 @@ class ElimereBot(commands.AutoShardedBot):
                 return  # Return so it doesn't run any other part of this
             response = await funcs.CheckResponseString(botoptions.eli_main_responses, message)  # Check to see if it's a keyword
             god_response = await funcs.CheckResponseString(botoptions.god_responses, message) # Checks if a keyword from the gods
-            if (message.author == 167419045128175616 or 198574477347520513) and god_response != '':  # If either author is the devs
+            if (message.author == 167419045128175616 or message.author == 198574477347520513) and god_response != '':  # If either author is the devs
                 message.content = god_response  # Send a god response
                 await message.channel.send(message.content)
             elif response != '':  # Else, send a normal response
