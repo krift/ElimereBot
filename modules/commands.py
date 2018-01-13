@@ -103,7 +103,7 @@ class Commands:
         g.stash()
         g.pull()
         await ctx.channel.send("All updated! Now I need to restart! Be right back guys!")
-        os.system('sudo systemctl elimereservice.reboot')
+        os.system('sudo systemctl elimerebot.service')
 
     @commands.check(IsDev)
     @commands.command(hidden=True)
