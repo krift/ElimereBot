@@ -102,7 +102,6 @@ class Commands:
         try:
             process = subprocess.Popen(['sudo', path+'/main.py'])
             out, err = process.communicate()
-            await ctx.channel.send(process.communicate())
             if process.poll() == 0:
                 await ctx.channel.send("All updated! Now I need to restart!")
             else:
