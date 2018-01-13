@@ -5,6 +5,9 @@ import subprocess
 from discord.ext import commands
 
 
+async def IsDev(ctx):
+    return ctx.author.id == 198574477347520513
+
 class Commands:
     def __init__(self, bot):
         self.bot = bot
@@ -88,7 +91,8 @@ class Commands:
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing1.jpg'))
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
 
-    @commands.command(hidden=True)
+    @commands.check(IsDev)
+    @commands.command(hidden=True, aliases=['pullupdate'])
     async def PullUpdate(self, ctx):
         """This pulls from the master branch"""
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
@@ -98,6 +102,7 @@ class Commands:
         else:
             await ctx.channel.send("Oh no! Looks like there was an issue!")
 
+    @commands.check(IsDev)
     @commands.command(hidden=True)
     async def BotRespond(self, ctx):
         """This responds to certain keywords and strings"""
