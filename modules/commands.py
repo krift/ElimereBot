@@ -100,7 +100,7 @@ class Commands:
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
         try:
-            process = subprocess.Popen(['sudo', path+'/main.py'])
+            process = subprocess.Popen(['sudo', 'python', path+'/main.py'])
             out, err = process.communicate()
             if process.poll() == 0:
                 await ctx.channel.send("All updated! Now I need to restart!")
