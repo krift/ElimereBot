@@ -103,9 +103,6 @@ class Commands:
         g.stash()
         g.pull()
         await ctx.channel.send("All updated! Now I need to restart! Be right back guys!")
-        pending = asyncio.Task.all_tasks()
-        self.bot.loop.run_until_complete(asyncio.gather(*pending))
-        time.sleep(10)
         os.system('sudo reboot')
 
     @commands.check(IsDev)
