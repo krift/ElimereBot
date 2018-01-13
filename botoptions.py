@@ -122,6 +122,7 @@ eli_responses = {  # This is accessed in the commands file when it's asked speci
     "meg": "$eli BotRespond",
     "elimere": "$eli BotRespond",
     "help": "$eli help",
+    "help me": "$eli help",
     "when is raid?": "$eli raidtime",
     "when is raid": "$eli raidtime",
     "what time is raid?": "$eli raidtime",
