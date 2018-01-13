@@ -1,6 +1,5 @@
 import modules.functions as func
-import botoptions, random, asyncio, discord, os
-import subprocess
+import botoptions, random, asyncio, discord, os, git
 
 from discord.ext import commands
 
@@ -99,9 +98,10 @@ class Commands:
         """This pulls from the master branch"""
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
-        process = subprocess.Popen(['python', path+'/main.py'])
+        g = git.cmd.Git(path)
         await ctx.channel.send("Starting the update! Please don't touch anything!")
-        asyncio.sleep(2)
+        g.stash()
+        g.pull()
         await ctx.channel.send("All updated! Now I need to restart!")
 
     @commands.check(IsDev)
