@@ -103,7 +103,7 @@ class Commands:
         g.stash()
         g.pull()
         await ctx.channel.send("All updated! Now I need to restart! Be right back guys!")
-        asyncio.sleep(15)
+        asyncio.sleep(500)
         os.system('sudo reboot')
 
     @commands.check(IsDev)
