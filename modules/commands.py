@@ -95,8 +95,9 @@ class Commands:
     @commands.command(hidden=True, aliases=['pullupdate'])
     async def PullUpdate(self, ctx):
         """This pulls from the master branch"""
+        path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
-        process = subprocess.Popen(['python3.6', '/home/pi/Desktop/ElimereBot/main.py'])
+        process = subprocess.Popen(['python3.6', path+'main.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if process.poll() == 0:
             await ctx.channel.send("All updated! Now I need to restart!")
         else:
