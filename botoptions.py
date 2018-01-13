@@ -104,7 +104,6 @@ god_responses = {  # This is accessed in the MainBotFile when it responds to cer
     "kash": "Way to go Jason...",
     "can you help me?": "No.",
     "can you help me": "No",
-    "mechanics": "I said I'm not explaining them again!",
     "unleashed": "Can't stop me now...",
     "kill her": "Why would you want to kill me :(",
     "rip": "There he goes saying rip again",
