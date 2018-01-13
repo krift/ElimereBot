@@ -100,12 +100,15 @@ class Commands:
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
         try:
-            process = subprocess.Popen(['sudo', 'python', path+'/main.py'])
-            out, err = process.communicate()
-            if process.poll() == 0:
+            process = subprocess.Popen(['python', path+'/main.py'])
+            (out, err) = process.communicate()
+            if out:
+                await ctx.channel.send("Return Code: "+process.returncode)
+                await ctx.channel.send("Output: " +out)
                 await ctx.channel.send("All updated! Now I need to restart!")
             else:
-                await ctx.channel.send("Oh no! Looks like there was an issue!")
+                await ctx.channel.send("Return Code: " + process.returncode)
+                await ctx.channel.send("Error: "+err)
         except Exception as e:
             await ctx.channel.send(e)
 
