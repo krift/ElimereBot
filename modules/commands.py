@@ -102,7 +102,9 @@ class Commands:
         await ctx.channel.send("Starting the update! Please don't touch anything!")
         g.stash()
         g.pull()
-        await ctx.channel.send("All updated! Now I need to restart!")
+        await ctx.channel.send("All updated! Now I need to restart! Be right back guys!")
+        asyncio.sleep(15)
+        os.system('sudo reboot')
 
     @commands.check(IsDev)
     @commands.command(hidden=True)
