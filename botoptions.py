@@ -90,26 +90,26 @@ eli_main_responses = {  # This is accessed in the MainBotFile when it responds t
     "I'm scared": "Me too...",
     "can you help me?": "No.",
     "can you help me": "No",
-    "up up down down left right left right b a": "God mod denied"
+    "up up down down left right left right b a": "God mod denied."
 }
 
 god_responses = {  # This is accessed in the MainBotFile when it responds to certain keywords from Brian or Cory
     "master": "Yes my Lord?",
-    "cracks whip": "Sorry my lord",
+    "cracks whip": "Sorry my lord.",
     "galfin": "<@167340145912184832> shall burn!",
-    "thunder": "<@263480893891411968> is probably lost grabbing strawberry mountain water...again",
-    "sorry": "Sorry guys my wires got crossed",
+    "thunder": "<@263480893891411968> is probably lost grabbing strawberry mountain water...again.",
+    "sorry": "Sorry guys my wires got crossed.",
     "god": "Praise Brian and Cory",
     "jason": "Way to go Jason...",
     "kash": "Way to go Jason...",
     "can you help me?": "No.",
-    "can you help me": "No",
+    "can you help me": "No.",
     "unleashed": "Can't stop me now...",
     "kill her": "Why would you want to kill me :(",
-    "rip": "There he goes saying rip again",
-    "kill": "Your wish is my command",
-    "control": "Only you can control me",
-    "up up down down left right left right b a": "God mod activated"
+    "rip": "There he goes saying rip again.",
+    "kill": "Your wish is my command.",
+    "control": "Only you can control me.",
+    "up up down down left right left right b a": "God mod activated."
 
 
 
