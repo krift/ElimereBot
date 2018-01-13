@@ -99,21 +99,18 @@ class Commands:
         """This pulls from the master branch"""
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
-        try:
-            process = subprocess.Popen(['python', path+'/main.py'], stdout='tempFile.txt')
-            await ctx.channel.send("Running")
-            process.wait()
-            await ctx.channel.send("Finished")
-            (out, err) = process.communicate()
-            if out:
-                await ctx.channel.send("Return Code: "+str(process.returncode))
-                await ctx.channel.send("Output: "+str(out))
-                await ctx.channel.send("All updated! Now I need to restart!")
-            else:
-                await ctx.channel.send("Return Code: " + str(process.returncode))
-                await ctx.channel.send("Error: "+str(err))
-        except Exception as e:
-            await ctx.channel.send(e)
+        process = subprocess.Popen(['python', path+'/main.py'])
+        await ctx.channel.send("Starting the update! Please don't touch anything!")
+        process.wait()
+        (out, err) = process.communicate()
+        if out:
+            await ctx.channel.send("Return Code: "+str(process.returncode))
+            await ctx.channel.send("Output: "+str(out))
+            await ctx.channel.send("Looks like there was a problem! Oh no!")
+        else:
+            await ctx.channel.send("All updated! Now I need to restart!")
+            await ctx.channel.send("Return Code: " + str(process.returncode))
+            await ctx.channel.send("Error: "+str(err))
 
     @commands.check(IsDev)
     @commands.command(hidden=True)
