@@ -6,7 +6,7 @@ from discord.ext import commands
 
 
 async def IsDev(ctx):
-    return ctx.author.id == (198574477347520513 or 167419045128175616)
+    return ctx.author.id == 198574477347520513 or ctx.author.id == 167419045128175616
 
 
 class Commands:
@@ -100,7 +100,7 @@ class Commands:
         await ctx.channel.send("Here is this path!" + path)
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
         try:
-            process = subprocess.Popen([path+'main.py'])
+            process = subprocess.Popen([path+'/main.py'])
             out, err = process.communicate()
             await ctx.channel.send(process.communicate())
             if process.poll() == 0:
