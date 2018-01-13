@@ -104,7 +104,7 @@ class Commands:
             (out, err) = process.communicate()
             if out:
                 await ctx.channel.send("Return Code: "+process.returncode)
-                await ctx.channel.send("Output: " +out)
+                await ctx.channel.send("Output: " +str(out))
                 await ctx.channel.send("All updated! Now I need to restart!")
             else:
                 await ctx.channel.send("Return Code: " + process.returncode)
