@@ -100,11 +100,12 @@ class Commands:
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
         try:
-            process = subprocess.Popen(['python', path+'/main.py'])
+            process = subprocess.Popen(['python', str(path)+'/main.py'])
+            await ctx.channel.send("Running")
             (out, err) = process.communicate()
             if out:
                 await ctx.channel.send("Return Code: "+process.returncode)
-                await ctx.channel.send("Output: " +str(out))
+                await ctx.channel.send("Output: "+str(out))
                 await ctx.channel.send("All updated! Now I need to restart!")
             else:
                 await ctx.channel.send("Return Code: " + process.returncode)
