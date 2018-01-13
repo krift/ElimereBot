@@ -6,7 +6,8 @@ from discord.ext import commands
 
 
 async def IsDev(ctx):
-    return ctx.author.id == 198574477347520513
+    return ctx.author.id == (198574477347520513 or 167419045128175616)
+
 
 class Commands:
     def __init__(self, bot):
@@ -96,12 +97,18 @@ class Commands:
     async def PullUpdate(self, ctx):
         """This pulls from the master branch"""
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        await ctx.channel.send("Here is this path!" + path)
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
-        process = subprocess.Popen(['python3.6', path+'main.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if process.poll() == 0:
-            await ctx.channel.send("All updated! Now I need to restart!")
-        else:
-            await ctx.channel.send("Oh no! Looks like there was an issue!")
+        try:
+            process = subprocess.Popen([path+'main.py'])
+            out, err = process.communicate()
+            await ctx.channel.send(process.communicate())
+            if process.poll() == 0:
+                await ctx.channel.send("All updated! Now I need to restart!")
+            else:
+                await ctx.channel.send("Oh no! Looks like there was an issue!")
+        except Exception as e:
+            await ctx.channel.send(e)
 
     @commands.check(IsDev)
     @commands.command(hidden=True)
