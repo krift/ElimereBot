@@ -6,6 +6,7 @@ from discord.ext import commands
 
 
 async def IsDev(ctx):
+    """Used to check if a Dev is calling the command"""
     return ctx.author.id == 198574477347520513 or ctx.author.id == 167419045128175616
 
 
@@ -97,10 +98,9 @@ class Commands:
     async def PullUpdate(self, ctx):
         """This pulls from the master branch"""
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        await ctx.channel.send("Here is this path!" + path)
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
         try:
-            process = subprocess.Popen([path+'/main.py'])
+            process = subprocess.Popen(['sudo', path+'/main.py'])
             out, err = process.communicate()
             await ctx.channel.send(process.communicate())
             if process.poll() == 0:
