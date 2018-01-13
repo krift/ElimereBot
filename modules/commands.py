@@ -99,18 +99,13 @@ class Commands:
         """This pulls from the master branch"""
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
-        process = subprocess.Popen(['python', path+'/main.py'])
+        process = subprocess.Popen(['python', path+'/main.py'], close_fds=True)
         await ctx.channel.send("Starting the update! Please don't touch anything!")
         process.wait()
-        (out, err) = process.communicate()
-        if out:
-            await ctx.channel.send("Return Code: "+str(process.returncode))
-            await ctx.channel.send("Output: "+str(out))
+        if process.returncode != 0:
             await ctx.channel.send("Looks like there was a problem! Oh no!")
         else:
             await ctx.channel.send("All updated! Now I need to restart!")
-            await ctx.channel.send("Return Code: " + str(process.returncode))
-            await ctx.channel.send("Error: "+str(err))
 
     @commands.check(IsDev)
     @commands.command(hidden=True)
