@@ -1,4 +1,4 @@
-
+#!/usr/local/bin/python3.6
 import modules.functions as funcs
 import config, discord, discord.ext.commands.errors, asyncio, botoptions, datetime, traceback
 from discord.ext import commands

@@ -1,5 +1,5 @@
 import modules.functions as func
-import botoptions, random, asyncio, discord, os, git, time
+import botoptions, random, asyncio, discord, os, git
 
 from discord.ext import commands
 
@@ -103,7 +103,7 @@ class Commands:
         g.stash()
         g.pull()
         await ctx.channel.send("All updated! Now I need to restart! Be right back guys!")
-        os.system('sudo reboot')
+        os.system('sudo systemctl elimereservice.reboot')
 
     @commands.check(IsDev)
     @commands.command(hidden=True)
