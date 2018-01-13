@@ -99,7 +99,7 @@ class Commands:
         """This pulls from the master branch"""
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
-        process = subprocess.Popen(['python', path+'/main.py'], close_fds=True)
+        process = subprocess.Popen(['python', path+'/main.py'])
         await ctx.channel.send("Starting the update! Please don't touch anything!")
         asyncio.sleep(2)
         await ctx.channel.send("All updated! Now I need to restart!")
