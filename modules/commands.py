@@ -101,11 +101,8 @@ class Commands:
         await ctx.channel.send("Oh boy! Looks like I need to update myself!")
         process = subprocess.Popen(['python', path+'/main.py'], close_fds=True)
         await ctx.channel.send("Starting the update! Please don't touch anything!")
-        process.wait()
-        if process.returncode != 0:
-            await ctx.channel.send("Looks like there was a problem! Oh no!")
-        else:
-            await ctx.channel.send("All updated! Now I need to restart!")
+        asyncio.sleep(2)
+        await ctx.channel.send("All updated! Now I need to restart!")
 
     @commands.check(IsDev)
     @commands.command(hidden=True)
