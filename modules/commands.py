@@ -1,7 +1,12 @@
 import modules.functions as func
-import botoptions, random, asyncio, discord, os
+import botoptions, random, asyncio, discord, os, git, config
 
 from discord.ext import commands
+
+
+async def IsDev(ctx):
+    """Used to check if a Dev is calling the command"""
+    return ctx.author.id == 198574477347520513 or ctx.author.id == 167419045128175616
 
 
 class Commands:
@@ -11,12 +16,11 @@ class Commands:
     @commands.command(aliases=['raidtime'])
     async def RaidTime(self, ctx):
         """-Tells the user for the 100th time when raids are."""
-        await ctx.channel.send("```\n"
-                               "Raids are on the following days:\n"
-                               "Thursday: 830pm Eastern\n"
-                               "Sunday: 730pm Eastern\n"
-                               "Please stop asking me this, you should remember it by now.\n"
-                               "```")
+        e = discord.Embed(title='Raid Times', colour=discord.Colour.purple())
+        e.description = 'Raids are on the following days. Please stop asking me this, you should remember it by now.'
+        e.add_field(name='Thursdays', value='830pm Eastern')
+        e.add_field(name='Sundays', value='730pm Eastern')
+        await ctx.channel.send(embed=e)
 
     @commands.command(aliases=['hello'])
     async def Hello(self, ctx):
@@ -28,8 +32,12 @@ class Commands:
         """-Holy crap are you even paying attention when I talk?"""
         await ctx.channel.send("https://www.twitch.tv/elimere")
 
+    @commands.command(aliases=['topclip'])
+    async def TopClip(self, ctx):
+        """-It's the top clip from my channel!"""
+        await ctx.channel.send("Check out this amazing clip from my channel!")
+        await ctx.channel.send(await func.RetrieveTwitchClip('elimere'))
 
-    #TODO:"TURN THE LINK INTO AN EMBED?"
     @commands.command(aliases=['raidmods'])
     async def RaidMods(self, ctx):
         """-These are the mods required for raiding"""
@@ -90,6 +98,21 @@ class Commands:
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing1.jpg'))
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
 
+    @commands.check(IsDev)
+    @commands.command(hidden=True, aliases=['pullupdate'])
+    async def PullUpdate(self, ctx):
+        """This pulls from the master branch"""
+        path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        channel = self.bot.get_guild(config.guildServerID).get_channel(167335272927723522)
+        await channel.send("Oh boy! Looks like I need to update myself!")
+        g = git.cmd.Git(path)
+        await channel.send("Starting the update! Please don't touch anything!")
+        g.stash()
+        g.pull()
+        await channel.send("All updated! Now I need to restart! Be right back guys!")
+        os.system('sudo systemctl restart elimerebot.service')
+
+    @commands.check(IsDev)
     @commands.command(hidden=True)
     async def BotRespond(self, ctx):
         """This responds to certain keywords and strings"""
