@@ -32,6 +32,12 @@ class Commands:
         """-Holy crap are you even paying attention when I talk?"""
         await ctx.channel.send("https://www.twitch.tv/elimere")
 
+    @commands.command(aliases=['topclip'])
+    async def TopClip(self, ctx):
+        """-It's the top clip from my channel!"""
+        await ctx.channel.send("Check out this amazing clip from my channel!")
+        await ctx.channel.send(await func.RetrieveTwitchClip('elimere'))
+
     @commands.command(aliases=['raidmods'])
     async def RaidMods(self, ctx):
         """-These are the mods required for raiding"""

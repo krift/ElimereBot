@@ -56,7 +56,9 @@ class ElimereBot(commands.AutoShardedBot):
         await channel.send("Hello "+member.mention+"! Hope you enjoy your stay here! We're all happy you decided to join us!")
 
     async def on_message(self, message):
-        if message.author.bot is False:  # So the bot won't process it's own messages
+        if message.author.bot is False:  # So the bot won't process bot messages
+            if message.content == '':
+                return
             if message.content[0] == '$':  # If the message is actually a command, process it
                 await self.process_commands(message)  # This part processes the actual command
                 return  # Return so it doesn't run any other part of this
