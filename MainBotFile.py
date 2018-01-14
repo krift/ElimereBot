@@ -56,6 +56,9 @@ class ElimereBot(commands.AutoShardedBot):
         await channel.send("Hello "+member.mention+"! Hope you enjoy your stay here! We're all happy you decided to join us!")
 
     async def on_message(self, message):
+        embeds = message.embeds[0].to_dict()
+        print(embeds)
+        print(embeds['author']['title'])
         if message.author.bot is False:  # So the bot won't process bot messages
             if message.content == '':
                 return
