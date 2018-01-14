@@ -61,7 +61,8 @@ class ElimereBot(commands.AutoShardedBot):
             if message.author.name == "GitHub":
                 embeds = message.embeds[0].to_dict()
                 if embeds['title'].lower().rfind('elimerebot:master') != -1:
-                    print("Found it")
+                    message.content = '$eli pullupdate'
+                    await self.process_commands(message)
         if message.author.bot is False:  # So the bot won't process bot messages
             if message.content == '':
                 return
