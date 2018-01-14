@@ -35,17 +35,16 @@ async def TwitchLive():
         return True
 
 
-async def RetrieveTwitchClip():
+async def RetrieveTwitchClip(channel):
     """Retrieves the newest twitch clip from the channel"""
     # Docs located here https://dev.twitch.tv/docs/v5/reference/clips
     twitchURL = 'https://api.twitch.tv/kraken/clips/top'
-    #twitchURL = 'https://api.twitch.tv/kraken/clips/top?channel=Twitch&period=month&trending=true&limit=1'
     headers = {
         'Client-ID': config.twitchBotId,
         'Accept': 'application/vnd.twitchtv.v5+json'
     }
     params = {
-        'channel': 'elimere',
+        'channel': channel,
         'period': 'all',
         'limit': '1'
     }
@@ -54,8 +53,6 @@ async def RetrieveTwitchClip():
             json_info = await resp.json()
             await asyncio.sleep(0.250)
             session.close()
-    print(json_info['clips'])
-    print(json_info['clips'][0]['url'])
     return json_info['clips'][0]['url']
 
 
