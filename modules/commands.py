@@ -6,7 +6,7 @@ from discord.ext import commands
 
 async def IsDev(ctx):
     """Used to check if a Dev is calling the command"""
-    return ctx.author.id == 198574477347520513 or ctx.author.id == 167419045128175616
+    return ctx.author.id == 198574477347520513 or ctx.author.id == 167419045128175616 or ctx.author.name == 'GitHub'
 
 
 class Commands:
