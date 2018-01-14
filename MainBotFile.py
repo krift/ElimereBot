@@ -60,7 +60,7 @@ class ElimereBot(commands.AutoShardedBot):
             print("True")
             if message.author.name == "GitHub":
                 embeds = message.embeds[0].to_dict()
-                if embeds['title'].lower().rfind('elimerebot:master'):
+                if embeds['title'].lower().rfind('elimerebot:master') != -1:
                     print("Found it")
         if message.author.bot is False:  # So the bot won't process bot messages
             if message.content == '':
