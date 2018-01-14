@@ -21,7 +21,10 @@ mass = [
     "Best battle priest I know around!",
     "I mean he is pretty charming",
     "I would totes bake him cookies for sure!",
-    "Glad to be part of his fam!"
+    "Glad to be part of his fam!",
+    "Don't eat that!",
+    "Don't touch anything!",
+    "Has better overalls than Jemsi."
 ]
 
 khaid = [
