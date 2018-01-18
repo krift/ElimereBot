@@ -101,6 +101,15 @@ class Commands:
         os.system('sudo systemctl restart elimerebot.service')
 
     @commands.check(IsDev)
+    @commands.command(aliases=['shutdown'])
+    async def Shutdown(self, ctx):
+        """Shuts the bot down"""
+        e = discord.Embed(title='Bot Shutdown', colour=discord.Colour.purple())
+        e.description = 'Bot has been shutdown, please restart the service directly.'
+        await self.bot.logout()
+        os.system('sudo systemctl stop elimerebot.service')
+
+    @commands.check(IsDev)
     @commands.command(hidden=True, aliases=['pullupdate'])
     async def PullUpdate(self, ctx):
         """This pulls from the master branch"""
