@@ -106,6 +106,8 @@ class Commands:
         """Shuts the bot down"""
         e = discord.Embed(title='Bot Shutdown', colour=discord.Colour.purple())
         e.description = 'Bot has been shutdown, please restart the service directly.'
+        channel = self.bot.get_guild(config.devServerID).get_channel(config.reportChanID)
+        await channel.send(embed=e)
         await self.bot.logout()
         os.system('sudo systemctl stop elimerebot.service')
 
