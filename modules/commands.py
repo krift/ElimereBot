@@ -95,7 +95,7 @@ class Commands:
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
 
     @commands.check(IsDev)
-    @commands.command(hidden=True, aliases=['restart'])
+    @commands.command(aliases=['restart'])
     async def Restart(self, ctx):
         """Restart the bot"""
         os.system('sudo systemctl restart elimerebot.service')
@@ -112,7 +112,7 @@ class Commands:
         os.system('sudo systemctl stop elimerebot.service')
 
     @commands.check(IsDev)
-    @commands.command(hidden=True, aliases=['pullupdate'])
+    @commands.command(aliases=['pullupdate'])
     async def PullUpdate(self, ctx):
         """This pulls from the master branch"""
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
