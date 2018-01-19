@@ -36,7 +36,7 @@ class Dev:
     async def PullUpdate(self, ctx):
         """-This pulls from the master branch"""
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildLogChanID)
+        channel = self.bot.get_guild(config.guildServerID).get_channel(167335272927723522)
         await channel.send("Oh boy! Looks like I need to update myself!")
         g = git.cmd.Git(path)
         g.commit()
