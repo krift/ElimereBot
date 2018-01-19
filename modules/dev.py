@@ -39,7 +39,7 @@ class Dev:
         channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildLogChanID)
         await channel.send("Oh boy! Looks like I need to update myself!")
         g = git.cmd.Git(path)
-        g.stash()
+        g.commit()
         g.pull()
         await channel.send("All updated! Now I need to restart! Be right back guys!")
         os.system('sudo systemctl restart elimerebot.service')
