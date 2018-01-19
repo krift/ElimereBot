@@ -1,4 +1,6 @@
-import traceback, discord
+import traceback
+import config
+import discord
 from discord.ext import commands
 
 
@@ -41,8 +43,9 @@ class ErrorHandling:
             try:
                 strippedCommand = ctx.message.content.replace(ctx.message.content[0], '')
                 strippedCommand = strippedCommand[0:len(strippedCommand)]
+                prefix = self.bot.command_prefix
                 await ctx.send(f"{error}")
-                await ctx.send(f"Do $eli help {strippedCommand} to see the correct usage.")
+                await ctx.send(f"Do {prefix} help {strippedCommand} to see the correct usage.")
             except Exception as e:
                 print(e)
             finally:
@@ -50,8 +53,9 @@ class ErrorHandling:
 
         elif isinstance(error, commands.CommandNotFound):
             try:
+                prefix = self.bot.command_prefix
                 await ctx.send(f"There is no command called {ctx.message.content}.")
-                await ctx.send("Use $eli help to see a list of available commands.")
+                await ctx.send(f"Use {prefix} help to see a list of available commands.")
             except Exception as e:
                 print(e)
                 pass
@@ -69,7 +73,8 @@ class ErrorHandling:
         
         elif isinstance(error, commands.errors.BadArgument):
             try:
-                await ctx.send("You entered an invalid value. Type $eli help <command> to see the correct usage.")
+                prefix = self.bot.command_prefix
+                await ctx.send(f"You entered an invalid value. Type {prefix} help <command> to see the correct usage.")
             except Exception as e:
                 print(e)
                 pass
@@ -85,7 +90,7 @@ class ErrorHandling:
         e.add_field(name='Command', value=ctx.command)
         e.add_field(name='Server', value=ctx.guild)
         e.add_field(name='Error', value=error)
-        await self.bot.get_guild(356544379885846549).get_channel(357317190556581891).send(embed=e)
+        await self.bot.get_guild(config.devServerID).get_channel(config.errorChanID).send(embed=e)
 
 
 def setup(bot):
