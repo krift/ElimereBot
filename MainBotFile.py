@@ -9,7 +9,8 @@ BOT_PREFIX = "$eli "
 
 INITIAL_EXTENSIONS = (
     'modules.errorhandling',
-    'modules.commands'
+    'modules.commands',
+    'modules.dev'
 )
 
 
@@ -93,7 +94,7 @@ class ElimereBot(commands.AutoShardedBot):
         e.add_field(name="kwargs", value=str(kwargs))
         e.description = f'```py\n{traceback.format_exc()}\n```'
         e.timestamp = datetime.datetime.utcnow()
-        await self.get_guild(356544379885846549).get_channel(357317190556581891).send(embed=e)
+        await self.get_guild(config.devServerID).get_channel(config.errorChanID).send(embed=e)
 
 
 RunBot()
