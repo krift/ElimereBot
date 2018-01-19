@@ -1,5 +1,5 @@
 import modules.functions as func
-import botoptions, random, asyncio, discord, os, git, config
+import botoptions, random, asyncio, discord, os
 
 from discord.ext import commands
 
