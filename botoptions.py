@@ -65,7 +65,9 @@ eli_messages = [
     "I don't have time for this, I have to run Maw of Souls. Just type $eli help next time!",
     "You should just blame Jason, it's obviously his fault.",
     "Did you know Vak has useless nipples?",
-    "Avoid the traps you fuckers."
+    "Avoid the traps you fuckers.",
+    "Pineapple pizza is pretty darn good.",
+    "Who put this storm here?!?"
 ]
 
 eli_main_responses = {  # This is accessed in the MainBotFile when it responds to certain keywords
@@ -90,9 +92,11 @@ eli_main_responses = {  # This is accessed in the MainBotFile when it responds t
     "spares me": "You must sacrifice treats to Wash to be spared.",
     "spare us": "You must sacrifice treats to Wash to be spared.",
     "im scared": "Me too...",
-    "I'm scared": "Me too...",
+    "i'm scared": "Me too...",
     "can you help me?": "No.",
     "can you help me": "No",
+    "pineapple": "Is someone talking about pineapple pizza??",
+    "pizza": "Pineapple pizza is the only pizza for me.",
     "up up down down left right left right b a": "God mod denied."
 }
 
