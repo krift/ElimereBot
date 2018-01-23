@@ -86,6 +86,11 @@ class ElimereBot(commands.AutoShardedBot):
     def run(self):
         super().run(config.token)
 
+    async def on_command_error(self, context, exception):
+        """Testing yo"""
+        if isinstance(exception, commands.CommandOnCooldown):
+            await context.send("You better stop before I put you in timeout!")
+
     async def on_error(self, event, *args, **kwargs):
         """Default error handler"""
         e = discord.Embed(title="Event Error", colour=0x32952)
