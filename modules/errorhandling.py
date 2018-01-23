@@ -1,6 +1,8 @@
 import traceback
 import config
 import discord
+import botoptions
+import random
 from discord.ext import commands
 
 
@@ -64,7 +66,7 @@ class ErrorHandling:
 
         elif isinstance(error, commands.CommandOnCooldown):
             try:
-                await ctx.send("You better stop before I put you in timeout!")
+                await ctx.send(random.choice(botoptions.eli_annoyed))
             except Exception as e:
                 print(e)
                 pass
