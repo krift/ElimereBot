@@ -4,11 +4,6 @@ import botoptions, random, asyncio, discord, os, git, config
 from discord.ext import commands
 
 
-async def IsDev(ctx):
-    """Used to check if a Dev is calling the command"""
-    return ctx.author.id == 198574477347520513 or ctx.author.id == 167419045128175616
-
-
 class Commands:
     def __init__(self, bot):
         self.bot = bot
@@ -41,15 +36,15 @@ class Commands:
     @commands.command(aliases=['raidmods'])
     async def RaidMods(self, ctx):
         """-These are the mods required for raiding"""
-        await ctx.channel.send("Again, here are the mods required for the 100000th time.")
-        await ctx.channel.send("You need the Twitch app installed, download this, then run it.")
-        await ctx.channel.send("http://www.mediafire.com/file/gpc0t8yjhi5369f/Booty_Bay_Surf_Club_Raid_Pack.ccip")
+        await ctx.channel.send("Again, here are the mods required for the 100000th time.\n"
+                               "You need the Twitch app installed, download this file, then run it.\n"
+                               "http://www.mediafire.com/file/gpc0t8yjhi5369f/Booty_Bay_Surf_Club_Raid_Pack.ccip")
 
     @commands.command(aliases=['voidelfs'])
     async def Voidelfs(self, ctx):
         """-Tell us how you REALLY feel about Void Elves"""
-        await ctx.channel.send("Well first, fuck them")
-        await ctx.channel.send("Second..I secretly envy their hair")
+        await ctx.channel.send("Well first, fuck them\n"
+                               "Second..I secretly envy their hair")
 
     @commands.command(aliases=['mechanics'])
     async def Mechanics(self, ctx):
@@ -69,26 +64,22 @@ class Commands:
     @commands.command(aliases=['silv'])
     async def Silv(self, ctx):
         """-Damn it Silv!"""
-        msg = random.choice(botoptions.silv)
-        await ctx.channel.send(msg)
+        await ctx.channel.send(random.choice(botoptions.silv))
 
     @commands.command(aliases=['jems'])
     async def Jems(self, ctx):
         """-One of my besties"""
-        msg = random.choice(botoptions.jems)
-        await ctx.channel.send(msg)
+        await ctx.channel.send(random.choice(botoptions.jems))
 
     @commands.command(aliases=['mass'])
     async def Mass(self, ctx):
         """-Cant stop wont stop"""
-        msg = random.choice(botoptions.mass)
-        await ctx.channel.send(msg)
+        await ctx.channel.send(random.choice(botoptions.mass))
 
     @commands.command(aliases=['khaid'])
     async def Khaid(self, ctx):
         """-Tell us another dad joke piano man"""
-        msg = random.choice(botoptions.khaid)
-        await ctx.channel.send(msg)
+        await ctx.channel.send(random.choice(botoptions.khaid))
 
     @commands.command(aliases=['heroes'])
     async def Heroes(self, ctx):
@@ -98,29 +89,14 @@ class Commands:
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing1.jpg'))
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
 
-    @commands.check(IsDev)
-    @commands.command(hidden=True, aliases=['pullupdate'])
-    async def PullUpdate(self, ctx):
-        """This pulls from the master branch"""
-        path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        channel = self.bot.get_guild(config.guildServerID).get_channel(167335272927723522)
-        await channel.send("Oh boy! Looks like I need to update myself!")
-        g = git.cmd.Git(path)
-        await channel.send("Starting the update! Please don't touch anything!")
-        g.stash()
-        g.pull()
-        await channel.send("All updated! Now I need to restart! Be right back guys!")
-        os.system('sudo systemctl restart elimerebot.service')
-
-    @commands.check(IsDev)
     @commands.command(hidden=True)
     async def BotRespond(self, ctx):
         """This responds to certain keywords and strings"""
         try:
             if await func.TwitchLive():  # If the function returns true
-                await ctx.channel.send("My twitch channel is live! Talk to me there, not here!")
-                await ctx.channel.send("https://www.twitch.tv/elimere")
-                await ctx.channel.send("But I guess I can help you anyways...")
+                await ctx.channel.send("My twitch channel is live! Talk to me there, not here!\n"
+                                       "https://www.twitch.tv/elimere\n"
+                                       "But I guess I can help you anyways...")
             else:  # Else, send a snarky response
                 await ctx.channel.send(random.choice(botoptions.eli_calls))
 

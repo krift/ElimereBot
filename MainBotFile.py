@@ -9,7 +9,8 @@ BOT_PREFIX = "$eli "
 
 INITIAL_EXTENSIONS = (
     'modules.errorhandling',
-    'modules.commands'
+    'modules.commands',
+    'modules.dev'
 )
 
 
@@ -56,6 +57,12 @@ class ElimereBot(commands.AutoShardedBot):
         await channel.send("Hello "+member.mention+"! Hope you enjoy your stay here! We're all happy you decided to join us!")
 
     async def on_message(self, message):
+        if message.embeds:
+            if message.author.name == "GitHub":
+                embeds = message.embeds[0].to_dict()
+                if embeds['title'].lower().rfind('elimerebot:master') != -1:
+                    message.content = '$eli PullUpdate'
+                    await self.process_commands(message)
         if message.author.bot is False:  # So the bot won't process bot messages
             if message.content == '':
                 return
@@ -87,7 +94,7 @@ class ElimereBot(commands.AutoShardedBot):
         e.add_field(name="kwargs", value=str(kwargs))
         e.description = f'```py\n{traceback.format_exc()}\n```'
         e.timestamp = datetime.datetime.utcnow()
-        await self.get_guild(356544379885846549).get_channel(357317190556581891).send(embed=e)
+        await self.get_guild(config.devServerID).get_channel(config.errorChanID).send(embed=e)
 
 
 RunBot()
