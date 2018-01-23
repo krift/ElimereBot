@@ -1,5 +1,5 @@
 import modules.functions as func
-import botoptions, random, asyncio, discord, os, git, config
+import botoptions, random, asyncio, discord, os
 
 from discord.ext import commands
 
@@ -90,6 +90,7 @@ class Commands:
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
 
     @commands.command(hidden=True)
+    @commands.cooldown(rate=3, per=300.0, type=commands.BucketType.user)
     async def BotRespond(self, ctx):
         """This responds to certain keywords and strings"""
         try:
