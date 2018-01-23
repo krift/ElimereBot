@@ -64,7 +64,7 @@ class ErrorHandling:
 
         elif isinstance(error, commands.CommandOnCooldown):
             try:
-                await ctx.send(error)
+                await ctx.send("You better stop before I put you in timeout!")
             except Exception as e:
                 print(e)
                 pass
