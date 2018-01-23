@@ -2,6 +2,7 @@ import os
 import config
 import git
 import discord
+import asyncio
 from discord.ext import commands
 
 
@@ -18,6 +19,8 @@ class Dev:
     @commands.command(aliases=['restart'])
     async def Restart(self, ctx):
         """-Restart the bot"""
+        await self.bot.logout()
+        asyncio.sleep(10)
         os.system('sudo systemctl restart elimerebot.service')
 
     @commands.check(IsDev)
@@ -29,6 +32,7 @@ class Dev:
         channel = self.bot.get_guild(config.devServerID).get_channel(config.reportChanID)
         await channel.send(embed=e)
         await self.bot.logout()
+        await asyncio.sleep(10)
         os.system('sudo systemctl stop elimerebot.service')
 
     @commands.check(IsDev)
