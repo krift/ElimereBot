@@ -140,10 +140,10 @@ eli_responses = {  # This is accessed in the commands file when it's asked speci
     "what mods do i need?": "$eli raidmods"
 }
 
-eli_annoyed = {
+eli_annoyed = [
     "You better stop before I put you in timeout!",
     "Don't make me sic Wash on you!",
     "I will kick you so fast!",
     "Have you ever been beaten up by a robot girl!?",
     "You're really making me regret this whole thing!"
-}
+]
