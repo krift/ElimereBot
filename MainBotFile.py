@@ -52,7 +52,7 @@ class ElimereBot(commands.AutoShardedBot):
             await asyncio.sleep(600)
 
     async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
-        channel = discord.utils.get(member.guild.text_channels)  # Select the top most text channel in the server
+        channel = self.get_guild(config.guildServerID).get_channel(config.guildGenChanID)  # Select the top most text channel in the server
         # Send this message
         await channel.send("Hello "+member.mention+"! Hope you enjoy your stay here! We're all happy you decided to join us!")
 
