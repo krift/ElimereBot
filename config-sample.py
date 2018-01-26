@@ -1,2 +1,8 @@
 token = "sample token file here"
+twitchBotId = "used in the BotRespond command"
+warcraftLogsAPI = "used to access warcraft logs"
+guildServerID = "this should be an int, not a string"
+guildLogChanID = "this should be an int, not a string"
+devServerID = "this should be an int, not a string"
+reportChanID = "this should be an int, not a string"
 """Rename this file to config.py and insure your .gitignore has config.py in it"""

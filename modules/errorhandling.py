@@ -1,11 +1,10 @@
-
-#pylint: disable = W, C
-
-import asyncio
-import datetime
 import traceback
+import config
 import discord
+import botoptions
+import random
 from discord.ext import commands
+
 
 class ErrorHandling:
 
@@ -46,8 +45,9 @@ class ErrorHandling:
             try:
                 strippedCommand = ctx.message.content.replace(ctx.message.content[0], '')
                 strippedCommand = strippedCommand[0:len(strippedCommand)]
+                prefix = self.bot.command_prefix
                 await ctx.send(f"{error}")
-                await ctx.send(f"Do $elimere help {strippedCommand} to see the correct usage.")
+                await ctx.send(f"Do {prefix} help {strippedCommand} to see the correct usage.")
             except Exception as e:
                 print(e)
             finally:
@@ -55,8 +55,9 @@ class ErrorHandling:
 
         elif isinstance(error, commands.CommandNotFound):
             try:
+                prefix = self.bot.command_prefix
                 await ctx.send(f"There is no command called {ctx.message.content}.")
-                await ctx.send("Use $elimere help to see a list of available commands.")
+                await ctx.send(f"Use {prefix} help to see a list of available commands.")
             except Exception as e:
                 print(e)
                 pass
@@ -65,7 +66,7 @@ class ErrorHandling:
 
         elif isinstance(error, commands.CommandOnCooldown):
             try:
-                await ctx.send(error)
+                await ctx.send(random.choice(botoptions.eli_annoyed))
             except Exception as e:
                 print(e)
                 pass
@@ -74,7 +75,8 @@ class ErrorHandling:
         
         elif isinstance(error, commands.errors.BadArgument):
             try:
-                await ctx.send("You entered an invalid value. Type $elimere help <command> to see the correct usage.")
+                prefix = self.bot.command_prefix
+                await ctx.send(f"You entered an invalid value. Type {prefix} help <command> to see the correct usage.")
             except Exception as e:
                 print(e)
                 pass
@@ -84,13 +86,14 @@ class ErrorHandling:
         elif isinstance(error, commands.CheckFailure):
             return
 
-        print('Ignoring exception in command {}:'.format(ctx.command))
-        traceback.print_exception(type(error), error, error.__traceback__)
         var = traceback.format_exception(type(error), error, error.__traceback__)
-        await self.bot.get_guild(356544379885846549).get_channel(357317190556581891).send(self.user.name)
-        await self.bot.get_guild(356544379885846549).get_channel(357317190556581891).send('Error on server: '+str(ctx.guild))
-        await self.bot.get_guild(356544379885846549).get_channel(357317190556581891).send(error)
-        await self.bot.get_guild(356544379885846549).get_channel(357317190556581891).send('```'+str(var)+'```')
+        e = discord.Embed(title="Command Error", colour=0x32952)
+        e.description = f'```py\n{var}\n```'
+        e.add_field(name='Command', value=ctx.command)
+        e.add_field(name='Server', value=ctx.guild)
+        e.add_field(name='Error', value=error)
+        await self.bot.get_guild(config.devServerID).get_channel(config.errorChanID).send(embed=e)
+
 
 def setup(bot):
     bot.add_cog(ErrorHandling(bot))
