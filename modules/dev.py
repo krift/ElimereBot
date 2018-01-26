@@ -3,6 +3,7 @@ import config
 import git
 import discord
 import asyncio
+import modules.functions as funcs
 from discord.ext import commands
 
 
@@ -14,6 +15,15 @@ async def IsDev(ctx):
 class Dev:
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(aliases=['pulllogs'])
+    async def PullLogs(self, ctx):
+        """Pulls the latest logs from warcraftlogs and posts them appropriately"""
+        channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildLogChanID)  # Set the channel to send to
+        msg = await funcs.CheckForLogs()  # Run the function and store the return
+        if msg != "":  # As long as the return isn't an empty string
+            await channel.send("Look what I found guys!\n"
+                               "msg")  # Post this and the log
 
     @commands.check(IsDev)
     @commands.command(aliases=['restart'])
