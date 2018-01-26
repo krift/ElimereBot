@@ -23,7 +23,6 @@ class ElimereBot(commands.AutoShardedBot):
     def __init__(self):
         super().__init__(command_prefix=BOT_PREFIX, description=DESCRIPTION, pm_help=None, help_attrs=dict(hidden=True))
         self.guild_only = True
-        self.bg_task = self.loop.create_task(self.BackgroundLogCheck())  # This executes the LogCheck function
 
         for extension in INITIAL_EXTENSIONS:
             try:
@@ -39,17 +38,6 @@ class ElimereBot(commands.AutoShardedBot):
         print('Bot ID: ' + str(self.user.id))
         print('Discord.py Version: ' + str(discord.__version__))
         print('-------------')
-
-    async def BackgroundLogCheck(self):
-        """This checks the Warcraft Logs site and posts a new log if there is one, runs every 10 minutes"""
-        await self.wait_until_ready()  # Wait until the bot is finished initializing
-        channel = self.get_guild(config.guildServerID).get_channel(config.guildLogChanID)  # Set the channel to send to
-        while not self.is_closed():  # As long as the bot is active
-            msg = await funcs.CheckForLogs()  # Run the function and store the return
-            if msg != "":  # As long as the return isn't an empty string
-                await channel.send("Look what I found guys!")  # Post this and the log
-                await channel.send(msg)
-            await asyncio.sleep(600)
 
     async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
         channel = self.get_guild(config.guildServerID).get_channel(config.guildGenChanID)  # Select the top most text channel in the server
