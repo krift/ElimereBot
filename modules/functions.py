@@ -5,6 +5,70 @@ import botoptions, asyncio, config, os, aiohttp
 PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+async def StoreMessage(label, msg):
+    """This will store a message inside a text file with the label"""
+    a = open(PATH+'/storage.txt', 'a')
+    a.write(label+"=\n")
+    a.write('{\n')
+    a.write(msg+'\n')
+    a.write("}\n")
+    a.close()
+
+
+async def RetrieveMessage(label):
+    """This will retrieve a stored message with the label"""
+    value = ''
+    key = ''
+    storage_dict = {}
+    a = open(PATH+'/storage.txt', 'r')
+    messages = a.readlines()
+    a.close()
+    i = 0
+    while i < len(messages):
+        if messages[i].rfind('=') != -1:
+            messages[i] = messages[i].replace('=', '')
+            messages[i] = messages[i].strip()
+            key = messages[i]
+            i += 1
+        if messages[i].rfind('{') != -1:
+            i += 1
+            while messages[i].rfind('}') == -1:
+                value += messages[i]
+                i += 1
+
+        i += 1
+        storage_dict[key] = value
+        value = ''
+    return storage_dict[label]
+
+
+async def RemoveStoredMessage(label):
+    """Removes a stored message"""
+    a = open(PATH+'/storage.txt', 'r')
+    messages = a.readlines()
+    a.close()
+    messages = [x.strip() for x in messages]
+    a = open(PATH+'/storage.txt', 'w')
+    i = 0
+    label_found = False
+    while i < len(messages):
+        if messages[i].rfind(label+'=') != -1:
+            label_found = True
+            i += 1
+            continue
+        elif messages[i].rfind('}') != -1 and label_found is True:
+            label_found = False
+            i += 1
+            continue
+        elif label_found is True:
+            i += 1
+            continue
+        else:
+            a.write(messages[i]+'\n')
+            i += 1
+    a.close()
+
+
 async def CheckForString(msg):
     """Checks the message to see if it matches the hey eli strings"""
     for string in botoptions.hey_eli:  # For each string in hey_eli list
