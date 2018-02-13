@@ -8,6 +8,30 @@ class Commands:
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.group(aliases=['storage'])
+    async def Storage(self, ctx):
+        """-Command group for all storage commands"""
+        if ctx.invoked_subcommand is None:
+            await ctx.channel.send('You need to pass a subcommand. Type $eli help storage for more info.')
+
+    @Storage.command(aliases=['store'])
+    async def StoreMessage(self, ctx, label: str, *, msg: str):
+        """-Stores a message"""
+        await func.StoreMessage(label, msg)
+        await ctx.channel.send('Stored a message with the label ' + label)
+
+    @Storage.command(aliases=['retrieve'])
+    async def RetrieveMessage(self, ctx, label):
+        """-Retrieves a message"""
+        msg = await func.RetrieveMessage(label)
+        await ctx.channel.send(msg)
+
+    @Storage.command(aliases=['remove'])
+    async def RemoveMessage(self, ctx, label):
+        """-Removes a message"""
+        await func.RemoveStoredMessage(label)
+        await ctx.channel.send('Removed stored message with the label ' + label)
+
     @commands.command(aliases=['raidtime'])
     async def RaidTime(self, ctx):
         """-Tells the user for the 100th time when raids are."""
