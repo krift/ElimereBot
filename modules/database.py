@@ -3,6 +3,7 @@ import os
 import asyncio
 PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
 class Database:
     def __init__(self):
         self.conn = sqlite3.connect(PATH+'/data/elidb')
@@ -24,6 +25,7 @@ class Database:
             self.conn.commit()
             return 'Stored'
         except sqlite3.IntegrityError:
+            self.conn.rollback()
             return 'A message with this label already exists.'
 
     async def retrieve_data(self, label):  # TODO: Add parameters
@@ -31,9 +33,9 @@ class Database:
         cursor.execute('''SELECT msg FROM storage WHERE label = ?''', (label,))
         msg = cursor.fetchone()
         if msg is None:
-            return 'Nothing found with the label' + label
+            return 'Nothing found with the label ' + label
         else:
-            return msg
+            return " ".join(msg)
 
     async def update_data(self, label, msg):  # TODO: Add parameters
         cursor = self.conn.cursor()
