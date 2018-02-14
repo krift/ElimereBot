@@ -29,6 +29,14 @@ class Commands:
         await db.close()
         await ctx.channel.send(msg)
 
+    @Storage.command(aliases=['update'])
+    async def UpdateMessage(self, ctx, label: str, *, msg: str):
+        """-Updates the message contained in a specific label"""
+        db = database.Database()
+        await db.update_data(label, msg)
+        await db.close()
+        await ctx.channel.send(label+' updated!')
+
     @Storage.command(aliases=['retrieve', 'get'])
     async def RetrieveMessage(self, ctx, label):
         """-Retrieves a message
