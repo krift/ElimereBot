@@ -1,6 +1,12 @@
 #!/usr/local/bin/python3.6
 import modules.functions as funcs
-import config, discord, discord.ext.commands.errors, asyncio, botoptions, datetime, traceback
+import config
+import discord
+import discord.ext.commands.errors
+import asyncio
+import botoptions
+import datetime
+import traceback
 from discord.ext import commands
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
