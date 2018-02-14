@@ -20,7 +20,10 @@ class Commands:
 
     @Storage.command(aliases=['store', 'set'])
     async def StoreMessage(self, ctx, label: str, *, msg: str):
-        """-Stores a message"""
+        """-Stores a message
+        $eli storage store label msg
+        label: This must not contain spaces, use _ to represent spaces This_Is_An_Example
+        msg: Can be as long as or how ever many lines you want"""
         db = database.Database()
         msg = await db.insert_data(label, str(ctx.author), msg)
         await db.close()
@@ -31,7 +34,8 @@ class Commands:
 
     @Storage.command(aliases=['retrieve', 'get'])
     async def RetrieveMessage(self, ctx, label):
-        """-Retrieves a message"""
+        """-Retrieves a message
+        label: The name of the message to retrieve"""
         db = database.Database()
         msg = await db.retrieve_data(label)
         await db.close()
@@ -39,7 +43,8 @@ class Commands:
 
     @Storage.command(aliases=['remove', 'delete'])
     async def RemoveMessage(self, ctx, label):
-        """-Removes a message"""
+        """-Removes a message
+        label: The name of the message to delete"""
         db = database.Database()
         await db.delete_data(label)
         await db.close()
