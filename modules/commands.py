@@ -1,5 +1,6 @@
 import modules.functions as func
 import botoptions, random, asyncio, discord, os
+import modules.database as database
 
 from discord.ext import commands
 
@@ -17,19 +18,28 @@ class Commands:
     @Storage.command(aliases=['store'])
     async def StoreMessage(self, ctx, label: str, *, msg: str):
         """-Stores a message"""
-        await func.StoreMessage(label, msg)
-        await ctx.channel.send('Stored a message with the label ' + label)
+        db = database.Database()
+        msg = await db.insert_data(label, msg)
+        await db.close()
+        if msg != '':
+            await ctx.channel.send(msg)
+        else:
+            await ctx.channel.send('Stored a message with the label ' + label)
 
     @Storage.command(aliases=['retrieve'])
     async def RetrieveMessage(self, ctx, label):
         """-Retrieves a message"""
-        msg = await func.RetrieveMessage(label)
+        db = database.Database()
+        msg = await db.retrieve_data(label)
+        await db.close()
         await ctx.channel.send(msg)
 
     @Storage.command(aliases=['remove'])
     async def RemoveMessage(self, ctx, label):
         """-Removes a message"""
-        await func.RemoveStoredMessage(label)
+        db = database.Database()
+        await db.delete_data(label)
+        await db.close()
         await ctx.channel.send('Removed stored message with the label ' + label)
 
     @commands.command(aliases=['raidtime'])
