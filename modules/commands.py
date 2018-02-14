@@ -27,10 +27,7 @@ class Commands:
         db = database.Database()
         msg = await db.insert_data(label, str(ctx.author), msg)
         await db.close()
-        if msg != '':
-            await ctx.channel.send(msg)
-        else:
-            await ctx.channel.send('Stored a message with the label ' + label)
+        await ctx.channel.send(msg)
 
     @Storage.command(aliases=['retrieve', 'get'])
     async def RetrieveMessage(self, ctx, label):
@@ -39,7 +36,10 @@ class Commands:
         db = database.Database()
         msg = await db.retrieve_data(label)
         await db.close()
-        await ctx.channel.send(msg)
+        await ctx.channel.send('```'
+                               f'Author: {msg[1]}\n'
+                               f'{msg[0]}'
+                               '```')
 
     @Storage.command(aliases=['remove', 'delete'])
     async def RemoveMessage(self, ctx, label):
