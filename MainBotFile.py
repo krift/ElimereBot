@@ -10,7 +10,7 @@ import traceback
 from discord.ext import commands
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
-BOT_PREFIX = "$eli "
+BOT_PREFIX = "$elit "
 
 
 INITIAL_EXTENSIONS = (

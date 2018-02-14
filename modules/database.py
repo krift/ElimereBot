@@ -51,7 +51,7 @@ class Database:
         else:
             return data, True  # Return the data
 
-    async def update_data(self, label, msg):  # TODO: Implement this as a command
+    async def update_data(self, label, msg):
         """Update a specific row in the table"""
         cursor = self.conn.cursor()  # Create the cursor object
         cursor.execute('''UPDATE storage SET msg = ? WHERE label = ?''', (msg, label))  # Update the row
