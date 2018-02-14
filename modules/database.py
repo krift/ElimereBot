@@ -11,7 +11,7 @@ class Database:
     async def close(self):
         self.conn.close()
 
-    async def create_table(self):  # TODO: Add name parameter
+    def create_table(self):  # TODO: Add name parameter
         cursor = self.conn.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS storage(label TEXT PRIMARY KEY unique, msg TEXT)''')
         self.conn.commit()
