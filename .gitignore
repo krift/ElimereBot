@@ -3,5 +3,4 @@ config.py
 media/*
 main.py
 LastWarcraftLog.txt
-storage.txt
 data/*
