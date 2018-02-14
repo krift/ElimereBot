@@ -3,6 +3,7 @@ import config
 import git
 import discord
 import asyncio
+import modules.database as database
 from discord.ext import commands
 
 
@@ -43,6 +44,15 @@ class Dev:
         g = git.cmd.Git(path)
         g.pull()
         os.system('sudo systemctl restart elimerebot.service')
+
+    @commands.check(IsDev)
+    @commands.command(aliases=['recreatetable'])
+    async def RecreateTable(self, ctx):
+        """-Recreates the database. Will lose all data inside it."""
+        db = database.Database()
+        await db.create_new_table('storage', 'storage')
+        await db.close()
+        await ctx.channel.send("New DB Table created")
 
 
 def setup(bot):

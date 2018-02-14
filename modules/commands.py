@@ -1,7 +1,10 @@
 import modules.functions as func
-import botoptions, random, asyncio, discord, os
 import modules.database as database
-
+import botoptions
+import asyncio
+import discord
+import os
+import random
 from discord.ext import commands
 
 
@@ -15,18 +18,18 @@ class Commands:
         if ctx.invoked_subcommand is None:
             await ctx.channel.send('You need to pass a subcommand. Type $eli help storage for more info.')
 
-    @Storage.command(aliases=['store'])
+    @Storage.command(aliases=['store', 'set'])
     async def StoreMessage(self, ctx, label: str, *, msg: str):
         """-Stores a message"""
         db = database.Database()
-        msg = await db.insert_data(label, msg)
+        msg = await db.insert_data(label, str(ctx.author), msg)
         await db.close()
         if msg != '':
             await ctx.channel.send(msg)
         else:
             await ctx.channel.send('Stored a message with the label ' + label)
 
-    @Storage.command(aliases=['retrieve'])
+    @Storage.command(aliases=['retrieve', 'get'])
     async def RetrieveMessage(self, ctx, label):
         """-Retrieves a message"""
         db = database.Database()
@@ -34,13 +37,25 @@ class Commands:
         await db.close()
         await ctx.channel.send(msg)
 
-    @Storage.command(aliases=['remove'])
+    @Storage.command(aliases=['remove', 'delete'])
     async def RemoveMessage(self, ctx, label):
         """-Removes a message"""
         db = database.Database()
         await db.delete_data(label)
         await db.close()
         await ctx.channel.send('Removed stored message with the label ' + label)
+
+    @Storage.command(aliases=['listall', 'listmessages'])
+    async def ListMessages(self, ctx):
+        """-Lists all saved messages"""
+        db = database.Database()
+        msg = await db.retrieve_all_labels()
+        await db.close()
+        if msg[1] is True:
+            message = "\n".join(str(i) for i in msg[0])
+            await ctx.channel.send(message)
+        else:
+            await ctx.channel.send(msg[0])
 
     @commands.command(aliases=['raidtime'])
     async def RaidTime(self, ctx):
