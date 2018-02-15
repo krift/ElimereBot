@@ -12,14 +12,14 @@ class Commands:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group(aliases=['storage'])
-    async def Storage(self, ctx):
+    @commands.group(aliases=['tags'])
+    async def Tags(self, ctx):
         """-Command group for all storage commands"""
         if ctx.invoked_subcommand is None:
             await ctx.channel.send('You need to pass a subcommand. Type $eli help storage for more info.')
 
-    @Storage.command(aliases=['store', 'set'])
-    async def StoreMessage(self, ctx, label: str, *, msg: str):
+    @Tags.command(aliases=['tag', 'set'])
+    async def Tag(self, ctx, label: str, *, msg: str):
         """-Stores a message
         $eli storage store label msg
         label: This must not contain spaces, use _ to represent spaces This_Is_An_Example
@@ -29,7 +29,7 @@ class Commands:
         await db.close()
         await ctx.channel.send(msg)
 
-    @Storage.command(aliases=['update'])
+    @Tags.command(aliases=['update'])
     async def UpdateMessage(self, ctx, label: str, *, msg: str):
         """-Updates the message contained in a specific label"""
         db = database.Database()
@@ -37,7 +37,7 @@ class Commands:
         await db.close()
         await ctx.channel.send(label+' updated!')
 
-    @Storage.command(aliases=['retrieve', 'get'])
+    @Tags.command(aliases=['retrieve', 'get'])
     async def RetrieveMessage(self, ctx, label):
         """-Retrieves a message
         label: The name of the message to retrieve"""
@@ -49,7 +49,7 @@ class Commands:
                                f'{msg[0]}'
                                '```')
 
-    @Storage.command(aliases=['remove', 'delete'])
+    @Tags.command(aliases=['remove', 'delete'])
     async def RemoveMessage(self, ctx, label):
         """-Removes a message
         label: The name of the message to delete"""
@@ -58,7 +58,7 @@ class Commands:
         await db.close()
         await ctx.channel.send('Removed stored message with the label ' + label)
 
-    @Storage.command(aliases=['listall', 'listmessages'])
+    @Tags.command(aliases=['listall', 'listmessages'])
     async def ListMessages(self, ctx):
         """-Lists all saved messages"""
         db = database.Database()
