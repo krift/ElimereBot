@@ -53,8 +53,8 @@ class ElimereBot(commands.AutoShardedBot):
         while not self.is_closed():  # As long as the bot is active
             msg = await funcs.CheckForLogs()  # Run the function and store the return
             if msg != "":  # As long as the return isn't an empty string
-                await channel.send("Look what I found guys!")  # Post this and the log
-                await channel.send(msg)
+                await channel.send("Look what I found guys!\n"
+                                   , msg)  # Post this and the log
             await asyncio.sleep(600)
 
     async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
