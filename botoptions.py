@@ -1,3 +1,6 @@
+zones = {17: 'Antorus, The Burning Throne',
+         13: 'Tomb of Sargeras'}
+
 silv = [
     "Silv stop fucking cloaking!",
     "Why did Silv die?",
