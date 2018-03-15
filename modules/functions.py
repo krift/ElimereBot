@@ -1,5 +1,4 @@
 import botoptions, asyncio, config, os, aiohttp
-import datetime
 import modules.database as db
 
 # This is the main directory of the bot

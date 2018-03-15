@@ -75,7 +75,7 @@ class Commands:
         """-Tells the user for the 100th time when raids are."""
         e = discord.Embed(title='Raid Times', colour=discord.Colour.purple())
         e.description = 'Raids are on the following days. Please stop asking me this, you should remember it by now.'
-        e.add_field(name='Thursdays', value='630pm Server\n830pm Easter')
+        e.add_field(name='Thursdays', value='630pm Server\n830pm Eastern')
         e.add_field(name='Sundays', value='530pm Server\n730pm Eastern')
         await ctx.channel.send(embed=e)
 
