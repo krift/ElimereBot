@@ -1,4 +1,6 @@
 import botoptions, asyncio, config, os, aiohttp
+import datetime
+import modules.database as db
 
 # This is the main directory of the bot
 # This is especially needed if it's running as a background task
@@ -58,6 +60,7 @@ async def RetrieveTwitchClip(channel):
 
 async def CheckForLogs():
     """This checks the WarcraftLogs site for new logs"""
+    # TODO: Store logs in database file
     params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api
     url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us?"  # This is the URL to pull logs
     async with aiohttp.ClientSession() as session:  # Start a new session
@@ -65,12 +68,21 @@ async def CheckForLogs():
             log_info = await resp.json()  # Store json information
             await asyncio.sleep(0.250)  # Wait to close
             session.close()  # Close
-    f = open(PATH+"/LastWarcraftLog.txt", 'r')  # Open the file
-    logID = f.readline().strip('/n')  # Read the file and store the string
-    f.close()
-    if log_info[len(log_info)-1]['id'] != logID:  # If the string isn't the same as the log
-        f = open(PATH+"/LastWarcraftLog.txt", 'w')  # Store the new log ID
-        f.write(log_info[len(log_info)-1]['id'])
-        return "https://www.warcraftlogs.com/reports/" + log_info[len(log_info) - 1]['id']  # Return the URL for the log
-    else:
-        return ""  # Else return an empty string
+    log = log_info[len(log_info)-1]
+    # print(log['id'])
+    # date = datetime.datetime.fromtimestamp(log['start'] / 1e3)
+    # actual_date = date.strftime('%d, %m %Y')
+    # print(date.strftime('%d, %m %Y'))
+    # TODO: When pulling log from database, convert start time to day, month, year
+    database = db.Database()
+    await database.insert_log_data(log['id'], log['start'], log['title'], log['zone'])
+    await database.close()
+    # f = open(PATH+"/LastWarcraftLog.txt", 'r')  # Open the file
+    # logID = f.readline().strip('/n')  # Read the file and store the string
+    # f.close()
+    # if log_info[len(log_info)-1]['id'] != logID:  # If the string isn't the same as the log
+    #     f = open(PATH+"/LastWarcraftLog.txt", 'w')  # Store the new log ID
+    #     f.write(log_info[len(log_info)-1]['id'])
+    #     return "https://www.warcraftlogs.com/reports/" + log_info[len(log_info) - 1]['id']  # Return the URL for the log
+    # else:
+    #     return ""  # Else return an empty string

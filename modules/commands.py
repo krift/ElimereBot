@@ -1,6 +1,10 @@
 import modules.functions as func
-import botoptions, random, asyncio, discord, os
-
+import modules.database as database
+import botoptions
+import asyncio
+import discord
+import os
+import random
 from discord.ext import commands
 
 
@@ -8,13 +12,71 @@ class Commands:
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.group(aliases=['tags'])
+    async def Tags(self, ctx):
+        """-Command group for all storage commands"""
+        if ctx.invoked_subcommand is None:
+            await ctx.channel.send('You need to pass a subcommand. Type $eli help storage for more info.')
+
+    @Tags.command(aliases=['tag', 'set'])
+    async def Tag(self, ctx, label: str, *, msg: str):
+        """-Stores a message
+        $eli storage store label msg
+        label: This must not contain spaces, use _ to represent spaces This_Is_An_Example
+        msg: Can be as long as or how ever many lines you want"""
+        db = database.Database()
+        msg = await db.insert_tag_data(label, str(ctx.author), msg)
+        await db.close()
+        await ctx.channel.send(msg)
+
+    @Tags.command(aliases=['update'])
+    async def UpdateMessage(self, ctx, label: str, *, msg: str):
+        """-Updates the message contained in a specific label"""
+        db = database.Database()
+        await db.update_data(label, msg)
+        await db.close()
+        await ctx.channel.send(label+' updated!')
+
+    @Tags.command(aliases=['retrieve', 'get'])
+    async def RetrieveMessage(self, ctx, label):
+        """-Retrieves a message
+        label: The name of the message to retrieve"""
+        db = database.Database()
+        msg = await db.retrieve_data(label)
+        await db.close()
+        await ctx.channel.send('```'
+                               f'Author: {msg[1]}\n'
+                               f'{msg[0]}'
+                               '```')
+
+    @Tags.command(aliases=['remove', 'delete'])
+    async def RemoveMessage(self, ctx, label):
+        """-Removes a message
+        label: The name of the message to delete"""
+        db = database.Database()
+        await db.delete_data(label)
+        await db.close()
+        await ctx.channel.send('Removed stored message with the label ' + label)
+
+    @Tags.command(aliases=['listall', 'listmessages'])
+    async def ListMessages(self, ctx):
+        """-Lists all saved messages"""
+        db = database.Database()
+        msg = await db.retrieve_all_labels()
+        await db.close()
+        if msg[1] is True:
+            message = "\n".join(str(i) for i in msg[0])
+            await ctx.channel.send(message)
+        else:
+            await ctx.channel.send(msg[0])
+
     @commands.command(aliases=['raidtime'])
     async def RaidTime(self, ctx):
         """-Tells the user for the 100th time when raids are."""
         e = discord.Embed(title='Raid Times', colour=discord.Colour.purple())
         e.description = 'Raids are on the following days. Please stop asking me this, you should remember it by now.'
-        e.add_field(name='Thursdays', value='830pm Eastern')
-        e.add_field(name='Sundays', value='730pm Eastern')
+        e.add_field(name='Thursdays', value='630pm Server\n830pm Easter')
+        e.add_field(name='Sundays', value='530pm Server\n730pm Eastern')
         await ctx.channel.send(embed=e)
 
     @commands.command(aliases=['hello'])
