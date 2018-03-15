@@ -3,6 +3,8 @@ import config
 import discord
 import botoptions
 import random
+import datetime
+import modules.database as database
 from discord.ext import commands
 
 
@@ -92,7 +94,16 @@ class ErrorHandling:
         e.add_field(name='Command', value=ctx.command)
         e.add_field(name='Server', value=ctx.guild)
         e.add_field(name='Error', value=error)
+        await ErrorLogging.LogError(ctx.guild, ctx.command, error)
         await self.bot.get_guild(config.devServerID).get_channel(config.errorChanID).send(embed=e)
+
+
+class ErrorLogging:
+
+    async def LogError(self, server, command, error):
+        db = database.Database()
+        db.insert_error_data(datetime.datetime.now(), server, command, error)
+
 
 
 def setup(bot):
