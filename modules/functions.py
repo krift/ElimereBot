@@ -76,12 +76,4 @@ async def CheckForLogs():
     database = db.Database()
     await database.insert_log_data(log['id'], log['start'], log['title'], log['zone'])
     await database.close()
-    # f = open(PATH+"/LastWarcraftLog.txt", 'r')  # Open the file
-    # logID = f.readline().strip('/n')  # Read the file and store the string
-    # f.close()
-    # if log_info[len(log_info)-1]['id'] != logID:  # If the string isn't the same as the log
-    #     f = open(PATH+"/LastWarcraftLog.txt", 'w')  # Store the new log ID
-    #     f.write(log_info[len(log_info)-1]['id'])
-    #     return "https://www.warcraftlogs.com/reports/" + log_info[len(log_info) - 1]['id']  # Return the URL for the log
-    # else:
-    #     return ""  # Else return an empty string
+    return log
