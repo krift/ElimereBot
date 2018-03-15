@@ -10,7 +10,7 @@ import traceback
 from discord.ext import commands
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
-BOT_PREFIX = "$eli "
+BOT_PREFIX = "$elit "
 
 
 INITIAL_EXTENSIONS = (
@@ -45,6 +45,7 @@ class ElimereBot(commands.AutoShardedBot):
         print('Bot ID: ' + str(self.user.id))
         print('Discord.py Version: ' + str(discord.__version__))
         print('-------------')
+        await funcs.CheckForLogs()
 
     async def BackgroundLogCheck(self):
         """This checks the Warcraft Logs site and posts a new log if there is one, runs every 10 minutes"""

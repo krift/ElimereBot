@@ -25,7 +25,7 @@ class Commands:
         label: This must not contain spaces, use _ to represent spaces This_Is_An_Example
         msg: Can be as long as or how ever many lines you want"""
         db = database.Database()
-        msg = await db.insert_data(label, str(ctx.author), msg)
+        msg = await db.insert_tag_data(label, str(ctx.author), msg)
         await db.close()
         await ctx.channel.send(msg)
 
