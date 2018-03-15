@@ -17,14 +17,15 @@ class Database:
         """This will create a table if one doesn't already exist"""
         cursor = self.conn.cursor()  # Create a cursor object
         cursor.execute('''CREATE TABLE IF NOT EXISTS storage(label TEXT PRIMARY KEY unique, author TEXT, msg TEXT)''')  # Create the table
+        cursor.execute('''CREATE TABLE IF NOT EXISTS logs (id TEXT PRIMARY KEY unique, date TEXT, title TEXT, zone TEXT)''')
         self.conn.commit()  # Commit changes to the database table
 
-    async def insert_data(self, label, author, msg):
+    async def insert_tag_data(self, *data):
         """Inserts specific data into the database table"""
         try:
             cursor = self.conn.cursor()  # Create a cursor object
             cursor.execute('''INSERT INTO storage(label,author, msg) VALUES(?,?,?)''',
-                           (label, author, msg))  # Insert the data into the table
+                           data)  # Insert the data into the table
             self.conn.commit()  # Commit changes
             return 'Stored'  # Return a string
         except sqlite3.IntegrityError:  # If the table already contains this specific label
@@ -62,6 +63,15 @@ class Database:
         cursor = self.conn.cursor()  # Create the cursor object
         cursor.execute('''DELETE FROM storage WHERE label = ?''', (label,))  # Select the row to delete and delete it
         self.conn.commit()  # Commit the changes
+
+    async def insert_log_data(self, *data):
+        """Inserts warcraft log data into the database table"""
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute('''INSERT INTO logs (id, date, title, zone) VALUES(?,?,?,?)''', data)
+            self.conn.commit()
+        except sqlite3.IntegrityError:
+            self.conn.rollback()
 
     async def create_new_table(self, drop_table, new_table):
         """Drops the specified table and creates a new table with a specific name"""
