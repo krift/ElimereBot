@@ -47,10 +47,10 @@ class Dev:
 
     @commands.check(IsDev)
     @commands.command(aliases=['recreatetable'])
-    async def RecreateTable(self, ctx):
+    async def RecreateTable(self, ctx, table_name, *table_data):
         """-Recreates the database. Will lose all data inside it."""
         db = database.Database()
-        await db.create_new_table('storage', 'storage')
+        await db.create_new_table(table_name, table_data)
         await db.close()
         await ctx.channel.send("New DB Table created")
 

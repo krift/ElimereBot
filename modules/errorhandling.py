@@ -94,7 +94,8 @@ class ErrorHandling:
         e.add_field(name='Command', value=ctx.command)
         e.add_field(name='Server', value=ctx.guild)
         e.add_field(name='Error', value=error)
-        await ErrorLogging.LogError(ctx.guild, ctx.command, error)
+        logger = ErrorLogging()
+        await logger.LogError(server=ctx.guild, command=ctx.command, error=error)
         await self.bot.get_guild(config.devServerID).get_channel(config.errorChanID).send(embed=e)
 
 
@@ -102,8 +103,7 @@ class ErrorLogging:
 
     async def LogError(self, server, command, error):
         db = database.Database()
-        db.insert_error_data(datetime.datetime.now(), server, command, error)
-
+        await db.insert_error_data(datetime.datetime.now(), server, command, error)
 
 
 def setup(bot):

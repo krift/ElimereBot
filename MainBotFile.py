@@ -17,7 +17,7 @@ INITIAL_EXTENSIONS = (
     'modules.errorhandling',
     'modules.commands',
     'modules.dev',
-    'modules.logs'
+    'modules.warcraftlogs'
 )
 
 
