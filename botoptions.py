@@ -140,7 +140,9 @@ eli_responses = {  # This is accessed in the commands file when it's asked speci
     "what mods are required?": "$eli raidmods",
     "what mods are required": "$eli raidmods",
     "what mods do i need": "$eli raidmods",
-    "what mods do i need?": "$eli raidmods"
+    "what mods do i need?": "$eli raidmods",
+    "can you pull the new log": "$eli pullnewlog",
+    "can you pull the new log?": "$eli pullnewlog"
 }
 
 eli_annoyed = [
