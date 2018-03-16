@@ -18,7 +18,7 @@ class Database:
         cursor = self.conn.cursor()  # Create a cursor object
         cursor.execute('''CREATE TABLE IF NOT EXISTS storage(label TEXT PRIMARY KEY unique, author TEXT, msg TEXT)''')  # Create the table
         cursor.execute('''CREATE TABLE IF NOT EXISTS logs (id TEXT PRIMARY KEY unique, date TEXT, title TEXT, zone TEXT)''')
-        cursor.execute('''CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY autoincrement, date TEXT, error TEXT)''')
+        cursor.execute('''CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY autoincrement, server TEXT, date TEXT, error TEXT)''')
         self.conn.commit()  # Commit changes to the database table
 
     async def insert_tag_data(self, *data):
@@ -105,8 +105,11 @@ class Database:
 
     async def create_new_table(self, table, table_data):
         """Drops the specified table and creates a new table with a specific name"""
+        data = ''
+        for string in table_data:
+            data += string+" "
         cursor = self.conn.cursor()  # Create the cursor object
         cursor.execute(f'''DROP TABLE IF EXISTS {table}''')  # Drop the table
         self.conn.commit()  # Commit changes just in case
-        cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table}({table_data})''')  # Create a new table
+        cursor.execute(f'''CREATE TABLE IF NOT EXISTS {table}({data})''')  # Create a new table
         self.conn.commit()  # Commit changes
