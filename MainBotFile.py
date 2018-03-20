@@ -3,7 +3,6 @@ import modules.functions as funcs
 import config
 import discord
 import discord.ext.commands.errors
-import asyncio
 import botoptions
 import datetime
 import traceback
@@ -17,7 +16,8 @@ INITIAL_EXTENSIONS = (
     'modules.errorhandling',
     'modules.commands',
     'modules.dev',
-    'modules.warcraftlogs'
+    'modules.warcraftlogs',
+    'modules.raiderio'
 )
 
 
