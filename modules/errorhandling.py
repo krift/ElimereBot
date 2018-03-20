@@ -95,7 +95,7 @@ class ErrorHandling:
         e.add_field(name='Server', value=ctx.guild)
         e.add_field(name='Error', value=error)
         logger = ErrorLogging()
-        await logger.LogError(server=ctx.guild, command=ctx.command, error=error)
+        await logger.LogError(server=ctx.guild, command=ctx.command, error=str(var))
         await self.bot.get_guild(config.devServerID).get_channel(config.errorChanID).send(embed=e)
 
 

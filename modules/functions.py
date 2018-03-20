@@ -78,3 +78,16 @@ async def CheckForLogs():
         await database.insert_log_data(log['id'], date, log['title'], log['zone'])
         await database.close()
         return log
+
+
+async def PullIOStats(realm, char_name):
+    """This pulls stats from raiderio"""
+    params = {'region': 'us', 'realm': realm, 'name': char_name, 'fields': 'mythic_plus_ranks'}
+    url = 'https://raider.io/api/v1/characters/profile?'
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, params=params) as resp:
+            log = await resp.json()
+            await asyncio.sleep(0.250)
+            session.close()
+    # print(log)
+    return log

@@ -18,7 +18,7 @@ class Database:
         cursor = self.conn.cursor()  # Create a cursor object
         cursor.execute('''CREATE TABLE IF NOT EXISTS storage(label TEXT PRIMARY KEY unique, author TEXT, msg TEXT)''')  # Create the table
         cursor.execute('''CREATE TABLE IF NOT EXISTS logs (id TEXT PRIMARY KEY unique, date TEXT, title TEXT, zone TEXT)''')
-        cursor.execute('''CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY autoincrement, server TEXT, date TEXT, error TEXT)''')
+        cursor.execute('''CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY autoincrement, date TEXT, server TEXT, command TEXT, error TEXT)''')
         self.conn.commit()  # Commit changes to the database table
 
     async def insert_tag_data(self, *data):
@@ -98,7 +98,7 @@ class Database:
     async def insert_error_data(self, *data):
         try:
             cursor = self.conn.cursor()
-            cursor.execute('''INSERT INTO errors (id, date, server, command, error) VALUES(?,?,?,?)''', str(data))
+            cursor.execute('''INSERT INTO errors (date, server, command, error) VALUES(?,?,?,?)''', (str(data[0]), str(data[1]), str(data[2]), str(data[3]),))
             self.conn.commit()
         except sqlite3.IntegrityError:
             self.conn.rollback()
