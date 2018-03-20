@@ -1,4 +1,5 @@
 import discord
+import config
 import modules.functions as funcs
 from discord.ext import commands
 
@@ -11,8 +12,9 @@ class RaiderIO:
     @commands.command(aliases=['getstats'])
     async def GetStats(self, ctx, realm, char_name):
         """Pull your raiderio stats from the website
-        realm:
+        realm: The realm your character is on
         char_name:"""
+        channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildDungChanID)
         stats = await funcs.PullIOStats(realm, char_name)
         # This data is pulled from the http request, see https://raider.io/api#!/character/get_api_v1_characters_profile for more details
         e = discord.Embed(title='RaiderIO Stats', colour=discord.Colour.blue())
@@ -61,7 +63,9 @@ class RaiderIO:
             e.add_field(name='All '+stats['class']+' Tanks', value='World: '+str(stats['mythic_plus_ranks']['class_tank']['world'])+'\n'+
                         'Region: ' + str(stats['mythic_plus_ranks']['class_tank']['region']) + '\n' +
                         'Realm: ' + str(stats['mythic_plus_ranks']['class_tank']['realm']))
-        await ctx.channel.send(embed=e)
+
+        await channel.send(ctx.message.author.mention)
+        await channel.send(embed=e)
 
 
 def setup(bot):
