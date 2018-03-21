@@ -6,6 +6,14 @@ import asyncio
 import modules.database as database
 from discord.ext import commands
 
+INITIAL_EXTENSIONS = (
+    'modules.errorhandling',
+    'modules.commands',
+    'modules.dev',
+    'modules.warcraftlogs',
+    'modules.raiderio'
+)
+
 
 async def IsDev(ctx):
     """Used to check if a Dev is calling the command"""
@@ -53,6 +61,14 @@ class Dev:
         await db.create_new_table(table_name, table_data)
         await db.close()
         await ctx.channel.send("New DB Table created")
+
+    @commands.check(IsDev)
+    @commands.command(aliases=['reloadcogs'])
+    async def ReloadCogs(self, ctx):
+        """This will reload all cogs"""
+        for module in INITIAL_EXTENSIONS:
+            self.bot.unload_extension(module)
+            self.bot.load_extension(module)
 
 
 def setup(bot):

@@ -86,8 +86,12 @@ async def PullIOStats(realm, char_name):
     url = 'https://raider.io/api/v1/characters/profile?'
     async with aiohttp.ClientSession() as session:
         async with session.get(url, params=params) as resp:
-            log = await resp.json()
+            info = await resp.json()
+            await asyncio.sleep(0.250)
+        params['fields'] = 'mythic_plus_scores'
+        async with session.get(url, params=params) as resp:
+            score = await resp.json()
             await asyncio.sleep(0.250)
             session.close()
     # print(log)
-    return log
+    return info, info['mythic_plus_ranks'], score['mythic_plus_scores']
