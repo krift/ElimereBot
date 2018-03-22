@@ -79,7 +79,6 @@ class Database:
         cursor = self.conn.cursor()
         cursor.execute('''SELECT id, title FROM logs where date = ?''', (date,))
         data = cursor.fetchall()
-        print(data)
         if not data:
             return None
         else:
@@ -96,8 +95,9 @@ class Database:
             return True
 
     async def insert_error_data(self, *data):
+        """Inserts errors into the database"""
         try:
-            cursor = self.conn.cursor()
+            cursor = self.conn.cursor() # Create the cursor object
             cursor.execute('''INSERT INTO errors (date, server, command, error) VALUES(?,?,?,?)''', (str(data[0]), str(data[1]), str(data[2]), str(data[3]),))
             self.conn.commit()
         except sqlite3.IntegrityError:

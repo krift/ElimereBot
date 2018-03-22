@@ -39,7 +39,7 @@ class ElimereBot(commands.AutoShardedBot):
                 print(e)
                 print(f'Failed to load extension {extension}')
 
-    async def on_ready(self):
+    async def on_ready(self): # This fires once the bot has connected
         print('-------------')
         print('Logged in as: ' + self.user.name)
         print('Bot ID: ' + str(self.user.id))
@@ -52,9 +52,9 @@ class ElimereBot(commands.AutoShardedBot):
         await channel.send("Hello "+member.mention+"! Hope you enjoy your stay here! We're all happy you decided to join us!")
 
     async def on_message(self, message):
-        if message.embeds:
-            if message.author.name == "GitHub":
-                embeds = message.embeds[0].to_dict()
+        if message.embeds: # If the message sent was an embed
+            if message.author.name == "GitHub": # If the author is the github bot
+                embeds = message.embeds[0].to_dict() # Look to see if the branch is the master branch then pull the new update
                 if embeds['title'].lower().rfind('elimerebot:master') != -1:
                     message.content = '$eli PullUpdate'
                     await self.process_commands(message)
