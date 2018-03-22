@@ -93,5 +93,5 @@ async def PullIOStats(realm, char_name):
             score = await resp.json()
             await asyncio.sleep(0.250)
             session.close()
-    # print(log)
+    # Return the base info, the ranks, and the scores into a tuple
     return info, info['mythic_plus_ranks'], score['mythic_plus_scores']

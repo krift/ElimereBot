@@ -61,7 +61,6 @@ class ErrorHandling:
                 await ctx.send(f"There is no command called {ctx.message.content}.")
                 await ctx.send(f"Use {prefix} help to see a list of available commands.")
             except Exception as e:
-                print(e)
                 pass
             finally:
                 return
@@ -70,7 +69,6 @@ class ErrorHandling:
             try:
                 await ctx.send(random.choice(botoptions.eli_annoyed))
             except Exception as e:
-                print(e)
                 pass
             finally:
                 return
@@ -78,9 +76,8 @@ class ErrorHandling:
         elif isinstance(error, commands.errors.BadArgument):
             try:
                 prefix = self.bot.command_prefix
-                await ctx.send(f"You entered an invalid value. Type {prefix} help <command> to see the correct usage.")
+                await ctx.send(f"You entered an invalid value. Type {prefix} help {ctx.command} to see the correct usage.")
             except Exception as e:
-                print(e)
                 pass
             finally:
                 return

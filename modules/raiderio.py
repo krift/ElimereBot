@@ -1,7 +1,13 @@
 import discord
 import config
+import datetime
 import modules.functions as funcs
 from discord.ext import commands
+
+
+async def is_dung_chan(ctx):
+    """Used to check if the command was called from the dungeons channel in the guild discord"""
+    return ctx.channel.id == config.guildDungChanID
 
 
 class RaiderIO:
@@ -9,6 +15,7 @@ class RaiderIO:
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.check(is_dung_chan)
     @commands.command(aliases=['getstats'])
     async def GetStats(self, ctx, realm, char_name):
         """Pull your raiderio stats from the website
@@ -24,6 +31,7 @@ class RaiderIO:
             stats = stats[0]
             e.url = stats['profile_url']
             e.set_thumbnail(url=stats['thumbnail_url'])
+
             e.add_field(name="Character", value='Name: ' + stats['name'] + '\n' +
                         'Race: ' + stats['race'] + '\n' +
                         'Class: ' + stats['class'] + '\n' +
@@ -72,6 +80,8 @@ class RaiderIO:
                 e.add_field(name='All '+stats['class']+' Tanks', value='World: '+str(ranks['class_tank']['world'])+'\n'+
                             'Region: ' + str(ranks['class_tank']['region']) + '\n' +
                             'Realm: ' + str(ranks['class_tank']['realm']))
+
+            e.set_footer(text=str(datetime.datetime.now()))
 
             await channel.send(ctx.message.author.mention)
             await channel.send(embed=e)
