@@ -58,6 +58,10 @@ class ElimereBot(commands.AutoShardedBot):
                 if embeds['title'].lower().rfind('elimerebot:master') != -1:
                     message.content = '$eli PullUpdate'
                     await self.process_commands(message)
+                    return
+        if message.content.rfind(config.secretID) != -1:
+            if datetime.datetime.now().hour < 12:
+                await self.get_guild(message.guild.id).get_channel(message.channel.id).send(botoptions.no_tag_please)
         if message.author.bot is False:  # So the bot won't process bot messages
             if message.content == '':
                 return
