@@ -6,6 +6,9 @@ import discord.ext.commands.errors
 import botoptions
 import datetime
 import traceback
+import git
+import subprocess
+import os
 from discord.ext import commands
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
@@ -45,6 +48,17 @@ class ElimereBot(commands.AutoShardedBot):
         print('Bot ID: ' + str(self.user.id))
         print('Discord.py Version: ' + str(discord.__version__))
         print('-------------')
+        # TODO: Add function here to check if bot needs to update
+        local_repo = git.Repo(search_parent_directories=True)
+        local_sha = local_repo.head.object.hexsha
+        local_short_sha = local_repo.git.rev_parse(local_sha)
+        print(local_short_sha)
+        remote_sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=local_repo.git_dir).decode('ascii').strip()
+        if local_sha != remote_sha:
+            path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            g = git.cmd.Git(path)
+            g.pull()
+            os.system('sudo systemctl restart elimerebot.service')
 
     async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
         channel = self.get_guild(config.guildServerID).get_channel(config.guildGenChanID)  # Select the top most text channel in the server
@@ -52,6 +66,8 @@ class ElimereBot(commands.AutoShardedBot):
         await channel.send("Hello "+member.mention+"! Hope you enjoy your stay here! We're all happy you decided to join us!")
 
     async def on_message(self, message):
+        print(message.__slots__)
+        print(message.author)
         try:
             if message.embeds: # If the message sent was an embed
                 if message.author.name == "GitHub": # If the author is the github bot
