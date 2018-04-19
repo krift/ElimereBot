@@ -76,7 +76,7 @@ class ElimereBot(commands.AutoShardedBot):
 
             if message.author.bot is False:  # So the bot won't process bot messages
                 if message.content.rfind(config.secretID) != -1:
-                    if datetime.datetime.now().hour < 12:
+                    if datetime.datetime.now().hour < 14:
                         await self.get_guild(message.guild.id).get_channel(message.channel.id).send(
                             botoptions.no_tag_please)
                 if message.content == '':
