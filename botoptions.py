@@ -76,8 +76,6 @@ eli_messages = [
 ]
 
 eli_main_responses = {  # This is accessed in the MainBotFile when it responds to certain keywords
-    "run": "You can run but you can't hide....",
-    "runs": "You can run but you can't hide....",
     "amazing": "Why yes, I am amazing.",
     "savior": "Blessings upon you child.",
     "resistance": "Resistance is futile.",
@@ -106,8 +104,6 @@ eli_main_responses = {  # This is accessed in the MainBotFile when it responds t
 }
 
 god_responses = {  # This is accessed in the MainBotFile when it responds to certain keywords from Brian or Cory
-    "master": "Yes my Lord?",
-    "cracks whip": "Sorry my lord.",
     "galfin": "<@167340145912184832> shall burn!",
     "thunder": "<@263480893891411968> is probably lost grabbing strawberry mountain water...again.",
     "sorry": "Sorry guys my wires got crossed.",

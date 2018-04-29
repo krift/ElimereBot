@@ -48,11 +48,10 @@ class ElimereBot(commands.AutoShardedBot):
         print('Bot ID: ' + str(self.user.id))
         print('Discord.py Version: ' + str(discord.__version__))
         print('-------------')
-        # TODO: Add function here to check if bot needs to update
+        # TODO: Maybe convert this into a function??
         local_repo = git.Repo(search_parent_directories=True)
         local_sha = local_repo.head.object.hexsha
-        local_short_sha = local_repo.git.rev_parse(local_sha)
-        print(local_short_sha)
+        # local_short_sha = local_repo.git.rev_parse(local_sha)
         remote_sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=local_repo.git_dir).decode('ascii').strip()
         if local_sha != remote_sha:
             path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -66,8 +65,6 @@ class ElimereBot(commands.AutoShardedBot):
         await channel.send("Hello "+member.mention+"! Hope you enjoy your stay here! We're all happy you decided to join us!")
 
     async def on_message(self, message):
-        print(message.__slots__)
-        print(message.author)
         try:
             if message.embeds: # If the message sent was an embed
                 if message.author.name == "GitHub": # If the author is the github bot
@@ -90,7 +87,7 @@ class ElimereBot(commands.AutoShardedBot):
                 response = await funcs.CheckResponseString(botoptions.eli_main_responses, message)  # Check to see if it's a keyword
                 god_response = await funcs.CheckResponseString(botoptions.god_responses, message) # Checks if a keyword from the gods
                 if god_response != '':
-                    if (message.author.id == 167419045128175616) is not (message.author.id == 198574477347520513):
+                    if self.check_dev(message.author.id):
                         # If either author is the devs
                         message.content = god_response  # Send a god response
                         await message.channel.send(message.content)
@@ -103,6 +100,10 @@ class ElimereBot(commands.AutoShardedBot):
         except AttributeError as e:
             await self.get_guild(config.devServerID).get_channel(config.errorChanID).send(e.__str__() + " in server " + str(message.guild))
             return
+
+    def check_dev(self, id):
+        """Checks whether the passed ID matches"""
+        return id == 167419045128175616 or id == 167419045128175616
 
     def run(self):
         super().run(config.token)
