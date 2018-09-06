@@ -67,7 +67,7 @@ class ErrorHandling:
 
         elif isinstance(error, commands.CommandOnCooldown):
             try:
-                await ctx.send(random.choice(botoptions.eli_annoyed))
+                pass
             except Exception as e:
                 pass
             finally:
