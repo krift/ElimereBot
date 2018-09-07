@@ -14,18 +14,20 @@ class WarcraftLogs:
     @commands.command(aliases=['pullnewlog'])
     async def PullNewLog(self, ctx):
         """This will pull the latest log from warcraft logs if there is one to pull"""
-        log = await func.CheckForLogs()
+        logs = await func.CheckForLogs()
         channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildLogChanID)
-        if log is None:
-            await channel.send("No new logs available.")
-        else:
-            e = discord.Embed(title=log['title'], colour=discord.Colour.purple())
-            e.add_field(name='Zone', value=botoptions.zones.get(log['zone'], 'Unknown Zone'))
-            e.url = "https://www.warcraftlogs.com/reports/"+log['id']
-            e.timestamp = datetime.datetime.fromtimestamp(log['start'] / 1e3)
-            e.set_thumbnail(url="https://www.method.gg/images/world-firsts/raids/bfa/bfa-uldir.jpg")
-            e.set_image(url="https://s3.amazonaws.com/file3.guildlaunch.net/462275/tabard.png")
-            await channel.send(embed=e)
+        async with ctx.channel.typing():
+            if not logs:
+                await channel.send("No new logs available.")
+            else:
+                for x in logs:
+                    e = discord.Embed(title=x['title'], colour=discord.Colour.purple())
+                    e.add_field(name='Zone', value=botoptions.zones.get(x['zone'], 'Unknown Zone'))
+                    e.url = "https://www.warcraftlogs.com/reports/"+x['id']
+                    e.timestamp = datetime.datetime.fromtimestamp(x['start'] / 1e3)
+                    e.set_thumbnail(url=botoptions.zone_pictures.get(x['zone']))
+                    e.set_image(url="https://s3.amazonaws.com/file3.guildlaunch.net/462275/tabard.png")
+                    await channel.send(embed=e)
 
     @commands.command(aliases=['logbydate, showlogbydate'])
     async def ShowLogByDate(self, ctx, date):
