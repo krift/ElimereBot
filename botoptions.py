@@ -1,5 +1,6 @@
 zones = {17: 'Antorus, The Burning Throne',
-         13: 'Tomb of Sargeras'}
+         13: 'Tomb of Sargeras',
+         19: 'Uldir'}
 
 no_tag_please = "Please don't tag Jemsi before 11am, I can't be responsible for what she might do."
 

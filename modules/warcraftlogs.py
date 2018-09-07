@@ -23,7 +23,7 @@ class WarcraftLogs:
             e.add_field(name='Zone', value=botoptions.zones.get(log['zone'], 'Unknown Zone'))
             e.url = "https://www.warcraftlogs.com/reports/"+log['id']
             e.timestamp = datetime.datetime.fromtimestamp(log['start'] / 1e3)
-            e.set_thumbnail(url="https://www.method.gg/images/raidrace/antorus-argus-28-11-17-05-32-08-1.jpg")
+            e.set_thumbnail(url="https://www.method.gg/images/world-firsts/raids/bfa/bfa-uldir.jpg")
             e.set_image(url="https://s3.amazonaws.com/file3.guildlaunch.net/462275/tabard.png")
             await channel.send(embed=e)
 
