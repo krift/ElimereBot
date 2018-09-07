@@ -1,6 +1,23 @@
-zones = {17: 'Antorus, The Burning Throne',
+zones = {19: 'Uldir',
+         17: 'Antorus, The Burning Throne',
          13: 'Tomb of Sargeras',
-         19: 'Uldir'}
+         12: 'Trial of Valor',
+         11: 'The Nighthold',
+         10: 'Emerald Nightmare',
+         8: 'Hellfire Citadel',
+         7: 'Blackrock Foundry',
+         6: 'Highmaul'}
+
+zone_pictures = {19: 'https://www.method.gg/images/world-firsts/raids/bfa/bfa-uldir.jpg',
+                 17: 'https://www.method.gg/images/world-firsts/raids/legion/legion-antorus.jpg',
+                 13: 'https://www.method.gg/images/world-firsts/raids/legion/legion-tomb-of-sargeras.jpg',
+                 11: 'https://www.method.gg/images/world-firsts/raids/legion/legion-the-nighthold.jpg',
+                 12: 'https://www.method.gg/images/world-firsts/raids/legion/legion-trial-of-valor.jpg',
+                 10: 'https://www.method.gg/images/world-firsts/raids/legion/legion-emerald-nightmare.jpg',
+                 8: 'https://www.method.gg/images/world-firsts/raids/wod/wod-hellfire-citadel.jpg',
+                 7: 'https://www.method.gg/images/world-firsts/raids/wod/wod-blackrock-foundry.jpg',
+                 6: 'https://www.method.gg/images/world-firsts/raids/wod/wod-highmaul.jpg',
+                 -1: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1024px-Icon-round-Question_mark.svg.png'}
 
 no_tag_please = "Please don't tag Jemsi before 11am, I can't be responsible for what she might do."
 

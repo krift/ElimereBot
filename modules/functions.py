@@ -67,17 +67,20 @@ async def CheckForLogs():
             log_info = await resp.json()  # Store json information
             await asyncio.sleep(0.250)  # Wait to close
             session.close()  # Close
-    log = log_info[0]
-    date = datetime.datetime.fromtimestamp(log['start'] / 1e3)
-    date = datetime.datetime.strftime(date, '%Y-%m-%d')
-    database = db.Database()
-    log_exists = await database.check_log_by_id(log['id'])
-    if log_exists:
-        return None
-    else:
-        await database.insert_log_data(log['id'], date, log['title'], log['zone'])
-        await database.close()
-        return log
+    logs = []
+    for x in log_info:
+        log = x
+        date = datetime.datetime.fromtimestamp(log['start'] / 1e3)
+        date = datetime.datetime.strftime(date, '%Y-%m-%d')
+        database = db.Database()
+        log_exists = await database.check_log_by_id(log['id'])
+        if log_exists:
+            continue
+        else:
+            await database.insert_log_data(log['id'], date, log['title'], log['zone'])
+            await database.close()
+            logs.append(log)
+    return logs
 
 
 async def PullIOStats(realm, char_name):
