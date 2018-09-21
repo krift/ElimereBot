@@ -29,7 +29,7 @@ class WarcraftLogs:
                     e.set_image(url="https://s3.amazonaws.com/file3.guildlaunch.net/462275/tabard.png")
                     await channel.send(embed=e)
 
-    @commands.command(aliases=['logbydate, showlogbydate'])
+    @commands.command(aliases=['logbydate', 'showlogbydate'])
     async def ShowLogByDate(self, ctx, date):
         """Enter the date like such:
         YYYY-MM-DD - 2018-01-05"""

@@ -48,16 +48,8 @@ class ElimereBot(commands.AutoShardedBot):
         print('Bot ID: ' + str(self.user.id))
         print('Discord.py Version: ' + str(discord.__version__))
         print('-------------')
-        # TODO: Maybe convert this into a function??
-        local_repo = git.Repo(search_parent_directories=True)
-        local_sha = local_repo.head.object.hexsha
-        # local_short_sha = local_repo.git.rev_parse(local_sha)
-        remote_sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=local_repo.git_dir).decode('ascii').strip()
-        if local_sha != remote_sha:
-            path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            g = git.cmd.Git(path)
-            g.pull()
-            os.system('sudo systemctl restart elimerebot.service')
+        self.check_for_update()
+
 
     async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
         channel = self.get_guild(config.guildServerID).get_channel(config.guildGenChanID)  # Select the top most text channel in the server
@@ -104,6 +96,19 @@ class ElimereBot(commands.AutoShardedBot):
     def check_dev(self, id):
         """Checks whether the passed ID matches"""
         return id == 167419045128175616 or id == 167419045128175616
+
+    def check_for_update(self):
+        """Checks to see if the local repo is different and then updates"""
+        local_repo = git.Repo(search_parent_directories=True)
+        local_sha = local_repo.head.object.hexsha
+        # local_short_sha = local_repo.git.rev_parse(local_sha)
+        remote_sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=local_repo.git_dir).decode(
+            'ascii').strip()
+        if local_sha != remote_sha:
+            path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            g = git.cmd.Git(path)
+            g.pull()
+            os.system('sudo systemctl restart elimerebot.service')
 
     def run(self):
         super().run(config.token)
