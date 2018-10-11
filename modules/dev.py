@@ -9,9 +9,9 @@ from discord.ext import commands
 INITIAL_EXTENSIONS = (
     'modules.errorhandling',
     'modules.commands',
-    'modules.dev',
     'modules.warcraftlogs',
-    'modules.raiderio'
+    'modules.raiderio',
+    'modules.wowhead'
 )
 
 

@@ -6,20 +6,55 @@ PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 class Database:
     def __init__(self):
         self.conn = sqlite3.connect(PATH+'/data/elidb')  # Connect to the database
-        self.create_table()  # Call the create_table function
+        # self.create_table()  # Call the create_table function
 
     async def close(self):
         """This closes the connection with the database"""
         self.conn.close()
 
-    def create_table(self):
+    # Depreciated
+    def create_table(self, db_string):
         """This will create a table if one doesn't already exist"""
         cursor = self.conn.cursor()  # Create a cursor object
-        cursor.execute('''CREATE TABLE IF NOT EXISTS storage(label TEXT PRIMARY KEY unique, author TEXT, msg TEXT)''')  # Create the table
-        cursor.execute('''CREATE TABLE IF NOT EXISTS logs (id TEXT PRIMARY KEY unique, date TEXT, title TEXT, zone TEXT)''')
-        cursor.execute('''CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY autoincrement, date TEXT, server TEXT, command TEXT, error TEXT)''')
+        cursor.execute(db_string)
+        # cursor.execute('''CREATE TABLE IF NOT EXISTS storage(label TEXT PRIMARY KEY unique, author TEXT, msg TEXT)''')  # Create the table
+        # cursor.execute('''CREATE TABLE IF NOT EXISTS logs (id TEXT PRIMARY KEY unique, date TEXT, title TEXT, zone TEXT)''')
+        # cursor.execute('''CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY autoincrement, date TEXT, server TEXT, command TEXT, error TEXT)''')
         self.conn.commit()  # Commit changes to the database table
 
+    async def insert_data(self, db_string, data):
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(db_string, data)
+            self.conn.commit()
+        except sqlite3.IntegrityError:
+            self.conn.rollback()
+
+    async def read_table(self, db_string, data):
+        cursor = self.conn.cursor()
+        cursor.execute(db_string, [data])
+        data = cursor.fetchone()
+        if not data:
+            return False
+        else:
+            return True
+
+    async def pull_data(self, db_string, data):
+        """Pull specific data from the table"""
+        cursor = self.conn.cursor()  # Create a cursor object
+        cursor.execute(db_string, (data,))  # Select the row
+        value = cursor.fetchone()  # Fecth the information
+        if value is None:  # If the data doesn't exist in the table
+            return False
+        else:
+            return value  # Return the data
+
+    async def update_data(self, db_string, data):
+        cursor = self.conn.cursor()  # Create the cursor object
+        cursor.execute(db_string, data)  # Update the row
+        self.conn.commit()  # Commit the changes
+
+# TODO: Everything below here will be removed
     async def insert_tag_data(self, *data):
         """Inserts specific data into the database table"""
         try:
@@ -52,11 +87,11 @@ class Database:
         else:
             return data, True  # Return the data
 
-    async def update_data(self, label, msg):
-        """Update a specific row in the table"""
-        cursor = self.conn.cursor()  # Create the cursor object
-        cursor.execute('''UPDATE storage SET msg = ? WHERE label = ?''', (msg, label))  # Update the row
-        self.conn.commit()  # Commit the changes
+    # async def update_data(self, label, msg):
+    #     """Update a specific row in the table"""
+    #     cursor = self.conn.cursor()  # Create the cursor object
+    #     cursor.execute('''UPDATE storage SET msg = ? WHERE label = ?''', (msg, label))  # Update the row
+    #     self.conn.commit()  # Commit the changes
 
     async def delete_data(self, label):
         """Deletes a specific row from the table"""
@@ -64,14 +99,15 @@ class Database:
         cursor.execute('''DELETE FROM storage WHERE label = ?''', (label,))  # Select the row to delete and delete it
         self.conn.commit()  # Commit the changes
 
-    async def insert_log_data(self, *data):
-        """Inserts warcraft log data into the database table"""
-        try:
-            cursor = self.conn.cursor()
-            cursor.execute('''INSERT INTO logs (id, date, title, zone) VALUES(?,?,?,?)''', data)
-            self.conn.commit()
-        except sqlite3.IntegrityError:
-            self.conn.rollback()
+    # Depreciated
+    # async def insert_log_data(self, *data):
+    #     """Inserts warcraft log data into the database table"""
+    #     try:
+    #         cursor = self.conn.cursor()
+    #         cursor.execute('''INSERT INTO logs (id, date, title, zone) VALUES(?,?,?,?)''', data)
+    #         self.conn.commit()
+    #     except sqlite3.IntegrityError:
+    #         self.conn.rollback()
 
     async def pull_log_by_date(self, date):
         """Pull logs by date"""
@@ -83,24 +119,26 @@ class Database:
         else:
             return data
 
-    async def check_log_by_id(self, id):
-        """Querys the database for a specific id"""
-        cursor = self.conn.cursor()
-        cursor.execute('''SELECT id FROM logs where id = ?''', (str(id),))
-        data = cursor.fetchone()
-        if not data:
-            return False
-        else:
-            return True
+    # Depreciated
+    # async def check_log_by_id(self, id):
+    #     """Querys the database for a specific id"""
+    #     cursor = self.conn.cursor()
+    #     cursor.execute('''SELECT id FROM logs where id = ?''', (str(id),))
+    #     data = cursor.fetchone()
+    #     if not data:
+    #         return False
+    #     else:
+    #         return True
 
-    async def insert_error_data(self, *data):
-        """Inserts errors into the database"""
-        try:
-            cursor = self.conn.cursor() # Create the cursor object
-            cursor.execute('''INSERT INTO errors (date, server, command, error) VALUES(?,?,?,?)''', (str(data[0]), str(data[1]), str(data[2]), str(data[3]),))
-            self.conn.commit()
-        except sqlite3.IntegrityError:
-            self.conn.rollback()
+    # Depreciated
+    # async def insert_error_data(self, *data):
+    #     """Inserts errors into the database"""
+    #     try:
+    #         cursor = self.conn.cursor()  # Create the cursor object
+    #         cursor.execute('''INSERT INTO errors (date, server, command, error) VALUES(?,?,?,?)''', (str(data[0]), str(data[1]), str(data[2]), str(data[3]),))
+    #         self.conn.commit()
+    #     except sqlite3.IntegrityError:
+    #         self.conn.rollback()
 
     async def create_new_table(self, table, table_data):
         """Drops the specified table and creates a new table with a specific name"""

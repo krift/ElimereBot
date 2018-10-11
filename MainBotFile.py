@@ -20,7 +20,8 @@ INITIAL_EXTENSIONS = (
     'modules.commands',
     'modules.dev',
     'modules.warcraftlogs',
-    'modules.raiderio'
+    'modules.raiderio',
+    'modules.wowhead'
 )
 
 
@@ -50,17 +51,29 @@ class ElimereBot(commands.AutoShardedBot):
         print('-------------')
         self.check_for_update()
 
-
     async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
         channel = self.get_guild(config.guildServerID).get_channel(config.guildGenChanID)  # Select the top most text channel in the server
         # Send this message
         await channel.send("Hello "+member.mention+"! Hope you enjoy your stay here! We're all happy you decided to join us!")
 
     async def on_message(self, message):
+        async def check_for_string(msg):
+            """Checks the message to see if it matches the hey eli strings"""
+            for string in botoptions.hey_eli:  # For each string in hey_eli list
+                if msg.content.lower().rfind(string) != -1:  # If it is found, return True
+                    return True
+
+        async def check_response_string(dict, msg):
+            """This checks a dictionary of strings and returns appropriately"""
+            for key in dict.keys():  # This looks at all the keys in the dictionary
+                if msg.content.lower().rfind(key) != -1:  # If the key is found
+                    return dict.get(key)  # Return the value of the key
+            return ''  # Else return and empty string
+
         try:
-            if message.embeds: # If the message sent was an embed
-                if message.author.name == "GitHub": # If the author is the github bot
-                    embeds = message.embeds[0].to_dict() # Look to see if the branch is the master branch then pull the new update
+            if message.embeds:  # If the message sent was an embed
+                if message.author.name == "GitHub":  # If the author is the github bot
+                    embeds = message.embeds[0].to_dict()  # Look to see if the branch is the master branch then pull the new update
                     if embeds['title'].lower().rfind('elimerebot:master') != -1:
                         message.content = '$eli PullUpdate'
                         await self.process_commands(message)
@@ -76,8 +89,8 @@ class ElimereBot(commands.AutoShardedBot):
                 if message.content[0] == '$':  # If the message is actually a command, process it
                     await self.process_commands(message)  # This part processes the actual command
                     return  # Return so it doesn't run any other part of this
-                response = await funcs.CheckResponseString(botoptions.eli_main_responses, message)  # Check to see if it's a keyword
-                god_response = await funcs.CheckResponseString(botoptions.god_responses, message) # Checks if a keyword from the gods
+                response = await check_response_string(botoptions.eli_main_responses, message)  # Check to see if it's a keyword
+                god_response = await check_response_string(botoptions.god_responses, message)  # Checks if a keyword from the gods
                 if god_response != '':
                     if self.check_dev(message.author.id):
                         # If either author is the devs
@@ -86,16 +99,16 @@ class ElimereBot(commands.AutoShardedBot):
                 elif response != '':  # Else, send a normal response
                     message.content = response
                     await message.channel.send(message.content)
-                elif await funcs.CheckForString(message):  # If it's not a keyword, run the BotRespond command
+                elif await check_for_string(message) is True:  # If it's not a keyword, run the BotRespond command
                     message.content = "$eli BotRespond"
                     await self.process_commands(message)
         except AttributeError as e:
             await self.get_guild(config.devServerID).get_channel(config.errorChanID).send(e.__str__() + " in server " + str(message.guild))
             return
 
-    def check_dev(self, id):
+    def check_dev(self, uid):
         """Checks whether the passed ID matches"""
-        return id == 167419045128175616 or id == 167419045128175616
+        return uid == 167419045128175616 or uid == 167419045128175616
 
     def check_for_update(self):
         """Checks to see if the local repo is different and then updates"""

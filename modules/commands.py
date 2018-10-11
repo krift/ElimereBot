@@ -25,6 +25,7 @@ class Commands:
         label: This must not contain spaces, use _ to represent spaces This_Is_An_Example
         msg: Can be as long as or how ever many lines you want"""
         db = database.Database()
+        db.create_table('''CREATE TABLE IF NOT EXISTS storage(label TEXT PRIMARY KEY unique, author TEXT, msg TEXT)''')
         msg = await db.insert_tag_data(label, str(ctx.author), msg)
         await db.close()
         await ctx.channel.send(msg)
@@ -155,18 +156,22 @@ class Commands:
     @commands.cooldown(rate=3, per=300.0, type=commands.BucketType.user)
     async def BotRespond(self, ctx):
         """This responds to certain keywords and strings"""
+        async def check_response_string(dict, msg):
+            """This checks a dictionary of strings and returns appropriately"""
+            for response in dict.keys():  # This looks at all the keys in the dictionary
+                if msg.content.lower().rfind(response) != -1:  # If the key is found
+                    return dict.get(response)  # Return the value of the key
+            return ''  # Else return and empty string
+
         try:
-            if await func.TwitchLive():  # If the function returns true
-                await ctx.channel.send("My twitch channel is live! Talk to me there, not here!\n"
-                                       "https://www.twitch.tv/elimere\n"
-                                       "But I guess I can help you anyways...")
-            else:  # Else, send a snarky response
-                await ctx.channel.send(random.choice(botoptions.eli_calls))
+            # Send a snarky response
+            await ctx.channel.send(random.choice(botoptions.eli_calls))
 
             def check(message):  # This check is used to ensure it's the same user and channel who sent the first message
                 return message.author == ctx.author and ctx.channel == message.channel
+
             response = await self.bot.wait_for('message', check=check, timeout=20.0)  # Wait for the response, 20 seconds max
-            response.content = await func.CheckResponseString(botoptions.eli_responses, response)  # Call this function
+            response.content = await check_response_string(botoptions.eli_responses, response.content)  # Call this function
             if response.content == '':  # If content is an empty string
                 msg = random.choice(botoptions.eli_messages)  # Send a random message
                 await ctx.channel.send(msg)

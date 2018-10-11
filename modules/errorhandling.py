@@ -100,7 +100,9 @@ class ErrorLogging:
 
     async def LogError(self, server, command, error):
         db = database.Database()
-        await db.insert_error_data(datetime.datetime.now(), server, command, error)
+        db.create_table('''CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY autoincrement, date TEXT, server TEXT, command TEXT, error TEXT)''')
+        await db.insert_data('''INSERT INTO errors (date, server, command, error) VALUES(?,?,?,?)''', (str(datetime.datetime.now()), str(server), str(command), str(error)))
+        await db.close()
 
 
 def setup(bot):
