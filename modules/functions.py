@@ -4,37 +4,37 @@ import modules.database as db
 
 # This is the main directory of the bot
 # This is especially needed if it's running as a background task
-PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Depreciated
+# async def CheckForString(msg):
+#     """Checks the message to see if it matches the hey eli strings"""
+#     for string in botoptions.hey_eli:  # For each string in hey_eli list
+#         if msg.content.lower().rfind(string) != -1:  # If it is found, return True
+#             return True
 
-async def CheckForString(msg):
-    """Checks the message to see if it matches the hey eli strings"""
-    for string in botoptions.hey_eli:  # For each string in hey_eli list
-        if msg.content.lower().rfind(string) != -1:  # If it is found, return True
-            return True
+# Depreciated
+# async def CheckResponseString(dict, msg):
+#     """This checks a dictionary of strings and returns appropriately"""
+#     for response in dict.keys():  # This looks at all the keys in the dictionary
+#         if msg.content.lower().rfind(response) != -1:  # If the key is found
+#             return dict.get(response)  # Return the value of the key
+#     return ''  # Else return and empty string
 
-
-async def CheckResponseString(dict, msg):
-    """This checks a dictionary of strings and returns appropriately"""
-    for response in dict.keys():  # This looks at all the keys in the dictionary
-        if msg.content.lower().rfind(response) != -1:  # If the key is found
-            return dict.get(response)  # Return the value of the key
-    return ''  # Else return and empty string
-
-
-async def TwitchLive():
-    """Checks to see if the twitch channel is live"""
-    twitchURL = 'https://api.twitch.tv/kraken/streams/elimere'
-    headers = {'Client-ID': config.twitchBotId}  # This is needed to access the twitch api
-    async with aiohttp.ClientSession() as session:  # Open a new session
-        async with session.get(twitchURL, headers=headers) as resp:  # Pull the response
-            json_info = await resp.json()  # Put the response into json format and store it
-            await asyncio.sleep(0.250)  # Wait to close the session
-            session.close()  # Close the session
-    if json_info['stream'] is None:  # If the stream value is None, return False, else return True
-        return False
-    else:
-        return True
+# Depreciated
+# async def TwitchLive():
+#     """Checks to see if the twitch channel is live"""
+#     twitchURL = 'https://api.twitch.tv/kraken/streams/elimere'
+#     headers = {'Client-ID': config.twitchBotId}  # This is needed to access the twitch api
+#     async with aiohttp.ClientSession() as session:  # Open a new session
+#         async with session.get(twitchURL, headers=headers) as resp:  # Pull the response
+#             json_info = await resp.json()  # Put the response into json format and store it
+#             await asyncio.sleep(0.250)  # Wait to close the session
+#             session.close()  # Close the session
+#     if json_info['stream'] is None:  # If the stream value is None, return False, else return True
+#         return False
+#     else:
+#         return True
 
 
 async def RetrieveTwitchClip(channel):
@@ -58,29 +58,37 @@ async def RetrieveTwitchClip(channel):
     return json_info['clips'][0]['url']
 
 
-async def CheckForLogs():
-    """This checks the WarcraftLogs site for new logs"""
-    params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api
-    url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us?"  # This is the URL to pull logs
-    async with aiohttp.ClientSession() as session:  # Start a new session
-        async with session.get(url, params=params) as resp:  # Get the response
-            log_info = await resp.json()  # Store json information
-            await asyncio.sleep(0.250)  # Wait to close
-            session.close()  # Close
-    logs = []
-    for x in log_info:
-        log = x
-        date = datetime.datetime.fromtimestamp(log['start'] / 1e3)
-        date = datetime.datetime.strftime(date, '%Y-%m-%d')
-        database = db.Database()
-        log_exists = await database.check_log_by_id(log['id'])
-        if log_exists:
-            continue
-        else:
-            await database.insert_log_data(log['id'], date, log['title'], log['zone'])
-            await database.close()
-            logs.append(log)
-    return logs
+# Depreciated
+# async def CheckForLogs():
+#     """This checks the WarcraftLogs site for new logs"""
+#     database = db.Database()
+#
+#     async def insert_log_data(*data):
+#         await database.insert_data('''INSERT INTO logs (id, date, title, zone) VALUES(?,?,?,?)''', data)
+#
+#     async def check_log_by_id(log_id):
+#         await database.read_table('''SELECT id FROM logs where id = ?''', str(log_id))
+#
+#     params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api
+#     url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us?"  # This is the URL to pull logs
+#     async with aiohttp.ClientSession() as session:  # Start a new session
+#         async with session.get(url, params=params) as resp:  # Get the response
+#             log_info = await resp.json()  # Store json information
+#             await asyncio.sleep(0.250)  # Wait to close
+#             session.close()  # Close
+#     logs = []
+#     for x in log_info:
+#         log = x
+#         date = datetime.datetime.fromtimestamp(log['start'] / 1e3)
+#         date = datetime.datetime.strftime(date, '%Y-%m-%d')
+#         log_exists = await check_log_by_id(log['id'])
+#         if log_exists:
+#             continue
+#         else:
+#             await insert_log_data(log['id'], date, log['title'], log['zone'])
+#             await database.close()
+#             logs.append(log)
+#     return logs
 
 
 async def PullIOStats(realm, char_name):
