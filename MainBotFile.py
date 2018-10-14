@@ -23,7 +23,8 @@ INITIAL_EXTENSIONS = (
     'modules.commands',
     'modules.dev',
     'modules.warcraftlogs',
-    'modules.raiderio'
+    'modules.raiderio',
+    'modules.tags'
 )
 
 
@@ -59,7 +60,7 @@ class ElimereBot(commands.AutoShardedBot):
     async def check_articles(self):
         await self.wait_until_ready()
         a = wow.Wowhead(self)
-        await a.PostNewArticle()
+        await a.post_new_article()
         await asyncio.sleep(18000)
         asyncio.ensure_future(self.check_articles())
 
@@ -122,7 +123,8 @@ class ElimereBot(commands.AutoShardedBot):
             await self.get_guild(config.devServerID).get_channel(config.errorChanID).send(e.__str__() + " in server " + str(message.guild))
             return
 
-    def check_for_update(self):
+    @staticmethod
+    def check_for_update():
         """Checks to see if the local repo is different and then updates"""
         local_repo = git.Repo(search_parent_directories=True)
         local_sha = local_repo.head.object.hexsha

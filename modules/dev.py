@@ -9,7 +9,8 @@ INITIAL_EXTENSIONS = (
     'modules.errorhandling',
     'modules.commands',
     'modules.warcraftlogs',
-    'modules.raiderio'
+    'modules.raiderio',
+    'modules.tags'
 )
 
 
