@@ -3,7 +3,6 @@ import config
 import git
 import discord
 import asyncio
-import modules.database as database
 from discord.ext import commands
 
 INITIAL_EXTENSIONS = (
@@ -56,9 +55,7 @@ class Dev:
     @commands.command(aliases=['recreatetable'])
     async def RecreateTable(self, ctx, table_name, *table_data):
         """-Recreates the database. Will lose all data inside it."""
-        db = database.Database()
-        await db.create_new_table(table_name, table_data)
-        await db.close()
+        await self.bot.database.create_new_table(table_name, table_data)
         await ctx.channel.send("New DB Table created")
 
     @commands.check(IsDev)

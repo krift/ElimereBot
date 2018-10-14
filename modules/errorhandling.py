@@ -1,10 +1,7 @@
 import traceback
 import config
 import discord
-import botoptions
-import random
 import datetime
-import modules.database as database
 from discord.ext import commands
 
 
@@ -92,17 +89,15 @@ class ErrorHandling:
         e.add_field(name='Server', value=ctx.guild)
         e.add_field(name='Error', value=error)
         logger = ErrorLogging()
-        await logger.LogError(server=ctx.guild, command=ctx.command, error=str(var))
+        await logger.LogError(server=ctx.guild, command=ctx.command, error=str(var), bot=self.bot)
         await self.bot.get_guild(config.devServerID).get_channel(config.errorChanID).send(embed=e)
 
 
 class ErrorLogging:
 
-    async def LogError(self, server, command, error):
-        db = database.Database()
-        db.create_table('''CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY autoincrement, date TEXT, server TEXT, command TEXT, error TEXT)''')
-        await db.insert_data('''INSERT INTO errors (date, server, command, error) VALUES(?,?,?,?)''', (str(datetime.datetime.now()), str(server), str(command), str(error)))
-        await db.close()
+    async def LogError(self, server, command, error, bot):
+        bot.database.create_table('''CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY autoincrement, date TEXT, server TEXT, command TEXT, error TEXT)''')
+        await bot.database.insert_data('''INSERT INTO errors (date, server, command, error) VALUES(?,?,?,?)''', (str(datetime.datetime.now()), str(server), str(command), str(error)))
 
 
 def setup(bot):

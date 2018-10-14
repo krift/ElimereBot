@@ -1,5 +1,6 @@
 #!/usr/local/bin/python3.6
 from datetime import datetime
+from discord.ext import commands
 import config
 import discord
 import discord.ext.commands.errors
@@ -11,7 +12,7 @@ import git
 import subprocess
 import os
 import modules.wowhead as wow
-from discord.ext import commands
+import modules.database as database
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
 BOT_PREFIX = "$eli "
@@ -36,6 +37,7 @@ class ElimereBot(commands.AutoShardedBot):
         super().__init__(command_prefix=BOT_PREFIX, description=DESCRIPTION, pm_help=None, help_attrs=dict(hidden=True))
         self.guild_only = True
         self.event_loop = asyncio.get_event_loop()
+        self.database = database.Database()
 
         for extension in INITIAL_EXTENSIONS:
             try:
@@ -56,8 +58,8 @@ class ElimereBot(commands.AutoShardedBot):
 
     async def check_articles(self):
         await self.wait_until_ready()
-        a = wow.Wowhead()
-        await a.PostNewArticle(self)
+        a = wow.Wowhead(self)
+        await a.PostNewArticle()
         await asyncio.sleep(18000)
         asyncio.ensure_future(self.check_articles())
 
