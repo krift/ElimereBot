@@ -1,7 +1,8 @@
 import discord
 import config
 import datetime
-import modules.functions as funcs
+import asyncio
+import aiohttp
 from discord.ext import commands
 
 
@@ -23,7 +24,7 @@ class RaiderIO:
         char_name:"""
         channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildDungChanID)
         async with ctx.channel.typing():
-            stats = await funcs.PullIOStats(realm, char_name)
+            stats = await self.PullIOStats(realm, char_name)
             # This data is pulled from the http request, see https://raider.io/api#!/character/get_api_v1_characters_profile for more details
             e = discord.Embed(title='RaiderIO Stats', colour=discord.Colour.blue())
             ranks = stats[1]
@@ -85,6 +86,22 @@ class RaiderIO:
 
             await channel.send(ctx.message.author.mention)
             await channel.send(embed=e)
+
+    async def PullIOStats(self, realm, char_name):
+        """This pulls stats from raiderio"""
+        params = {'region': 'us', 'realm': realm, 'name': char_name, 'fields': 'mythic_plus_ranks'}
+        url = 'https://raider.io/api/v1/characters/profile?'
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, params=params) as resp:
+                info = await resp.json()
+                await asyncio.sleep(0.250)
+            params['fields'] = 'mythic_plus_scores'
+            async with session.get(url, params=params) as resp:
+                score = await resp.json()
+                await asyncio.sleep(0.250)
+                session.close()
+        # Return the base info, the ranks, and the scores into a tuple
+        return info, info['mythic_plus_ranks'], score['mythic_plus_scores']
 
 
 def setup(bot):

@@ -80,6 +80,10 @@ class ElimereBot(commands.AutoShardedBot):
                     return dict.get(key)  # Return the value of the key
             return ''  # Else return and empty string
 
+        def check_dev(uid):
+            """Checks whether the passed ID matches"""
+            return uid == 167419045128175616 or uid == 167419045128175616
+
         try:
             if message.embeds:  # If the message sent was an embed
                 if message.author.name == "GitHub":  # If the author is the github bot
@@ -102,7 +106,7 @@ class ElimereBot(commands.AutoShardedBot):
                 response = await check_response_string(botoptions.eli_main_responses, message)  # Check to see if it's a keyword
                 god_response = await check_response_string(botoptions.god_responses, message)  # Checks if a keyword from the gods
                 if god_response != '':
-                    if self.check_dev(message.author.id):
+                    if check_dev(message.author.id):
                         # If either author is the devs
                         message.content = god_response  # Send a god response
                         await message.channel.send(message.content)
@@ -115,10 +119,6 @@ class ElimereBot(commands.AutoShardedBot):
         except AttributeError as e:
             await self.get_guild(config.devServerID).get_channel(config.errorChanID).send(e.__str__() + " in server " + str(message.guild))
             return
-
-    def check_dev(self, uid):
-        """Checks whether the passed ID matches"""
-        return uid == 167419045128175616 or uid == 167419045128175616
 
     def check_for_update(self):
         """Checks to see if the local repo is different and then updates"""
