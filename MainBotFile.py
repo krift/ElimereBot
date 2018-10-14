@@ -1,5 +1,6 @@
 #!/usr/local/bin/python3.6
 from datetime import datetime
+from discord.ext import commands
 import config
 import discord
 import discord.ext.commands.errors
@@ -11,7 +12,7 @@ import git
 import subprocess
 import os
 import modules.wowhead as wow
-from discord.ext import commands
+import modules.database as database
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
 BOT_PREFIX = "$eli "
@@ -36,6 +37,7 @@ class ElimereBot(commands.AutoShardedBot):
         super().__init__(command_prefix=BOT_PREFIX, description=DESCRIPTION, pm_help=None, help_attrs=dict(hidden=True))
         self.guild_only = True
         self.event_loop = asyncio.get_event_loop()
+        self.database = database.Database()
 
         for extension in INITIAL_EXTENSIONS:
             try:
@@ -56,8 +58,8 @@ class ElimereBot(commands.AutoShardedBot):
 
     async def check_articles(self):
         await self.wait_until_ready()
-        a = wow.Wowhead()
-        await a.PostNewArticle(self)
+        a = wow.Wowhead(self)
+        await a.PostNewArticle()
         await asyncio.sleep(18000)
         asyncio.ensure_future(self.check_articles())
 
@@ -79,6 +81,10 @@ class ElimereBot(commands.AutoShardedBot):
                 if msg.content.lower().rfind(key) != -1:  # If the key is found
                     return dict.get(key)  # Return the value of the key
             return ''  # Else return and empty string
+
+        def check_dev(uid):
+            """Checks whether the passed ID matches"""
+            return uid == 167419045128175616 or uid == 167419045128175616
 
         try:
             if message.embeds:  # If the message sent was an embed
@@ -102,7 +108,7 @@ class ElimereBot(commands.AutoShardedBot):
                 response = await check_response_string(botoptions.eli_main_responses, message)  # Check to see if it's a keyword
                 god_response = await check_response_string(botoptions.god_responses, message)  # Checks if a keyword from the gods
                 if god_response != '':
-                    if self.check_dev(message.author.id):
+                    if check_dev(message.author.id):
                         # If either author is the devs
                         message.content = god_response  # Send a god response
                         await message.channel.send(message.content)
@@ -115,10 +121,6 @@ class ElimereBot(commands.AutoShardedBot):
         except AttributeError as e:
             await self.get_guild(config.devServerID).get_channel(config.errorChanID).send(e.__str__() + " in server " + str(message.guild))
             return
-
-    def check_dev(self, uid):
-        """Checks whether the passed ID matches"""
-        return uid == 167419045128175616 or uid == 167419045128175616
 
     def check_for_update(self):
         """Checks to see if the local repo is different and then updates"""

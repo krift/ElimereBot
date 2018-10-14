@@ -3,7 +3,6 @@ import asyncio
 import botoptions
 import datetime
 import discord
-import modules.database as db
 import config
 from discord.ext import commands
 
@@ -11,16 +10,15 @@ from discord.ext import commands
 class WarcraftLogs:
     def __init__(self, bot):
         self.bot = bot
-        self.database = db.Database()
-        self.database.create_table(db_string='''CREATE TABLE IF NOT EXISTS logs (id TEXT PRIMARY KEY unique, date TEXT, title TEXT, zone TEXT)''')
+        self.bot.database.create_table(db_string='''CREATE TABLE IF NOT EXISTS logs (id TEXT PRIMARY KEY unique, date TEXT, title TEXT, zone TEXT)''')
 
     async def check_for_logs(self):
         """This checks the WarcraftLogs site for new logs"""
         async def insert_log_data(*data):
-            await self.database.insert_data('''INSERT INTO logs (id, date, title, zone) VALUES(?,?,?,?)''', data)
+            await self.bot.database.insert_data('''INSERT INTO logs (id, date, title, zone) VALUES(?,?,?,?)''', data)
 
         async def check_log_by_id(log_id):
-            return await self.database.read_table('''SELECT id FROM logs where id = ?''', str(log_id))
+            return await self.bot.database.read_table('''SELECT id FROM logs where id = ?''', str(log_id))
 
         params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api
         url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us?"  # This is the URL to pull logs
@@ -64,8 +62,7 @@ class WarcraftLogs:
     async def ShowLogByDate(self, ctx, date):
         """Enter the date like such:
         YYYY-MM-DD - 2018-01-05"""
-        database = db.Database()
-        logs = await database.pull_log_by_date(date)
+        logs = await self.bot.database.pull_log_by_date(date)
         if logs is None:
             await ctx.channel.send("There don't appear to be any logs on that date.")
         else:
