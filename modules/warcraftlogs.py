@@ -20,7 +20,7 @@ class WarcraftLogs:
             await self.database.insert_data('''INSERT INTO logs (id, date, title, zone) VALUES(?,?,?,?)''', data)
 
         async def check_log_by_id(log_id):
-            await self.database.read_table('''SELECT id FROM logs where id = ?''', str(log_id))
+            return await self.database.read_table('''SELECT id FROM logs where id = ?''', str(log_id))
 
         params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api
         url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us?"  # This is the URL to pull logs
@@ -28,7 +28,7 @@ class WarcraftLogs:
             async with session.get(url, params=params) as resp:  # Get the response
                 log_info = await resp.json()  # Store json information
                 await asyncio.sleep(0.250)  # Wait to close
-                session.close()  # Close
+                await session.close()  # Close
         logs = []
         for x in log_info:
             log = x
@@ -40,14 +40,13 @@ class WarcraftLogs:
             else:
                 await insert_log_data(log['id'], date, log['title'], log['zone'])
                 logs.append(log)
-        await self.database.close()
         return logs
 
     @commands.command(aliases=['pullnewlog'])
     async def PullNewLog(self, ctx):
         """This will pull the latest log from warcraft logs if there is one to pull"""
         logs = await self.check_for_logs()
-        channel = self.bot.get_guild(config.devServerID).get_channel(config.reportChanID)
+        channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildLogChanID)
         async with ctx.channel.typing():
             if not logs:
                 await channel.send("No new logs available.")

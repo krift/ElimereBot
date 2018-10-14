@@ -19,7 +19,7 @@ zone_pictures = {19: 'https://www.method.gg/images/world-firsts/raids/bfa/bfa-ul
                  6: 'https://www.method.gg/images/world-firsts/raids/wod/wod-highmaul.jpg',
                  -1: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1024px-Icon-round-Question_mark.svg.png'}
 
-keywords = ['hotfix', 'tuning']
+keywords = ['hotfix', 'tuning', 'patch']
 
 no_tag_please = "Please don't tag Jemsi before 11am, I can't be responsible for what she might do."
 
