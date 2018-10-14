@@ -44,7 +44,7 @@ class Wowhead:
 
     async def PostNewArticle(self, bot):
         articles = await self.grab_new_articles()
-        channel = bot.get_guild(config.devServerID).get_channel(356544379885846552)
+        channel = bot.get_guild(config.guildServerID).get_channel(config.guildGenChanID)
         for x in articles:
             e = discord.Embed(title=x.title, colour=discord.Colour.purple())
             e.add_field(name='Summary', value=self.create_summary(x.summary))
