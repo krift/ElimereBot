@@ -26,22 +26,25 @@ class Wowhead:
         await self.bot.database.update_data('''UPDATE options SET value = ? WHERE option = ?''', (self.parser['entries'][0].published, 'wowhead_stored',))
         return articles
 
-    def create_summary(self, value):
+    @staticmethod
+    def create_summary(value):
         return value[0:int(len(value) / 2)].replace('<p>', ' ').replace('<br>', ' ') + '...'  # Removes html code and reduces the length of the summary
 
-    def check_for_keyword(self, title):
+    @staticmethod
+    def check_for_keyword(title):
         for word in botoptions.keywords:
             if word in title.lower():  # Format title so the string is all lowercase.
                 return True
         return False
 
-    def check_date(self, stored, new):
+    @staticmethod
+    def check_date(stored, new):
         if stored.rfind(new) != -1:  # The stored date is the same as the new date
             return True
         else:
             return False
 
-    async def PostNewArticle(self):
+    async def post_new_article(self):
         articles = await self.grab_new_articles()
         channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildGenChanID)
         for x in articles:
