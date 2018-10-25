@@ -100,7 +100,7 @@ class Commands:
         async def check_response_string(dict, msg):
             """This checks a dictionary of strings and returns appropriately"""
             for response in dict.keys():  # This looks at all the keys in the dictionary
-                if msg.content.lower().rfind(response) != -1:  # If the key is found
+                if msg.lower().rfind(response) != -1:  # If the key is found
                     return dict.get(response)  # Return the value of the key
             return ''  # Else return and empty string
 

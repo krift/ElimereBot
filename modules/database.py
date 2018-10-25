@@ -27,7 +27,10 @@ class Database:
 
     async def read_table(self, db_string, data):
         cursor = self.conn.cursor()
-        cursor.execute(db_string, [data])
+        if data is '':
+            cursor.execute(db_string)
+        else:
+            cursor.execute(db_string, [data])
         data = cursor.fetchone()
         if not data:
             return False

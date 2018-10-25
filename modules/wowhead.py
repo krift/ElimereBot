@@ -10,6 +10,15 @@ class Wowhead:
         self.bot = bot
         self.parser = feedparser.parse("https://www.wowhead.com/news&rss")
         self.bot.database.create_table('''CREATE TABLE IF NOT EXISTS options (option TEXT PRIMARY KEY unique, value TEXT)''')
+        self.ensure_option_exists()
+
+    def ensure_option_exists(self):
+        """Check the database for stored options. Seed if they don't exist."""
+        value = self.bot.event_loop.create_task(self.bot.database.read_table('''SELECT option FROM options WHERE option = ?''', 'wowhead_stored'))
+        if value is True:
+            return
+        else:
+            self.bot.event_loop.create_task(self.bot.database.insert_data('''INSERT INTO options (option, value) VALUES(?,?)''', botoptions.wowhead_initial_seed))
 
     async def grab_stored_date(self):
         return await self.bot.database.pull_data('''SELECT value FROM options WHERE option = ?''', 'wowhead_stored')
