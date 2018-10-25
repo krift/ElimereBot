@@ -1,4 +1,5 @@
 import traceback
+import asyncio
 import config
 import discord
 import datetime
@@ -88,17 +89,21 @@ class ErrorHandling:
         e.add_field(name='Command', value=ctx.command)
         e.add_field(name='Server', value=ctx.guild)
         e.add_field(name='Error', value=error)
-        logger = ErrorLogging()
-        await logger.log_error(server=ctx.guild, command=ctx.command, error=str(var), bot=self.bot)
+        logger = ErrorLogging(self.bot)
+        await logger.log_error(server=ctx.guild, command=ctx.command, error=str(var))
         await self.bot.get_guild(config.devServerID).get_channel(config.errorChanID).send(embed=e)
+        asyncio.sleep(5)
+        del logger
 
 
 class ErrorLogging:
 
-    @staticmethod
-    async def log_error(server, command, error, bot):
+    def __init__(self, bot):
+        self.bot = bot
         bot.database.create_table('''CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY autoincrement, date TEXT, server TEXT, command TEXT, error TEXT)''')
-        await bot.database.insert_data('''INSERT INTO errors (date, server, command, error) VALUES(?,?,?,?)''', (str(datetime.datetime.now()), str(server), str(command), str(error)))
+
+    async def log_error(self, server, command, error):
+        await self.bot.database.insert_data('''INSERT INTO errors (date, server, command, error) VALUES(?,?,?,?)''', (str(datetime.datetime.now()), str(server), str(command), str(error)))
 
 
 def setup(bot):

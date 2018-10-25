@@ -59,9 +59,14 @@ class ElimereBot(commands.AutoShardedBot):
 
     async def check_articles(self):
         await self.wait_until_ready()
-        a = wow.Wowhead(self)
-        await a.post_new_article()
-        await asyncio.sleep(18000)
+        try:
+            a = wow.Wowhead(self)
+            await asyncio.sleep(25)  # This sleep is here to ensure the database seeds properly, else we get errors.
+            await a.post_new_article()
+        finally:
+            await asyncio.sleep(30)
+            del a  # Delete the object, it will be remade.
+        await asyncio.sleep(18000)  # This sleeps for 5 hours
         asyncio.ensure_future(self.check_articles())
 
     async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it

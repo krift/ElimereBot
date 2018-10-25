@@ -21,6 +21,8 @@ zone_pictures = {19: 'https://www.method.gg/images/world-firsts/raids/bfa/bfa-ul
 
 keywords = ['hotfix', 'tuning']
 
+wowhead_initial_seed = ['wowhead_stored', 'Sun, 14 Oct 2018 15:06:38 -0500']
+
 no_tag_please = "Please don't tag Jemsi before 11am, I can't be responsible for what she might do."
 
 silv = [

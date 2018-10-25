@@ -11,6 +11,13 @@ class WarcraftLogs:
     def __init__(self, bot):
         self.bot = bot
         self.bot.database.create_table(db_string='''CREATE TABLE IF NOT EXISTS logs (id TEXT PRIMARY KEY unique, date TEXT, title TEXT, zone TEXT)''')
+        self.event_loop = bot.event_loop
+        self.event_loop.create_task(self.ensure_table_data_exists())
+
+    async def ensure_table_data_exists(self):
+        """Checks to see if the table has any logs in it, if not, pull all logs off the website."""
+        if await self.bot.database.read_table('''SELECT * from logs limit 1''', data='') is False:
+            a = await self.check_for_logs()
 
     async def check_for_logs(self):
         """This checks the WarcraftLogs site for new logs"""
