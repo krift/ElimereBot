@@ -56,6 +56,7 @@ class ElimereBot(commands.AutoShardedBot):
         print('-------------')
         self.check_for_update()
         self.event_loop.create_task(self.check_articles())
+        self.event_loop.create_task(self.check_for_logs())
 
     async def check_articles(self):
         await self.wait_until_ready()
@@ -68,6 +69,14 @@ class ElimereBot(commands.AutoShardedBot):
             del a  # Delete the object, it will be remade.
         await asyncio.sleep(18000)  # This sleeps for 5 hours
         asyncio.ensure_future(self.check_articles())
+
+    async def check_for_logs(self):
+        await self.wait_until_ready()
+        a = self.get_cog('WarcraftLogs')
+        await a.auto_pull_log()
+        del a
+        await asyncio.sleep(3600)  # Run every hour.
+        asyncio.ensure_future(self.check_for_logs())
 
     async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
         channel = self.get_guild(config.guildServerID).get_channel(config.guildGenChanID)  # Select the top most text channel in the server
