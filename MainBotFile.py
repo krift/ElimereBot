@@ -72,9 +72,9 @@ class ElimereBot(commands.AutoShardedBot):
 
     async def check_for_logs(self):
         await self.wait_until_ready()
-        a = self.get_cog('WarcraftLogs')
-        await a.auto_pull_log()
-        del a
+        b = self.get_cog('WarcraftLogs')
+        await b.auto_pull_log()
+        del b
         await asyncio.sleep(3600)  # Run every hour.
         asyncio.ensure_future(self.check_for_logs())
 
