@@ -52,7 +52,7 @@ class WarcraftLogs:
         logs = await self.check_for_logs()
         channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildLogChanID)
         if not logs:
-            await channel.send("No new logs available.")
+            return
         else:
             for x in logs:
                 e = discord.Embed(title=x['title'], colour=discord.Colour.purple())
@@ -70,7 +70,7 @@ class WarcraftLogs:
         channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildLogChanID)
         async with ctx.channel.typing():
             if not logs:
-                return
+                await channel.send("No new logs available.")
             else:
                 for x in logs:
                     e = discord.Embed(title=x['title'], colour=discord.Colour.purple())
