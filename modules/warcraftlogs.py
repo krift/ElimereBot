@@ -47,6 +47,22 @@ class WarcraftLogs:
                 logs.append(log)
         return logs
 
+    async def auto_pull_log(self):
+        """This is the same as the below command but is used for the task the checks every hour."""
+        logs = await self.check_for_logs()
+        channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildLogChanID)
+        if not logs:
+            await channel.send("No new logs available.")
+        else:
+            for x in logs:
+                e = discord.Embed(title=x['title'], colour=discord.Colour.purple())
+                e.add_field(name='Zone', value=botoptions.zones.get(x['zone'], 'Unknown Zone'))
+                e.url = "https://www.warcraftlogs.com/reports/" + x['id']
+                e.timestamp = datetime.datetime.fromtimestamp(x['start'] / 1e3)
+                e.set_thumbnail(url=botoptions.zone_pictures.get(x['zone']))
+                e.set_image(url="https://s3.amazonaws.com/file3.guildlaunch.net/462275/tabard.png")
+                await channel.send(embed=e)
+
     @commands.command(aliases=['pullnewlog'])
     async def PullNewLog(self, ctx):
         """This will pull the latest log from warcraft logs if there is one to pull"""
