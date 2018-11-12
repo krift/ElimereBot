@@ -67,7 +67,7 @@ class ElimereBot(commands.AutoShardedBot):
         finally:
             await asyncio.sleep(30)
             del a  # Delete the object, it will be remade.
-        await asyncio.sleep(18000)  # This sleeps for 5 hours
+        await asyncio.sleep(300)  # This sleeps for 5 hours
         asyncio.ensure_future(self.check_articles())
 
     async def check_for_logs(self):
@@ -75,7 +75,7 @@ class ElimereBot(commands.AutoShardedBot):
         b = self.get_cog('WarcraftLogs')
         await b.auto_pull_log()
         del b
-        await asyncio.sleep(3600)  # Run every hour.
+        await asyncio.sleep(300)  # Run every hour.
         asyncio.ensure_future(self.check_for_logs())
 
     # async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
