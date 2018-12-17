@@ -85,20 +85,49 @@ class WarcraftLogs:
     async def ShowLogByDate(self, ctx, date):
         """Enter the date like such:
         YYYY-MM-DD - 2018-01-05"""
-        logs = await self.bot.database.pull_log_by_date(date)
+        logs = await self.bot.database.pull_data('''SELECT id, title FROM logs where date = ?''', (date,), select_all=True)
         if logs is None:
             await ctx.channel.send("There don't appear to be any logs on that date.")
         else:
             msg = ''
             for log in logs:
-                msg += '['+log[1]+']https://www.warcraftlogs.com/reports/'+log[0]+' \n'
+                msg += f'[{log[1]}]https://www.warcraftlogs.com/reports/{log[0]} \n'
             await ctx.channel.send("Here are the logs I found!")
             await ctx.channel.send("```"+msg+"```")
 
-    # TODO
-    @commands.command(hidden=True)
-    async def ShowLogByZone(self, ctx):
-        """Not implemented, will allow user to pull all logs by zone"""
+    @commands.command(aliases=['logbyzone', 'showlogbyzone'])
+    async def ShowLogByZone(self, ctx, *, zone):
+        """Enter a raid zone to pull all logs from that zone.
+        Uldir
+        Antorus, The Burning Throne
+        Tomb of Sargeras
+        Trial of Valor
+        The Nighthold
+        Emerald Nightmare
+        Hellfire Citadel
+        Blackrock Foundry
+        Highmaul"""
+        # We need to get the zone key based on the value
+        raid_zone = 0
+        for key, value in botoptions.zones.items():
+            if value == zone:
+                raid_zone = key
+        if raid_zone == 0:
+            await ctx.channel.send("You appear to have entered an invalid zone. Check the help command and try again.")
+        else:
+            logs = await self.bot.database.pull_data('''SELECT id, date, title FROM logs where zone = ?''', (raid_zone,)
+                                                     , select_all=True)
+            if logs is None:
+                await ctx.channel.send("There don't appear to be any logs on that date.")
+            else:
+                msg = ''
+                await ctx.channel.send("Here are the logs I found!")
+                for log in logs:
+                    msg += f'[{log[2]}][{log[1]}]https://www.warcraftlogs.com/reports/{log[0]} \n'
+                    if len(msg) > 1900:  # This is done incase the amount of logs will not fit into one message
+                        await ctx.channel.send("```" + msg + "```")
+                        msg = ''
+                await ctx.channel.send("```" + msg + "```")
 
 
 def setup(bot):

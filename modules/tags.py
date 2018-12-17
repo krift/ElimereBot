@@ -19,8 +19,9 @@ class Tags:
         $eli tags tag label msg
         label: This must not contain spaces, use _ to represent spaces This_Is_An_Example
         msg: Can be as long as or how ever many lines you want"""
-        msg = await self.bot.database.insert_tag_data(label, str(ctx.author), msg)
-        await ctx.channel.send(msg)
+        await self.bot.database.insert_data('''INSERT INTO storage(label,author, msg) VALUES(?,?,?)'''
+                                            ,(label, str(ctx.author), msg))
+        # This kind of requires some sort of validation to ensure the tag was stored, will look into this
 
     @Tags.command(aliases=['update'])
     async def UpdateMessage(self, ctx, label: str, *, msg: str):
@@ -32,24 +33,27 @@ class Tags:
     async def RetrieveMessage(self, ctx, label):
         """-Retrieves a message
         label: The name of the message to retrieve"""
-        msg = await self.bot.database.retrieve_data(label)
-        await ctx.channel.send('```'
-                               f'Author: {msg[1]}\n'
-                               f'{msg[0]}'
-                               '```')
+        msg = await self.bot.database.pull_data('''SELECT msg, author FROM storage WHERE label = ?''', label)
+        if msg is None:
+            await ctx.channel.send('No label found.')
+        else:
+            await ctx.channel.send('```'
+                                   f'Author: {msg[1]}\n'
+                                   f'{msg[0]}'
+                                   '```')
 
     @Tags.command(aliases=['remove', 'delete'])
     async def RemoveMessage(self, ctx, label):
         """-Removes a message
         label: The name of the message to delete"""
-        await self.bot.database.delete_data(label)
+        await self.bot.database.delete_data('''DELETE FROM storage WHERE label = ?''', label)
         await ctx.channel.send('Removed stored message with the label ' + label)
 
     @Tags.command(aliases=['listall', 'listmessages'])
     async def ListMessages(self, ctx):
         """-Lists all saved messages"""
-        msg = await self.bot.database.retrieve_all_labels()
-        if msg[1] is True:
+        msg = await self.bot.database.pull_data('''SELECT label, author FROM storage''', data='', select_all=True)
+        if msg[0] is True:
             message = "\n".join(str(i) for i in msg[0])
             await ctx.channel.send(message)
         else:
