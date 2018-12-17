@@ -11,7 +11,7 @@ import asyncio
 import git
 import subprocess
 import os
-import modules.wowhead as wow
+import modules.wow.wowhead as wow
 import modules.database as database
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
@@ -22,8 +22,8 @@ INITIAL_EXTENSIONS = (
     'modules.errorhandling',
     'modules.commands',
     'modules.dev',
-    'modules.warcraftlogs',
-    'modules.raiderio',
+    'modules.wow.warcraftlogs',
+    'modules.wow.raiderio',
     'modules.tags'
 )
 
@@ -35,7 +35,7 @@ def RunBot():
 
 class ElimereBot(commands.AutoShardedBot):
     def __init__(self):
-        super().__init__(command_prefix=BOT_PREFIX, description=DESCRIPTION, pm_help=None, help_attrs=dict(hidden=True))
+        super().__init__(command_prefix=BOT_PREFIX, description=DESCRIPTION, pm_help=False, help_attrs=dict(hidden=True))
         self.guild_only = True
         self.event_loop = asyncio.get_event_loop()
         self.database = database.Database()

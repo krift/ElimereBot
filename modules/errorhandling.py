@@ -43,11 +43,11 @@ class ErrorHandling:
 
         elif isinstance(error, commands.MissingRequiredArgument):
             try:
-                strippedCommand = ctx.message.content.replace(ctx.message.content[0], '')
-                strippedCommand = strippedCommand[0:len(strippedCommand)]
                 prefix = self.bot.command_prefix
+                strippedCommand = ctx.message.content.replace(prefix, '')
+                strippedCommand = strippedCommand[0:len(strippedCommand)]
                 await ctx.send(f"{error}")
-                await ctx.send(f"Do {prefix} help {strippedCommand} to see the correct usage.")
+                await ctx.send(f"Do {prefix}help {strippedCommand} to see the correct usage.")
             except Exception as e:
                 print(e)
             finally:

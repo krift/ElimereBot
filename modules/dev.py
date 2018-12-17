@@ -53,13 +53,6 @@ class Dev:
         os.system('sudo systemctl restart elimerebot.service')
 
     @commands.check(IsDev)
-    @commands.command(aliases=['recreatetable'])
-    async def RecreateTable(self, ctx, table_name, *table_data):
-        """-Recreates the database. Will lose all data inside it."""
-        await self.bot.database.create_new_table(table_name, table_data)
-        await ctx.channel.send("New DB Table created")
-
-    @commands.check(IsDev)
     @commands.command(aliases=['reloadcogs'])
     async def ReloadCogs(self, ctx):
         """This will reload all cogs"""
