@@ -55,20 +55,18 @@ class ElimereBot(commands.AutoShardedBot):
         print('Discord.py Version: ' + str(discord.__version__))
         print('-------------')
         self.check_for_update()
-        self.event_loop.create_task(self.check_articles())
-        self.event_loop.create_task(self.check_for_logs())
+        await self.event_loop.create_task(self.check_articles())
+        await self.event_loop.create_task(self.check_for_logs())
 
     async def check_articles(self):
         await self.wait_until_ready()
-        try:
-            a = wow.Wowhead(self)
-            await asyncio.sleep(25)  # This sleep is here to ensure the database seeds properly, else we get errors.
-            await a.post_new_article()
-        finally:
-            await asyncio.sleep(30)
-            del a  # Delete the object, it will be remade.
+        a = wow.Wowhead(self)
+        await asyncio.sleep(25)  # This sleep is here to ensure the database seeds properly, else we get errors.
+        await a.post_new_article()
+        await asyncio.sleep(30)
+        del a  # Delete the object, it will be remade.
         await asyncio.sleep(300)  # This sleeps for 5 hours
-        asyncio.ensure_future(self.check_articles())
+        await asyncio.ensure_future(self.check_articles())
 
     async def check_for_logs(self):
         await self.wait_until_ready()
@@ -76,7 +74,7 @@ class ElimereBot(commands.AutoShardedBot):
         await b.auto_pull_log()
         del b
         await asyncio.sleep(300)  # Run every hour.
-        asyncio.ensure_future(self.check_for_logs())
+        await asyncio.ensure_future(self.check_for_logs())
 
     # async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
     #     channel = self.get_guild(config.guildServerID).get_channel(config.guildGenChanID)  # Select the top most text channel in the server
