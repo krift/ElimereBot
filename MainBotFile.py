@@ -1,4 +1,3 @@
-#!/usr/local/bin/python3.6
 from datetime import datetime
 from discord.ext import commands
 import config

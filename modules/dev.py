@@ -29,7 +29,7 @@ class Dev:
         """-Restart the bot"""
         await self.bot.logout()
         asyncio.sleep(10)
-        os.system('sudo systemctl restart elimerebot.service')
+        os.system('sudo systemctl restart discordbot.service')
 
     @commands.check(IsDev)
     @commands.command(aliases=['shutdown'])
@@ -41,7 +41,7 @@ class Dev:
         await channel.send(embed=e)
         await self.bot.logout()
         await asyncio.sleep(10)
-        os.system('sudo systemctl stop elimerebot.service')
+        os.system('sudo systemctl stop discordbot.service')
 
     @commands.check(IsDev)
     @commands.command(aliases=['pullupdate'])
@@ -50,7 +50,7 @@ class Dev:
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         g = git.cmd.Git(path)
         g.pull()
-        os.system('sudo systemctl restart elimerebot.service')
+        os.system('sudo systemctl restart discordbot.service')
 
     @commands.check(IsDev)
     @commands.command(aliases=['reloadcogs'])
