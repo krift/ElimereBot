@@ -54,8 +54,8 @@ class ElimereBot(commands.AutoShardedBot):
         print('Discord.py Version: ' + str(discord.__version__))
         print('-------------')
         self.check_for_update()
-        await self.event_loop.create_task(self.check_articles())
-        await self.event_loop.create_task(self.check_for_logs())
+        self.event_loop.create_task(self.check_articles())
+        self.event_loop.create_task(self.check_for_logs())
 
     async def check_articles(self):
         await self.wait_until_ready()
