@@ -1,15 +1,11 @@
 from datetime import datetime
 from discord.ext import commands
 import config
-import discord
-import discord.ext.commands.errors
 import botoptions
 import datetime
 import traceback
 import asyncio
-import git
-import subprocess
-import os
+import logging, logging.config
 import modules.wow.wowhead as wow
 import modules.database as database
 
@@ -47,35 +43,47 @@ class ElimereBot(commands.AutoShardedBot):
                 print(e)
                 print(f'Failed to load extension {extension}')
 
-    async def on_ready(self):  # This fires once the bot has connected
-        print('-------------')
-        print('Logged in as: ' + self.user.name)
-        print('Bot ID: ' + str(self.user.id))
-        print('Discord.py Version: ' + str(discord.__version__))
-        print('-------------')
-        self.check_for_update()
+        a = self.get_cog('WarcraftLogs')
+        self.event_loop.create_task(a.ensure_table_data_exists())
+        b = wow.Wowhead(self)
+        self.event_loop.create_task(b.ensure_option_exists())
         self.event_loop.create_task(self.check_articles())
         self.event_loop.create_task(self.check_for_logs())
+        del a, b
+
+    # This section can probably be removed
+    # async def on_ready(self):  # This fires once the bot has connected
+        # print('start')
+        # print('-------------')
+        # print('Logged in as: ' + self.user.name)
+        # print('Bot ID: ' + str(self.user.id))
+        # print('Discord.py Version: ' + str(discord.__version__))
+        # print('-------------')
+        # self.database.create_tables()
+        # a = self.get_cog('WarcraftLogs')
+        # self.event_loop.create_task(a.ensure_table_data_exists())
+        # b = wow.Wowhead(self)
+        # self.event_loop.create_task(b.ensure_option_exists())
+        # del a, b
+        # print("Done")
 
     async def check_articles(self):
-        await self.wait_until_ready()
         a = wow.Wowhead(self)
         await asyncio.sleep(25)  # This sleep is here to ensure the database seeds properly, else we get errors.
         await a.post_new_article()
         await asyncio.sleep(25)
         del a  # Delete the object, it will be remade.
         await asyncio.sleep(300)  # This sleeps for 5 hours
-        asyncio.ensure_future(self.check_articles())
+        self.event_loop.create_task(self.check_articles())
 
     async def check_for_logs(self):
-        await self.wait_until_ready()
         b = self.get_cog('WarcraftLogs')
         await b.auto_pull_log()
         del b
         await asyncio.sleep(300)  # Run every hour.
-        asyncio.ensure_future(self.check_for_logs())
+        self.event_loop.create_task(self.check_for_logs())
 
-    # async def on_member_join(self, member):  # This is fired every time a user joins a server with this bot on it
+    # async def on_member_join(self, member):  # This is fired every time a user joins a server
     #     channel = self.get_guild(config.guildServerID).get_channel(config.guildGenChanID)  # Select the top most text channel in the server
     #     # Send this message
     #     await channel.send("Hello "+member.mention+"! Hope you enjoy your stay here! We're all happy you decided to join us!")
@@ -134,32 +142,22 @@ class ElimereBot(commands.AutoShardedBot):
             await self.get_guild(config.devServerID).get_channel(config.errorChanID).send(e.__str__() + " in server " + str(message.guild))
             return
 
-    @staticmethod
-    def check_for_update():
-        """Checks to see if the local repo is different and then updates"""
-        local_repo = git.Repo(search_parent_directories=True)
-        local_sha = local_repo.head.object.hexsha
-        # local_short_sha = local_repo.git.rev_parse(local_sha)
-        remote_sha = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=local_repo.git_dir).decode(
-            'ascii').strip()
-        if local_sha != remote_sha:
-            path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            g = git.cmd.Git(path)
-            g.pull()
-            os.system('sudo systemctl restart elimerebot.service')
-
     def run(self):
         super().run(config.token)
 
     async def on_error(self, event, *args, **kwargs):
         """Default error handler"""
-        e = discord.Embed(title="Event Error", colour=0x32952)
-        e.add_field(name="Event", value=event)
-        e.add_field(name="args", value=str(args))
-        e.add_field(name="kwargs", value=str(kwargs))
-        e.description = f'```py\n{traceback.format_exc()}\n```'
-        e.timestamp = datetime.datetime.utcnow()
-        await self.get_guild(config.devServerID).get_channel(config.errorChanID).send(embed=e)
+        logger = logging.getLogger("discordBot.Logging")
+        logger.setLevel(logging.INFO)
+        fh = logging.FileHandler("info.log")
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        fh.setFormatter(formatter)
+        logger.addHandler(fh)
+        logger.error("-------------------------")
+        logger.error(f"EVENT: {event}")
+        logger.error(traceback.format_exc(limit=-1, chain=False))
+        logger.error(f"ARGS: {args}")
+        logger.error(f"KWARGS: {kwargs}")
 
 
 RunBot()

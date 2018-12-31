@@ -1,12 +1,30 @@
-import traceback
-import asyncio
-import config
 import discord
-import datetime
+import logging
+import logging.config
 from discord.ext import commands
 
 
+class Logging:
+
+    @staticmethod
+    def log_command_error(command, server, error):
+        logger = logging.getLogger("discordBot.Logging")
+        logger.setLevel(logging.INFO)
+        fh = logging.FileHandler("info.log")
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        fh.setFormatter(formatter)
+        logger.addHandler(fh)
+        logger.error("-------------------------")
+        logger.error(f"Command: {command}")
+        logger.error(f"Server: {server}")
+        logger.error(f"Error: {error}")
+
+
 class ErrorHandling:
+    """
+    This class handles all discord command specific errors. At the bottom of the class will be a generic catch all
+    logging object for any error that isn't explicitly handled.
+    """
 
     def __init__(self, bot):
         self.bot = bot
@@ -28,28 +46,28 @@ class ErrorHandling:
         if isinstance(error, commands.MissingPermissions):
             try:
                 await ctx.send("You don't have the required permissions for that command.")
-            except Exception as e:
-                print(e)
+            except:
+                pass
             finally:
                 return
 
         elif isinstance(error, commands.NoPrivateMessage):
             try:
                 await ctx.author.send("This bot doesn't accept private messages.")
-            except Exception as e:
-                print(e)
+            except:
+                pass
             finally:
                 return
 
         elif isinstance(error, commands.MissingRequiredArgument):
             try:
                 prefix = self.bot.command_prefix
-                strippedCommand = ctx.message.content.replace(prefix, '')
-                strippedCommand = strippedCommand[0:len(strippedCommand)]
+                stripped_command = ctx.message.content.replace(prefix, '')
+                stripped_command = stripped_command[0:len(stripped_command)]
                 await ctx.send(f"{error}")
-                await ctx.send(f"Do {prefix}help {strippedCommand} to see the correct usage.")
-            except Exception as e:
-                print(e)
+                await ctx.send(f"Do {prefix}help {stripped_command} to see the correct usage.")
+            except:
+                pass
             finally:
                 return
 
@@ -58,7 +76,7 @@ class ErrorHandling:
                 prefix = self.bot.command_prefix
                 await ctx.send(f"There is no command called {ctx.message.content}.")
                 await ctx.send(f"Use {prefix} help to see a list of available commands.")
-            except Exception as e:
+            except:
                 pass
             finally:
                 return
@@ -66,7 +84,7 @@ class ErrorHandling:
         elif isinstance(error, commands.CommandOnCooldown):
             try:
                 pass
-            except Exception as e:
+            except:
                 pass
             finally:
                 return
@@ -75,7 +93,7 @@ class ErrorHandling:
             try:
                 prefix = self.bot.command_prefix
                 await ctx.send(f"You entered an invalid value. Type {prefix} help {ctx.command} to see the correct usage.")
-            except Exception as e:
+            except:
                 pass
             finally:
                 return
@@ -83,27 +101,9 @@ class ErrorHandling:
         elif isinstance(error, commands.CheckFailure):
             return
 
-        var = traceback.format_exception(type(error), error, error.__traceback__)
-        e = discord.Embed(title="Command Error", colour=0x32952)
-        e.description = f'```py\n{var}\n```'
-        e.add_field(name='Command', value=ctx.command)
-        e.add_field(name='Server', value=ctx.guild)
-        e.add_field(name='Error', value=error)
-        logger = ErrorLogging(self.bot)
-        await logger.log_error(server=ctx.guild, command=ctx.command, error=str(var))
-        await self.bot.get_guild(config.devServerID).get_channel(config.errorChanID).send(embed=e)
-        asyncio.sleep(5)
-        del logger
-
-
-class ErrorLogging:
-
-    def __init__(self, bot):
-        self.bot = bot
-        bot.database.create_table('''CREATE TABLE IF NOT EXISTS errors (id INTEGER PRIMARY KEY autoincrement, date TEXT, server TEXT, command TEXT, error TEXT)''')
-
-    async def log_error(self, server, command, error):
-        await self.bot.database.insert_data('''INSERT INTO errors (date, server, command, error) VALUES(?,?,?,?)''', (str(datetime.datetime.now()), str(server), str(command), str(error)))
+        # This should catch all unexpected errors that come from commands and log them.
+        logger = Logging()
+        logger.log_command_error(ctx.command, ctx.guild, error)
 
 
 def setup(bot):

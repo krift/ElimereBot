@@ -5,7 +5,6 @@ class Tags:
 
     def __init__(self, bot):
         self.bot = bot
-        self.bot.database.create_table('''CREATE TABLE IF NOT EXISTS storage(label TEXT PRIMARY KEY unique, author TEXT, msg TEXT)''')
 
     @commands.group(aliases=['tags'])
     async def Tags(self, ctx):
@@ -14,28 +13,33 @@ class Tags:
             await ctx.channel.send('You need to pass a subcommand. Type $eli help tags for more info.')
 
     @Tags.command(aliases=['tag', 'set'])
-    async def Tag(self, ctx, label: str, *, msg: str):
+    async def Tag(self, ctx, tag: str, *, msg: str):
         """-Stores a message
         $eli tags tag label msg
-        label: This must not contain spaces, use _ to represent spaces This_Is_An_Example
+        tag name: This must not contain spaces, use _ to represent spaces This_Is_An_Example
         msg: Can be as long as or how ever many lines you want"""
-        await self.bot.database.insert_data('''INSERT INTO storage(label,author, msg) VALUES(?,?,?)'''
-                                            ,(label, str(ctx.author), msg))
-        # This kind of requires some sort of validation to ensure the tag was stored, will look into this
+        stored = await self.bot.database.insert_tag_data(tag, str(ctx.author), msg)
+        if stored is not None:
+            await ctx.channel.send("Label stored :D")
+        else:
+            await ctx.channel.send("The tag could not be stored.")
 
     @Tags.command(aliases=['update'])
-    async def UpdateMessage(self, ctx, label: str, *, msg: str):
+    async def UpdateTag(self, ctx, label: str, *, msg: str):
         """-Updates the message contained in a specific label"""
-        await self.bot.database.update_data(label, msg)
-        await ctx.channel.send(label+' updated!')
+        updated = await self.bot.database.update_tag_data(label, msg)
+        if updated is not None:
+            await ctx.channel.send(label+' updated!')
+        else:
+            await ctx.channel.send("Sorry, I couldn't update the tag :(")
 
     @Tags.command(aliases=['retrieve', 'get'])
-    async def RetrieveMessage(self, ctx, label):
+    async def RetrieveTag(self, ctx, label):
         """-Retrieves a message
         label: The name of the message to retrieve"""
-        msg = await self.bot.database.pull_data('''SELECT msg, author FROM storage WHERE label = ?''', label)
+        msg = await self.bot.database.select_tag_data(label)
         if msg is None:
-            await ctx.channel.send('No label found.')
+            await ctx.channel.send('No tag found.')
         else:
             await ctx.channel.send('```'
                                    f'Author: {msg[1]}\n'
@@ -43,21 +47,28 @@ class Tags:
                                    '```')
 
     @Tags.command(aliases=['remove', 'delete'])
-    async def RemoveMessage(self, ctx, label):
+    async def RemoveTag(self, ctx, tag):
         """-Removes a message
         label: The name of the message to delete"""
-        await self.bot.database.delete_data('''DELETE FROM storage WHERE label = ?''', label)
-        await ctx.channel.send('Removed stored message with the label ' + label)
+        removed = await self.bot.database.delete_tag_data(tag)
+        if removed is not None:
+            await ctx.channel.send('Removed stored tag with the tag ' + tag)
+        else:
+            await ctx.channel.send("Something went wrong :( I wasn't able to remove the tag.")
 
     @Tags.command(aliases=['listall', 'listmessages'])
-    async def ListMessages(self, ctx):
-        """-Lists all saved messages"""
-        msg = await self.bot.database.pull_data('''SELECT label, author FROM storage''', data='', select_all=True)
-        if msg[0] is True:
-            message = "\n".join(str(i) for i in msg[0])
-            await ctx.channel.send(message)
+    async def ListTags(self, ctx):
+        """-Lists all the tags you've created."""
+        msg = await self.bot.database.select_all_tag_data(str(ctx.author))
+        if msg is not None:
+            await ctx.channel.send("Here are all your tags!")
+            text = '```'
+            for item in msg:
+                text += f'{item[0]}: {item[1]}\n'
+            text += '```'
+            await ctx.channel.send(text)
         else:
-            await ctx.channel.send(msg[0])
+            await ctx.channel.send("Looks like there was an issue! I couldn't find any tags!")
 
 
 def setup(bot):
