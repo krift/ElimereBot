@@ -10,22 +10,17 @@ from discord.ext import commands
 class WarcraftLogs:
     def __init__(self, bot):
         self.bot = bot
-        self.bot.database.create_table(db_string='''CREATE TABLE IF NOT EXISTS logs (id TEXT PRIMARY KEY unique, date TEXT, title TEXT, zone TEXT)''')
-        self.event_loop = bot.event_loop
-        self.event_loop.create_task(self.ensure_table_data_exists())
 
     async def ensure_table_data_exists(self):
         """Checks to see if the table has any logs in it, if not, pull all logs off the website."""
-        if await self.bot.database.read_table('''SELECT * from logs limit 1''', data='') is False:
+        if self.bot.database.check_table('logs') is None:
             a = await self.check_for_logs()
 
     async def check_for_logs(self):
         """This checks the WarcraftLogs site for new logs"""
-        async def insert_log_data(*data):
-            await self.bot.database.insert_data('''INSERT INTO logs (id, date, title, zone) VALUES(?,?,?,?)''', data)
 
         async def check_log_by_id(log_id):
-            return await self.bot.database.read_table('''SELECT id FROM logs where id = ?''', str(log_id))
+            return await self.bot.database.read_log_table(str(log_id))
 
         params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api
         url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us?"  # This is the URL to pull logs
@@ -43,7 +38,7 @@ class WarcraftLogs:
             if log_exists:
                 continue
             else:
-                await insert_log_data(log['id'], date, log['title'], log['zone'])
+                await self.bot.database.insert_log_data(log['id'], date, log['title'], log['zone'])
                 logs.append(log)
         return logs
 
@@ -85,7 +80,7 @@ class WarcraftLogs:
     async def ShowLogByDate(self, ctx, date):
         """Enter the date like such:
         YYYY-MM-DD - 2018-01-05"""
-        logs = await self.bot.database.pull_data('''SELECT id, title FROM logs where date = ?''', (date,), select_all=True)
+        logs = await self.bot.database.select_log_by_date(date)
         if logs is None:
             await ctx.channel.send("There don't appear to be any logs on that date.")
         else:
@@ -115,10 +110,9 @@ class WarcraftLogs:
         if raid_zone == 0:
             await ctx.channel.send("You appear to have entered an invalid zone. Check the help command and try again.")
         else:
-            logs = await self.bot.database.pull_data('''SELECT id, date, title FROM logs where zone = ?''', (raid_zone,)
-                                                     , select_all=True)
+            logs = await self.bot.database.select_log_by_zone(raid_zone)
             if logs is None:
-                await ctx.channel.send("There don't appear to be any logs on that date.")
+                await ctx.channel.send("There don't appear to be any logs for that zone.")
             else:
                 msg = ''
                 await ctx.channel.send("Here are the logs I found!")

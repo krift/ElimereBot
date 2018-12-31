@@ -1,6 +1,5 @@
 config.py
+config.ini
 *.pyc
 media/*
-main.py
-LastWarcraftLog.txt
 data/*

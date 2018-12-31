@@ -60,6 +60,12 @@ class Dev:
             self.bot.unload_extension(module)
             self.bot.load_extension(module)
 
+    @commands.check(IsDev)
+    @commands.command()
+    async def logout(self, ctx):
+        self.bot.database.close_conn_pool()
+        await self.bot.logout()
+
 
 def setup(bot):
     bot.add_cog(Dev(bot))
