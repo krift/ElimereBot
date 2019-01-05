@@ -43,7 +43,7 @@ class Database:
             params = self.config()
             conn_pool = psycopg2.pool.SimpleConnectionPool(5, 10, **params)
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(f'Error in config file: {error}')
         return conn_pool
 
     def retrieve_connection(self):

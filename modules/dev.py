@@ -50,6 +50,7 @@ class Dev:
         path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         g = git.cmd.Git(path)
         g.pull()
+        self.bot.database.close_conn_pool()
         os.system('sudo systemctl restart discordbot.service')
 
     @commands.check(IsDev)
