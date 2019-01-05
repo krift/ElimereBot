@@ -13,15 +13,19 @@ class WarcraftLogs:
 
     async def ensure_table_data_exists(self):
         """Checks to see if the table has any logs in it, if not, pull all logs off the website."""
+        if self.bot.database.conn_pool is None:
+            channel = self.bot.get_guild(config.devServerID).get_channel(config.reportChanID)
+            await channel.send("No active connections to the database.")
+            return
         if self.bot.database.check_table('logs') is None:
             a = await self.check_for_logs()
 
     async def check_for_logs(self):
         """This checks the WarcraftLogs site for new logs"""
-
-        async def check_log_by_id(log_id):
-            return await self.bot.database.read_log_table(str(log_id))
-
+        if self.bot.database.conn_pool is None:
+            channel = self.bot.get_guild(config.devServerID).get_channel(config.reportChanID)
+            await channel.send("No active connections to the database.")
+            return
         params = {'api_key': config.warcraftLogsAPI}  # Needed to access the WarcraftLogs api
         url = "https://www.warcraftlogs.com:443/v1/reports/guild/booty%20bay%20surf%20club/maiev/us?"  # This is the URL to pull logs
         async with aiohttp.ClientSession() as session:  # Start a new session
@@ -34,7 +38,7 @@ class WarcraftLogs:
             log = x
             date = datetime.datetime.fromtimestamp(log['start'] / 1e3)
             date = datetime.datetime.strftime(date, '%Y-%m-%d')
-            log_exists = await check_log_by_id(log['id'])
+            log_exists = await self.bot.database.read_log_table(str(log['id']))
             if log_exists:
                 continue
             else:

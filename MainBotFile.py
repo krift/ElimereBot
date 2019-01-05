@@ -51,22 +51,6 @@ class ElimereBot(commands.AutoShardedBot):
         self.event_loop.create_task(self.check_for_logs())
         del a, b
 
-    # This section can probably be removed
-    # async def on_ready(self):  # This fires once the bot has connected
-        # print('start')
-        # print('-------------')
-        # print('Logged in as: ' + self.user.name)
-        # print('Bot ID: ' + str(self.user.id))
-        # print('Discord.py Version: ' + str(discord.__version__))
-        # print('-------------')
-        # self.database.create_tables()
-        # a = self.get_cog('WarcraftLogs')
-        # self.event_loop.create_task(a.ensure_table_data_exists())
-        # b = wow.Wowhead(self)
-        # self.event_loop.create_task(b.ensure_option_exists())
-        # del a, b
-        # print("Done")
-
     async def check_articles(self):
         a = wow.Wowhead(self)
         await asyncio.sleep(25)  # This sleep is here to ensure the database seeds properly, else we get errors.
@@ -77,6 +61,7 @@ class ElimereBot(commands.AutoShardedBot):
         self.event_loop.create_task(self.check_articles())
 
     async def check_for_logs(self):
+        await asyncio.sleep(30)
         b = self.get_cog('WarcraftLogs')
         await b.auto_pull_log()
         del b

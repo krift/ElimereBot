@@ -11,6 +11,10 @@ class Wowhead:
 
     async def ensure_option_exists(self):
         """Check the database for stored options. Seed if they don't exist."""
+        if self.bot.database.conn_pool is None:
+            channel = self.bot.get_guild(config.devServerID).get_channel(config.reportChanID)
+            await channel.send("No active connections to the database.")
+            return
         value = await self.bot.database.select_wowhead_date()
         if value is not None:
             return
@@ -23,6 +27,10 @@ class Wowhead:
         return await self.bot.database.select_wowhead_date()
 
     async def grab_new_articles(self):
+        if self.bot.database.conn_pool is None:
+            channel = self.bot.get_guild(config.devServerID).get_channel(config.reportChanID)
+            await channel.send("No active connections to the database.")
+            return
         articles = []
         parser = feedparser.parse("https://www.wowhead.com/news&rss")
         stored = await self.grab_stored_date()
