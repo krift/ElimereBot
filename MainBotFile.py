@@ -49,11 +49,10 @@ class ElimereBot(commands.AutoShardedBot):
         self.event_loop.create_task(b.ensure_option_exists())
         self.event_loop.create_task(self.check_articles())
         self.event_loop.create_task(self.check_for_logs())
-        del a, b
 
     async def check_articles(self):
+        await asyncio.sleep(30)
         a = wow.Wowhead(self)
-        await asyncio.sleep(25)  # This sleep is here to ensure the database seeds properly, else we get errors.
         await a.post_new_article()
         await asyncio.sleep(25)
         del a  # Delete the object, it will be remade.
