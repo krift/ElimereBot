@@ -12,8 +12,8 @@ class Database:
     def __init__(self):
         self.conn_pool = self.create_connection_pool()
 
-    def log_error(self, e):
-        logger = logging.getLogger("discordBot.Logging")
+    def log_error(self, e, function_called):
+        logger = logging.getLogger(f"discordBot.Logging.Database.{function_called}")
         logger.setLevel(logging.INFO)
         fh = logging.FileHandler(f"{PATH}/info.log")
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -43,7 +43,7 @@ class Database:
             params = self.config()
             conn_pool = psycopg2.pool.SimpleConnectionPool(5, 10, **params)
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(f'Error in config file: {error}')
+            self.log_error(f'Error in config file: {error}', 'create_connection_pool')
         return conn_pool
 
     def retrieve_connection(self):
@@ -80,7 +80,17 @@ class Database:
             wowhead_date TEXT PRIMARY KEY,
             date TEXT
             )
+        """,
             """
+            CREATE TABLE IF NOT EXISTS discordroles (
+            id SERIAL PRIMARY KEY,
+            server_id TEXT,
+            guild_name TEXT,
+            roles_assign TEXT [],
+            report_channel TEXT NULL,
+            roles_channel TEXT NULL
+            )
+        """,
         )
         conn = None
         try:
@@ -96,7 +106,7 @@ class Database:
             # commit the changes
             conn.commit()
         except (Exception, psycopg2.DatabaseError)as e:
-            self.log_error(e)
+            self.log_error(e, 'create_tables')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -112,7 +122,7 @@ class Database:
             row_found = cur.fetchone()
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'check_table')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -130,7 +140,7 @@ class Database:
             conn.commit()
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'insert_log_data')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -147,7 +157,7 @@ class Database:
             row_found = cur.fetchone()
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'read_log_table')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -165,7 +175,7 @@ class Database:
             print(row_found)
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'select_log_by_date')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -183,7 +193,7 @@ class Database:
             print(logs_found)
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'select_log_by_zone')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -201,7 +211,7 @@ class Database:
             conn.commit()
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'insert_tag')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -219,7 +229,7 @@ class Database:
             conn.commit()
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'update_tag')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -237,7 +247,7 @@ class Database:
             conn.commit()
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'select_tag')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -255,7 +265,7 @@ class Database:
             conn.commit()
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'delete_tag')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -273,7 +283,7 @@ class Database:
             conn.commit()
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'select_all_tag')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -291,7 +301,7 @@ class Database:
             conn.commit()
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'insert_wowhead')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -309,7 +319,7 @@ class Database:
             conn.commit()
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'update_wowhead')
         finally:
             if conn is not None:
                 self.return_connection(conn)
@@ -326,7 +336,47 @@ class Database:
             row_found = cur.fetchone()
             cur.close()
         except (Exception, psycopg2.DatabaseError) as error:
-            self.log_error(error)
+            self.log_error(error, 'select_wowhead')
+        finally:
+            if conn is not None:
+                self.return_connection(conn)
+        return row_found
+
+    async def insert_discordroles_data(self, server_id, guild_name, roles_assign, report_channel, roles_channel):
+        sql = """INSERT INTO discordroles (server_id, guild_name, roles_assign, report_channel, roles_channel)
+        VALUES (%s, %s, %s, %s, %s, %s)"""
+        conn = None
+        inserted_rows = None
+        try:
+            conn = self.retrieve_connection()
+            cur = conn.cursor()
+            cur.execute(sql, (server_id, guild_name, roles_assign, report_channel, roles_channel))
+            inserted_rows = cur.rowcount
+            conn.commit()
+            cur.close()
+        except (Exception, psycopg2.DatabaseError) as error:
+            self.log_error(error, 'insert_discordroles')
+        finally:
+            if conn is not None:
+                self.return_connection(conn)
+        return inserted_rows
+
+    # async def update_discordroles_data(self):
+
+    # async def delete_discordroles_data(self, server_id, role_type):
+
+    async def select_discordroles_data(self, server_id, role_type):
+        sql = """SELECT * FROM discordroles WHERE server_id = %s AND role_type = %s"""
+        conn = None
+        row_found = ''
+        try:
+            conn = self.retrieve_connection()
+            cur = conn.cursor()
+            cur.execute(sql, (server_id, role_type))
+            row_found = cur.fetchone()
+            cur.close()
+        except (Exception, psycopg2.DatabaseError) as error:
+            self.log_error(error, 'select_discordroles')
         finally:
             if conn is not None:
                 self.return_connection(conn)

@@ -14,6 +14,7 @@ BOT_PREFIX = "$eli "
 
 
 INITIAL_EXTENSIONS = (
+    'modules.roles',
     'modules.errorhandling',
     'modules.commands',
     'modules.dev',
@@ -34,6 +35,7 @@ class ElimereBot(commands.AutoShardedBot):
         self.guild_only = True
         self.event_loop = asyncio.get_event_loop()
         self.database = database.Database()
+        self.database.create_tables()
 
         for extension in INITIAL_EXTENSIONS:
             try:
@@ -91,13 +93,13 @@ class ElimereBot(commands.AutoShardedBot):
             return uid == 167419045128175616 or uid == 167419045128175616
 
         try:
-            if message.embeds:  # If the message sent was an embed
-                if message.author.name == "GitHub":  # If the author is the github bot
-                    embeds = message.embeds[0].to_dict()  # Look to see if the branch is the master branch then pull the new update
-                    if embeds['title'].lower().rfind('elimerebot:master') != -1:
-                        message.content = '$eli PullUpdate'
-                        await self.process_commands(message)
-                        return
+            # if message.embeds:  # If the message sent was an embed
+            #     if message.author.name == "GitHub":  # If the author is the github bot
+            #         embeds = message.embeds[0].to_dict()  # Look to see if the branch is the master branch then pull the new update
+            #         if embeds['title'].lower().rfind('elimerebot:master') != -1:
+            #             message.content = '$eli PullUpdate'
+            #             await self.process_commands(message)
+            #             return
 
             if message.author.bot is False:  # So the bot won't process bot messages
                 if message.content.rfind(config.secretID) != -1:
