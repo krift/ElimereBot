@@ -1,4 +1,5 @@
-zones = {19: 'Uldir',
+zones = {21: "Battle of Dazar'alor",
+         19: 'Uldir',
          17: 'Antorus, The Burning Throne',
          13: 'Tomb of Sargeras',
          12: 'Trial of Valor',
@@ -8,7 +9,8 @@ zones = {19: 'Uldir',
          7: 'Blackrock Foundry',
          6: 'Highmaul'}
 
-zone_pictures = {19: 'https://www.method.gg/images/world-firsts/raids/bfa/bfa-uldir.jpg',
+zone_pictures = {21: 'https://www.method.gg/images/world-firsts/raids/bfa/bfa-battle-of-dazaralor.jpg',
+                 19: 'https://www.method.gg/images/world-firsts/raids/bfa/bfa-uldir.jpg',
                  17: 'https://www.method.gg/images/world-firsts/raids/legion/legion-antorus.jpg',
                  13: 'https://www.method.gg/images/world-firsts/raids/legion/legion-tomb-of-sargeras.jpg',
                  11: 'https://www.method.gg/images/world-firsts/raids/legion/legion-the-nighthold.jpg',
