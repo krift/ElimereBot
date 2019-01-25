@@ -58,7 +58,8 @@ class WarcraftLogs:
                 e.add_field(name='Zone', value=botoptions.zones.get(x['zone'], 'Unknown Zone'))
                 e.url = "https://www.warcraftlogs.com/reports/" + x['id']
                 e.timestamp = datetime.datetime.fromtimestamp(x['start'] / 1e3)
-                e.set_thumbnail(url=botoptions.zone_pictures.get(x['zone']))
+                e.set_thumbnail(url=botoptions.zone_pictures.get(x['zone'],
+                                                                 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Icon-round-Question_mark.svg/1024px-Icon-round-Question_mark.svg.png'))
                 e.set_image(url="https://s3.amazonaws.com/file3.guildlaunch.net/462275/tabard.png")
                 await channel.send(embed=e)
 
