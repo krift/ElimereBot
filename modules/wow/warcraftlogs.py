@@ -98,6 +98,7 @@ class WarcraftLogs:
     @commands.command(aliases=['logbyzone', 'showlogbyzone'])
     async def ShowLogByZone(self, ctx, *, zone):
         """Enter a raid zone to pull all logs from that zone.
+        Battle of Dazar'alor
         Uldir
         Antorus, The Burning Throne
         Tomb of Sargeras
