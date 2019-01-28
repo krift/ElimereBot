@@ -14,7 +14,7 @@ class Roles:
         They must be typed in that order with a space in between and spelled correctly.
         example: ExampleCharacter maiev
         """
-        guild_info = await self.bot.database.select_discordroles_data(str(ctx.guild.id), 'General')
+        guild_info = await self.bot.database.select_discordroles_data(str(ctx.guild.id))
         await ctx.channel.send("Whoa! Looks like you're requesting a role on discord!")
         await ctx.channel.send("Put your character name and realm(In that order, separated by a space) exactly as "
                                "they are spelled and I'll double check my records!")

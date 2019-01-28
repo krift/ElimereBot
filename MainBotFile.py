@@ -39,7 +39,7 @@ class ElimereBot(commands.AutoShardedBot):
 
         for extension in INITIAL_EXTENSIONS:
             try:
-                self.load_extension(extension)  # Load the extension, so you don't have to import it
+                self.load_extension(extension)
                 print(f'Loaded {extension} extension')
             except Exception as e:
                 print(e)
@@ -53,20 +53,27 @@ class ElimereBot(commands.AutoShardedBot):
         self.event_loop.create_task(self.check_for_logs())
 
     async def check_articles(self):
+        """
+        This function creates a new Wowhead reference and runs the post_new_article function.
+        """
         await asyncio.sleep(30)
         a = wow.Wowhead(self)
         await a.post_new_article()
         await asyncio.sleep(25)
-        del a  # Delete the object, it will be remade.
-        await asyncio.sleep(300)  # This sleeps for 5 hours
+        del a
+        await asyncio.sleep(300)
         self.event_loop.create_task(self.check_articles())
 
     async def check_for_logs(self):
+        """
+        This function creates a new WarcraftLogs reference and runs the auto_pull_log function.
+        """
         await asyncio.sleep(30)
         b = self.get_cog('WarcraftLogs')
         await b.auto_pull_log()
+        await asyncio.sleep(25)
         del b
-        await asyncio.sleep(300)  # Run every hour.
+        await asyncio.sleep(300)
         self.event_loop.create_task(self.check_for_logs())
 
     # async def on_member_join(self, member):  # This is fired every time a user joins a server
