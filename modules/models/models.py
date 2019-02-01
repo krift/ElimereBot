@@ -4,7 +4,7 @@ from configparser import ConfigParser
 PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
-def config(filename=f"{PATH}/config.ini", section="testpostgresql"):
+def config(filename=f"{PATH}/config.ini", section="postgresql"):
     """
     Simple config parser to load database connection info
     :param filename: The name of the file to load
