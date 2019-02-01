@@ -7,23 +7,24 @@ import traceback
 import asyncio
 import logging, logging.config
 import modules.wow.wowhead as wow
-import modules.database as database
 
 DESCRIPTION = "An Elimere bot that really doesn't like to be asked questions!"
 BOT_PREFIX = "$eli "
 
 
 INITIAL_EXTENSIONS = (
-    'modules.roles',
-    'modules.errorhandling',
+    'modules.botsetups',
+    'modules.tags',
     'modules.commands',
-    'modules.dev',
     'modules.wow.warcraftlogs',
     'modules.wow.raiderio',
-    'modules.tags'
+    'modules.roles',
+    'modules.errorhandling',
+    'modules.dev'
 )
 
 
+# noinspection PyPep8Naming
 def RunBot():
     bot = ElimereBot()
     bot.run()
@@ -34,8 +35,10 @@ class ElimereBot(commands.AutoShardedBot):
         super().__init__(command_prefix=BOT_PREFIX, description=DESCRIPTION, pm_help=False, help_attrs=dict(hidden=True))
         self.guild_only = True
         self.event_loop = asyncio.get_event_loop()
-        self.database = database.Database()
-        self.database.create_tables()
+        b = wow.Wowhead(self)
+        self.event_loop.create_task(b.ensure_option_exists())
+        self.event_loop.create_task(self.check_articles())
+        self.event_loop.create_task(self.check_for_logs())
 
         for extension in INITIAL_EXTENSIONS:
             try:
@@ -45,20 +48,18 @@ class ElimereBot(commands.AutoShardedBot):
                 print(e)
                 print(f'Failed to load extension {extension}')
 
-        a = self.get_cog('WarcraftLogs')
-        self.event_loop.create_task(a.ensure_table_data_exists())
-        b = wow.Wowhead(self)
-        self.event_loop.create_task(b.ensure_option_exists())
-        self.event_loop.create_task(self.check_articles())
-        self.event_loop.create_task(self.check_for_logs())
+    async def on_ready(self):
+        pass
 
     async def check_articles(self):
         """
         This function creates a new Wowhead reference and runs the post_new_article function.
         """
-        await asyncio.sleep(30)
+        await asyncio.sleep(5)
         a = wow.Wowhead(self)
-        await a.post_new_article()
+        for server in self.guilds:
+            await a.post_new_article(str(server.id))
+            await asyncio.sleep(1)
         await asyncio.sleep(25)
         del a
         await asyncio.sleep(300)
@@ -68,9 +69,11 @@ class ElimereBot(commands.AutoShardedBot):
         """
         This function creates a new WarcraftLogs reference and runs the auto_pull_log function.
         """
-        await asyncio.sleep(30)
+        await asyncio.sleep(5)
         b = self.get_cog('WarcraftLogs')
-        await b.auto_pull_log()
+        for server in self.guilds:
+            await b.auto_pull_log(str(server.id))
+            await asyncio.sleep(1)
         await asyncio.sleep(25)
         del b
         await asyncio.sleep(300)
@@ -88,11 +91,11 @@ class ElimereBot(commands.AutoShardedBot):
                 if msg.content.lower().rfind(string) != -1:  # If it is found, return True
                     return True
 
-        async def check_response_string(dict, msg):
+        async def check_response_string(response_dict, msg):
             """This checks a dictionary of strings and returns appropriately"""
-            for key in dict.keys():  # This looks at all the keys in the dictionary
+            for key in response_dict.keys():  # This looks at all the keys in the dictionary
                 if msg.content.lower().rfind(key) != -1:  # If the key is found
-                    return dict.get(key)  # Return the value of the key
+                    return response_dict.get(key)  # Return the value of the key
             return ''  # Else return and empty string
 
         def check_dev(uid):
