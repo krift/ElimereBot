@@ -2,45 +2,40 @@ from datetime import datetime
 import feedparser
 import botoptions
 import discord
-import config
+from modules.models.models import GeneralBotOptions, Discord
 
 
 class Wowhead:
     def __init__(self, bot):
         self.bot = bot
 
-    async def ensure_option_exists(self):
+    @staticmethod
+    async def ensure_option_exists():
         """Check the database for stored options. Seed if they don't exist."""
-        if self.bot.database.conn_pool is None:
-            channel = self.bot.get_guild(config.devServerID).get_channel(config.reportChanID)
-            await channel.send("No active connections to the database.")
-            return
-        value = await self.bot.database.select_wowhead_date()
+        value = None
+        try:
+            value = GeneralBotOptions.get(GeneralBotOptions.name == "wowhead_date")
+        except Exception:
+            pass
         if value is not None:
             return
         else:
-            print("that")
             parser = feedparser.parse("https://www.wowhead.com/news&rss")
-            await self.bot.database.insert_wowhead_date(parser['entries'][0].published)
-
-    async def grab_stored_date(self):
-        return await self.bot.database.select_wowhead_date()
+            GeneralBotOptions.create(name="wowhead_date", value=parser['entries'][0].published)
 
     async def grab_new_articles(self):
-        if self.bot.database.conn_pool is None:
-            channel = self.bot.get_guild(config.devServerID).get_channel(config.reportChanID)
-            await channel.send("No active connections to the database.")
-            return
         articles = []
         parser = feedparser.parse("https://www.wowhead.com/news&rss")
-        stored = await self.grab_stored_date()
-        stored = stored[0]
+        stored = GeneralBotOptions.get(GeneralBotOptions.name == "wowhead_date")
+        stored = stored.value
         for x in parser['entries']:  # Start at the bottom of the list and work up
             if self.check_date(stored, x.published) is True:
                 break
             elif self.check_for_keyword(x.title):
                 articles.append(x)
-        await self.bot.database.update_wowhead_date(parser['entries'][0].published)
+        update = GeneralBotOptions.get(GeneralBotOptions.name == "wowhead_date")
+        update.value = parser['entries'][0].published
+        update.save()
         return articles
 
     @staticmethod
@@ -61,13 +56,18 @@ class Wowhead:
         else:
             return False
 
-    async def post_new_article(self):
+    async def post_new_article(self, server_id):
+        discord_server = Discord.select().where(Discord.server_id == server_id)
+        if len(discord_server) == 0:
+            return
+        if discord_server[0].wowhead_channel_id is None:
+            return
         articles = await self.grab_new_articles()
-        channel = self.bot.get_guild(config.guildServerID).get_channel(config.guildGenChanID)
+        channel = self.bot.get_guild(int(server_id)).get_channel(int(discord_server[0].wowhead_channel_id))
         for x in articles:
             e = discord.Embed(title=x.title, colour=discord.Colour.purple())
             e.add_field(name='Summary', value=self.create_summary(x.summary))
             e.url = x.link
-            e.timestamp = datetime.strptime(x.published,'%a, %d %b %Y %X %z')
+            e.timestamp = datetime.strptime(x.published, '%a, %d %b %Y %X %z')
             e.set_thumbnail(url='https://wow.zamimg.com/images/logos/wh-logo.png')
             await channel.send(embed=e)

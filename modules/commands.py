@@ -12,6 +12,7 @@ class Commands:
     def __init__(self, bot):
         self.bot = bot
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['raidtime'])
     async def RaidTime(self, ctx):
         """-Tells the user for the 100th time when raids are."""
@@ -21,22 +22,26 @@ class Commands:
         e.add_field(name='Sundays', value='530pm Server\n730pm Eastern')
         await ctx.channel.send(embed=e)
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['hello'])
     async def Hello(self, ctx):
         """-Uhhhhh....hellooooo"""
         await ctx.channel.send("I swear to god, I don't know why I even bother, no one listens anyways.")
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['twitch'])
     async def Twitch(self, ctx):
         """-Holy crap are you even paying attention when I talk?"""
         await ctx.channel.send("https://www.twitch.tv/elimere")
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['topclip'])
     async def TopClip(self, ctx):
         """-It's the top clip from my channel!"""
         await ctx.channel.send("Check out this amazing clip from my channel!")
         await ctx.channel.send(await self.retrieve_twitch_clip('elimere'))
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['raidmods'])
     async def RaidMods(self, ctx):
         """-These are the mods required for raiding"""
@@ -44,47 +49,56 @@ class Commands:
                                "You need the Twitch app installed, download this file, then run it.\n"
                                "http://www.mediafire.com/file/gpc0t8yjhi5369f/Booty_Bay_Surf_Club_Raid_Pack.ccip")
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['voidelfs'])
     async def Voidelfs(self, ctx):
         """-Tell us how you REALLY feel about Void Elves"""
         await ctx.channel.send("Well first, fuck them\n"
                                "Second..I secretly envy their hair")
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['mechanics'])
     async def Mechanics(self, ctx):
         """-Will you please stop standing in shit??"""
         await ctx.channel.send("Seriously guys? Are we really still fucking this up after this many months?")
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['haste'])
     async def Haste(self, ctx):
         """-Is it not enough???"""
         await ctx.channel.send("I don't have enough haste!")
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['thunder'])
     async def Thunder(self, ctx):
         """-Where are you???"""
         await ctx.channel.send("Did you get enough strawberry mountain water??")
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['silv'])
     async def Silv(self, ctx):
         """-Damn it Silv!"""
         await ctx.channel.send(random.choice(botoptions.silv))
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['jems'])
     async def Jems(self, ctx):
         """-One of my besties"""
         await ctx.channel.send(random.choice(botoptions.jems))
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['mass'])
     async def Mass(self, ctx):
         """-Cant stop wont stop"""
         await ctx.channel.send(random.choice(botoptions.mass))
 
+    # noinspection PyPep8Naming
     @commands.command(aliases=['khaid'])
     async def Khaid(self, ctx):
         """-Tell us another dad joke piano man"""
         await ctx.channel.send(random.choice(botoptions.khaid))
 
+    # noinspection PyPep8Naming,PyPep8Naming
     @commands.command(aliases=['heroes'])
     async def Heroes(self, ctx):
         """-My heroes!"""
@@ -93,15 +107,16 @@ class Commands:
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing1.jpg'))
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
 
+    # noinspection PyPep8Naming
     @commands.command(hidden=True)
     @commands.cooldown(rate=3, per=300.0, type=commands.BucketType.user)
     async def BotRespond(self, ctx):
         """This responds to certain keywords and strings"""
-        async def check_response_string(dict, msg):
+        def check_response_string(response_dict, message):
             """This checks a dictionary of strings and returns appropriately"""
-            for response in dict.keys():  # This looks at all the keys in the dictionary
-                if msg.lower().rfind(response) != -1:  # If the key is found
-                    return dict.get(response)  # Return the value of the key
+            for value in response_dict.keys():  # This looks at all the keys in the dictionary
+                if message.lower().rfind(value) != -1:  # If the key is found
+                    return response_dict.get(value)  # Return the value of the key
             return ''  # Else return and empty string
 
         try:
@@ -124,6 +139,7 @@ class Commands:
         except asyncio.TimeoutError:  # This fires if the user doesn't respond in 20 seconds
             await ctx.channel.send("I guess you didn't have anything to say anyways....")
 
+    # noinspection PyPep8Naming
     @staticmethod
     async def retrieve_twitch_clip(channel):
         """Retrieves the newest twitch clip from the channel"""
@@ -142,7 +158,7 @@ class Commands:
             async with session.get(twitchURL, headers=headers, params=params) as resp:
                 json_info = await resp.json()
                 await asyncio.sleep(0.250)
-                session.close()
+                await session.close()
         return json_info['clips'][0]['url']
 
 
