@@ -30,7 +30,7 @@ class RaiderIO:
         """
         channel = self.bot.get_guild(ctx.guild.id).get_channel(int(Discord.select().where(Discord.server_id == str(ctx.guild.id))[0].mythic_plus_report_channel))
         async with ctx.channel.typing():
-            stats = await self.__class__.PullIOStats(realm, char_name, region)
+            stats = await self.__class__.PullIOStats(realm=realm, char_name=char_name, region=region)
             # This data is pulled from the http request, see https://raider.io/api#!/character/get_api_v1_characters_profile for more details
             e = discord.Embed(title='RaiderIO Stats', colour=discord.Colour.blue())
             ranks = stats[1]
