@@ -32,7 +32,7 @@ class RaiderIO:
         async with ctx.channel.typing():
             stats = await self.__class__.PullIOStats(realm=realm, char_name=char_name, region=region)
             # This data is pulled from the http request, see https://raider.io/api#!/character/get_api_v1_characters_profile for more details
-            e = discord.Embed(title='RaiderIO Stats', colour=discord.Colour.blue())
+            e = discord.Embed(title='RaiderIO Mythic+ Stats', colour=discord.Colour.blue())
             ranks = stats[1]
             scores = stats[2]
             stats = stats[0]
@@ -96,7 +96,7 @@ class RaiderIO:
     # noinspection PyPep8Naming
     @staticmethod
     async def PullIOStats(realm, region, char_name):
-        """This pulls stats from raiderio"""
+        """This pulls Mythic+ stats from raiderio"""
         params = {'region': region, 'realm': realm, 'name': char_name, 'fields': 'mythic_plus_ranks'}
         url = 'https://raider.io/api/v1/characters/profile?'
         async with aiohttp.ClientSession() as session:
