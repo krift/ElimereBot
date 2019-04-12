@@ -60,7 +60,7 @@ class ElimereBot(commands.AutoShardedBot):
         for server in self.guilds:
             await a.post_new_article(str(server.id))
             await asyncio.sleep(1)
-        await asyncio.sleep(25)
+        await asyncio.sleep(60)
         del a
         await asyncio.sleep(300)
         self.event_loop.create_task(self.check_articles())
@@ -74,7 +74,7 @@ class ElimereBot(commands.AutoShardedBot):
         for server in self.guilds:
             await b.auto_pull_log(str(server.id))
             await asyncio.sleep(1)
-        await asyncio.sleep(25)
+        await asyncio.sleep(60)
         del b
         await asyncio.sleep(300)
         self.event_loop.create_task(self.check_for_logs())
