@@ -45,7 +45,7 @@ class WarcraftLogs:
         return logs
 
     async def auto_pull_log(self, server_id):
-        """This is the same as the below command but is used for the task that checks every hour."""
+        """This is the same as the above command but is used for the task that checks every 5 minutes."""
         discord_server = Discord.select().where(Discord.server_id == server_id)
         if len(discord_server) == 0:
             return

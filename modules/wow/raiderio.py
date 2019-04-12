@@ -88,7 +88,7 @@ class RaiderIO:
                             'Region: ' + str(ranks['class_tank']['region']) + '\n' +
                             'Realm: ' + str(ranks['class_tank']['realm']))
 
-            e.set_footer(text=str(datetime.datetime.now()))
+            e.set_footer(text="Date Retrieved: " + str(datetime.datetime.now()))
 
             await channel.send(ctx.message.author.mention)
             await channel.send(embed=e)
