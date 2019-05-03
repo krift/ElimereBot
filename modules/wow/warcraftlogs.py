@@ -4,6 +4,7 @@ import botoptions
 import datetime
 import discord
 import config
+import peewee
 from discord.ext import commands
 from modules.models.models import Logs, Guild, Discord
 
@@ -32,8 +33,12 @@ class WarcraftLogs:
         for log in log_info:
             date = datetime.datetime.fromtimestamp(log['start'] / 1e3)
             date = datetime.datetime.strftime(date, '%Y-%m-%d')
-            log_exists = Logs.get_or_create(log_id=log['id'], log_date=date, log_title=log['title'],
-                                            log_zone=log['zone'], guild=Guild.get(Guild.name == server[0].guild.name))
+            log_exists = ''
+            try:
+                log_exists = Logs.get_or_create(log_id=log['id'], log_date=date, log_title=log['title'],
+                                                log_zone=log['zone'], guild=Guild.get(Guild.name == server[0].guild.name))
+            except peewee.IntegrityError:
+                continue
             if log_exists[1] is False:
                 continue
             else:
