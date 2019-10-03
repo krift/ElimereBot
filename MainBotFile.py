@@ -103,14 +103,6 @@ class ElimereBot(commands.AutoShardedBot):
             return uid == 167419045128175616 or uid == 167419045128175616
 
         try:
-            # if message.embeds:  # If the message sent was an embed
-            #     if message.author.name == "GitHub":  # If the author is the github bot
-            #         embeds = message.embeds[0].to_dict()  # Look to see if the branch is the master branch then pull the new update
-            #         if embeds['title'].lower().rfind('elimerebot:master') != -1:
-            #             message.content = '$eli PullUpdate'
-            #             await self.process_commands(message)
-            #             return
-
             if message.author.bot is False:  # So the bot won't process bot messages
                 if message.content.rfind(config.secretID) != -1:
                     if datetime.datetime.now().hour < 14:
@@ -121,19 +113,6 @@ class ElimereBot(commands.AutoShardedBot):
                 if message.content[0] == '$':  # If the message is actually a command, process it
                     await self.process_commands(message)  # This part processes the actual command
                     return  # Return so it doesn't run any other part of this
-                response = await check_response_string(botoptions.eli_main_responses, message)  # Check to see if it's a keyword
-                god_response = await check_response_string(botoptions.god_responses, message)  # Checks if a keyword from the gods
-                if god_response != '':
-                    if check_dev(message.author.id):
-                        # If either author is the devs
-                        message.content = god_response  # Send a god response
-                        await message.channel.send(message.content)
-                elif response != '':  # Else, send a normal response
-                    message.content = response
-                    await message.channel.send(message.content)
-                elif await check_for_string(message) is True:  # If it's not a keyword, run the BotRespond command
-                    message.content = "$eli BotRespond"
-                    await self.process_commands(message)
         except AttributeError as e:
             await self.get_guild(config.devServerID).get_channel(config.errorChanID).send(e.__str__() + " in server " + str(message.guild))
             return

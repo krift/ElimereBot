@@ -108,38 +108,6 @@ class Commands:
         await ctx.channel.send(file=discord.File(fileLoc+'/media/thing2.jpg'))
 
     # noinspection PyPep8Naming
-    @commands.command(hidden=True)
-    @commands.cooldown(rate=3, per=300.0, type=commands.BucketType.user)
-    async def BotRespond(self, ctx):
-        """This responds to certain keywords and strings"""
-        def check_response_string(response_dict, message):
-            """This checks a dictionary of strings and returns appropriately"""
-            for value in response_dict.keys():  # This looks at all the keys in the dictionary
-                if message.lower().rfind(value) != -1:  # If the key is found
-                    return response_dict.get(value)  # Return the value of the key
-            return ''  # Else return and empty string
-
-        try:
-            # Send a snarky response
-            await ctx.channel.send(random.choice(botoptions.eli_calls))
-
-            def check(message):  # This check is used to ensure it's the same user and channel who sent the first message
-                return message.author == ctx.author and ctx.channel == message.channel
-
-            response = await self.bot.wait_for('message', check=check, timeout=20.0)  # Wait for the response, 20 seconds max
-            response.content = await check_response_string(botoptions.eli_responses, response.content)  # Call this function
-            if response.content == '':  # If content is an empty string
-                msg = random.choice(botoptions.eli_messages)  # Send a random message
-                await ctx.channel.send(msg)
-            else:
-                if response.content[0] == '$':  # If it's a command, process it
-                    await self.bot.process_commands(response)
-                else:
-                    await ctx.channel.send(response.content)  # Else just send what the bot response was
-        except asyncio.TimeoutError:  # This fires if the user doesn't respond in 20 seconds
-            await ctx.channel.send("I guess you didn't have anything to say anyways....")
-
-    # noinspection PyPep8Naming
     @staticmethod
     async def retrieve_twitch_clip(channel):
         """Retrieves the newest twitch clip from the channel"""
