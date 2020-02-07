@@ -1,4 +1,5 @@
-zones = {23: "The Eternal Palace",
+zones = {24: "Ny'alotha, The Eternal Palace",
+         23: "The Eternal Palace",
          22: "Crucible of Storms",
          21: "Battle of Dazar'alor",
          19: 'Uldir',
@@ -11,7 +12,8 @@ zones = {23: "The Eternal Palace",
          7: 'Blackrock Foundry',
          6: 'Highmaul'}
 
-zone_pictures = {23: "https://dmszsuqyoe6y6.cloudfront.net/img/warcraft/zones/zone-23-small.jpg",
+zone_pictures = {24: "https://www.method.gg/images/world-firsts/raids/bfa/bfa-nyalotha.jpg",
+                 23: "https://dmszsuqyoe6y6.cloudfront.net/img/warcraft/zones/zone-23-small.jpg",
                  22: "https://www.method.gg/images/world-firsts/raids/bfa/crucible-of-storms.jpg",
                  21: 'https://www.method.gg/images/world-firsts/raids/bfa/bfa-battle-of-dazaralor.jpg',
                  19: 'https://www.method.gg/images/world-firsts/raids/bfa/bfa-uldir.jpg',
